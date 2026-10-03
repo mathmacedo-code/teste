@@ -2,22 +2,23 @@
 
 import { motion } from "framer-motion";
 import { Wordmark } from "@/components/brand/Logo";
-import { HeroSequence } from "@/components/ui/HeroSequence";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { Cta } from "@/components/ui/Cta";
 import { EASE } from "@/components/ui/Motion";
 import { video } from "@/data/media";
 
 const lines = ["O Mediterrâneo", "encontra São Paulo."];
 
-/** Hero: abre com o vídeo do salão e, em seguida, o spritz sendo montado fica bem mais tempo. Tríptico no desktop, vertical no mobile. */
+/** Hero: tríptico em vídeo no desktop (material original é vertical), vídeo vertical no mobile. */
 export function Hero() {
   return (
     <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-noite text-perola">
-      <HeroSequence
-        clips={[
-          { source: video.heroDesktop, mobileSource: video.heroMobile, plays: 1, label: "Ambientes do Vila Medí à noite: fachada, luminárias, mesas e coquetéis" },
-          { source: video.drinkSpritzDesktop, mobileSource: video.drinkSpritz, plays: 3, label: "Spritz sendo montado no bar do Vila Medí" },
-        ]}
+      {/* Para a abertura em sequência (ex.: + vídeo do elevador), trocar por <HeroSequence clips={[...]} /> */}
+      <AmbientVideo
+        source={video.heroDesktop}
+        mobileSource={video.heroMobile}
+        priority
+        label="Ambientes do Vila Medí à noite: fachada, luminárias, mesas e coquetéis"
       />
       <div aria-hidden className="scrim-bottom absolute inset-0" />
 
