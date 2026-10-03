@@ -2,26 +2,26 @@
 
 import { motion } from "framer-motion";
 import { Wordmark } from "@/components/brand/Logo";
-import { AmbientVideo } from "@/components/ui/AmbientVideo";
+import { HeroSequence } from "@/components/ui/HeroSequence";
 import { Cta } from "@/components/ui/Cta";
 import { EASE } from "@/components/ui/Motion";
 import { video } from "@/data/media";
 
 const lines = ["O Mediterrâneo", "encontra São Paulo."];
 
-/** Hero: tríptico em vídeo no desktop (material original é vertical), vídeo vertical no mobile. */
+/** Hero: abre com o vídeo do salão e, em seguida, o spritz sendo montado fica bem mais tempo. Tríptico no desktop, vertical no mobile. */
 export function Hero() {
   return (
     <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-noite text-perola">
-      <AmbientVideo
-        source={video.heroDesktop}
-        mobileSource={video.heroMobile}
-        priority
-        label="Ambientes do Vila Medí à noite: fachada, luminárias, mesas e coquetéis"
+      <HeroSequence
+        clips={[
+          { source: video.heroDesktop, mobileSource: video.heroMobile, plays: 1, label: "Ambientes do Vila Medí à noite: fachada, luminárias, mesas e coquetéis" },
+          { source: video.drinkSpritzDesktop, mobileSource: video.drinkSpritz, plays: 3, label: "Spritz sendo montado no bar do Vila Medí" },
+        ]}
       />
       <div aria-hidden className="scrim-bottom absolute inset-0" />
 
-      <div className="shell relative flex h-full flex-col justify-end pb-[max(3.25rem,7vh)]">
+      <div className="shell relative flex h-full flex-col justify-end pb-[max(5.5rem,10vh)] md:pb-[max(6.5rem,11vh)]">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.4, delay: 0.25, ease: EASE }}>
           <Wordmark className="w-[148px] md:w-[196px]" />
         </motion.div>

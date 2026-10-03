@@ -1,4 +1,4 @@
-import type { CutoutKey, VideoKey } from "./media";
+import type { CutoutKey, ImageKey, VideoKey } from "./media";
 
 export type RestaurantSlug = "temperani" | "miimar" | "cru";
 export type Theme = "cal" | "branco" | "noite";
@@ -10,8 +10,9 @@ export type Restaurant = {
   origin: string;
   line: string; // frase curta usada na home
   hoverLine: string; // texto que surge no hover da home
-  /** vídeo do painel da casa na home */
-  cover: VideoKey;
+  /** foto da casa (painel da home e ambiente da página da casa) */
+  photo: ImageKey;
+  photoAlt: string;
   /** prato recortado que representa a casa (elemento gráfico) */
   dish: CutoutKey;
   theme: Theme;
@@ -22,7 +23,7 @@ export type Restaurant = {
   kitchen?: { title: string; text: string };
   signatureDishes: string[]; // ids em data/dishes.ts
   menuHighlights: { name: string; note: string }[];
-  ambience: { title: string; text: string; video: VideoKey };
+  ambience: { title: string; text: string };
   feature: { title: string; text: string };
   closing: string;
 };
@@ -35,7 +36,8 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     origin: "Itália",
     line: "Cucina italiana inspirada pela Costa Amalfitana.",
     hoverLine: "Massa fresca, forno a lenha e o azul da Campânia.",
-    cover: "forno",
+    photo: "cozinha-temperani",
+    photoAlt: "Cozinha do Temperani Amalfi com azulejos em azul e branco, caixas de tomates e cestos de palha",
     dish: "recorte-burrata",
     theme: "cal",
     cta: "Reservar no Temperani",
@@ -71,7 +73,6 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     ambience: {
       title: "Luz baixa, palha e madeira.",
       text: "Mesas sob luminárias de palha, banquetas estofadas e o calor do forno ao fundo do salão.",
-      video: "noite",
     },
     feature: {
       title: "Carta de vinhos.",
@@ -86,7 +87,8 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     origin: "Grécia",
     line: "Sabores do Mediterrâneo em uma atmosfera única.",
     hoverLine: "Polvo na brasa, mezze e o branco das ilhas gregas.",
-    cover: "miimar",
+    photo: "cozinha-miimar",
+    photoAlt: "Balcão do MII Mar com azulejos verdes, parede caiada em arco e peixes maturando na câmara",
     dish: "recorte-risoni",
     theme: "branco",
     cta: "Reservar no MII Mar",
@@ -118,7 +120,6 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     ambience: {
       title: "O branco das ilhas, à noite.",
       text: "Arcos, paredes caiadas, listras e azulejos em azul e branco. Um salão que lembra um terraço sobre o Egeu.",
-      video: "heroMobile",
     },
     feature: {
       title: "A grelha.",
@@ -133,7 +134,8 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     origin: "Mar",
     line: "Mar, crudos, ostras e coquetelaria.",
     hoverLine: "Ostras, crudos e o balcão que vira noite.",
-    cover: "cru",
+    photo: "bar-3",
+    photoAlt: "Balcão do bar central em madeira iluminada, sob luminárias de palha",
     dish: "recorte-peixe",
     theme: "noite",
     cta: "Reservar no Cru Oyster Bar",
@@ -165,7 +167,6 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     ambience: {
       title: "Quando a luz baixa.",
       text: "Coquetéis, música e conversa ao redor do balcão. O Cru é onde a noite do Vila Medí acontece.",
-      video: "noite",
     },
     feature: {
       title: "Coquetelaria.",

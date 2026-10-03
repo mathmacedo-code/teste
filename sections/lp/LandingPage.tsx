@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Emblem, Wordmark } from "@/components/brand/Logo";
 import { EventForm } from "@/components/forms/EventForm";
-import { ReservationForm } from "@/components/forms/ReservationForm";
+import { ReserveChoices } from "@/components/forms/ReserveChoices";
 import { StickyReserve } from "@/components/layout/StickyReserve";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { Cta } from "@/components/ui/Cta";
@@ -97,14 +97,14 @@ export function LandingPage({ l }: { l: Landing }) {
           <div className="lg:col-span-4">
             <h2 className="display-l">{l.form === "evento" ? "Peça sua proposta." : "Reserve sua mesa."}</h2>
             <p className="lede mt-6 max-w-[34ch] opacity-85">
-              {site.address.venue}, {site.address.floor}. Confirmamos pelo WhatsApp.
+              {site.address.venue}, {site.address.floor}. {l.form === "evento" ? "Respondemos com uma proposta." : "Reserve direto pelo WhatsApp."}
             </p>
           </div>
           <div className="lg:col-span-7 lg:col-start-6">
             {l.form === "evento" ? (
               <EventForm cta={l.cta} source={`lp_${l.slug}`} />
             ) : (
-              <ReservationForm defaultHouse={l.house} cta={l.cta} source={`lp_${l.slug}`} tone="dark" />
+              <ReserveChoices houses={l.house ? [l.house] : undefined} source={`lp_${l.slug}`} tone="dark" />
             )}
           </div>
         </div>

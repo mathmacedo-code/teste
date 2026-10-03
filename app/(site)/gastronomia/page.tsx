@@ -80,7 +80,7 @@ export default function GastronomiaPage() {
       <section className="bg-noite text-perola">
         <div className="grid md:grid-cols-2">
           <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[86vh]">
-            <AmbientVideo source={video.noite} label="Bar central do Vila Medí: coquetéis sendo preparados e servidos" />
+            <AmbientVideo source={video.drinkTaca} label="Coquetel sendo servido na taça, com casca de laranja, no bar central" />
           </div>
           <Reveal className="flex flex-col justify-center px-[clamp(1.25rem,6vw,6rem)] py-20">
             <h2 className="display-l">Bar central e carta de vinhos.</h2>

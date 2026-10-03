@@ -6,7 +6,8 @@ import { Cta } from "@/components/ui/Cta";
 import { CandleGlow } from "@/components/ui/CandleGlow";
 import { Cutout } from "@/components/ui/Cutout";
 import { DishMarquee } from "@/components/ui/DishMarquee";
-import { Reveal } from "@/components/ui/Motion";
+import { Photo } from "@/components/ui/Photo";
+import { Parallax, Reveal } from "@/components/ui/Motion";
 import { Float, LemonBranch, Meander, TileField, WaveLines } from "@/components/ui/Motifs";
 import { Seal } from "@/components/ui/Seal";
 import { dishes } from "@/data/dishes";
@@ -151,11 +152,12 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
             <h2 className="display-l">{r.ambience.title}</h2>
             <p className="lede mt-7 max-w-[34ch] opacity-85">{r.ambience.text}</p>
           </Reveal>
-          <Reveal className="relative col-span-10 col-start-2 mt-12 md:col-span-5 md:col-start-7 md:row-start-1 md:mt-0" delay={0.1}>
-            <div aria-hidden className="arch-23 absolute -inset-[10px] border border-current/25" />
-            <div className="arch-23 relative aspect-[2/3] overflow-hidden bg-noite">
-              <AmbientVideo source={video[r.ambience.video]} label={`Ambiente do ${r.name}`} />
-            </div>
+          <Reveal className="relative col-span-11 col-start-2 mt-12 md:col-span-5 md:col-start-7 md:row-start-1 md:mt-0" delay={0.1}>
+            {/* moldura deslocada em linha fina, como um passe-partout */}
+            <div aria-hidden className="absolute -top-3 -left-3 h-full w-full border border-current/25" />
+            <Parallax className="relative aspect-[4/5] bg-noite" amount={6}>
+              <Photo k={r.photo} alt={r.photoAlt} sizes="(min-width: 768px) 40vw, 90vw" quality={85} />
+            </Parallax>
           </Reveal>
         </div>
       </section>

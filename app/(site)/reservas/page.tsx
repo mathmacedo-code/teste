@@ -1,7 +1,7 @@
-import { ReservationForm } from "@/components/forms/ReservationForm";
+import { ReserveChoices } from "@/components/forms/ReserveChoices";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { video } from "@/data/media";
-import { HOUSES, site, whatsappLink } from "@/data/site";
+import { HOUSES, site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
@@ -26,10 +26,10 @@ export default async function ReservasPage({ searchParams }: { searchParams: Pro
         <div className="shell py-16 md:py-24 lg:px-[clamp(2rem,5vw,6rem)]">
           <h1 className="display-l">Reserve sua mesa.</h1>
           <p className="lede mt-6 max-w-[40ch] opacity-85">
-            Escolha a casa, o dia e o horário. Confirmamos pelo WhatsApp.
+            Escolha a casa e fale direto com a nossa equipe pelo WhatsApp: dia, horário e número de pessoas.
           </p>
           <div className="mt-14">
-            <ReservationForm defaultHouse={defaultHouse} />
+            <ReserveChoices highlight={defaultHouse} source="reservas" />
           </div>
           <dl className="mt-20 grid gap-8 border-t border-grafite/15 pt-10 text-[0.98rem] sm:grid-cols-2">
             <div>
@@ -41,11 +41,13 @@ export default async function ReservasPage({ searchParams }: { searchParams: Pro
               </dd>
             </div>
             <div>
-              <dt className="meta opacity-60">Prefere falar com a gente?</dt>
+              <dt className="meta opacity-60">Horário</dt>
               <dd className="mt-2">
-                <a className="link-u" href={whatsappLink("Olá! Gostaria de reservar uma mesa no Vila Medí.")} target="_blank" rel="noopener noreferrer">
-                  Reservar pelo WhatsApp
-                </a>
+                {site.hours.map((h) => (
+                  <span key={h.days} className="block">
+                    {h.days}: {h.time}
+                  </span>
+                ))}
               </dd>
             </div>
           </dl>

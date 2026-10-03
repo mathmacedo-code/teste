@@ -31,7 +31,7 @@ type Props = {
 const all = new Set<HTMLVideoElement>();
 let unlockBound = false;
 
-function prep(el: HTMLVideoElement) {
+export function prep(el: HTMLVideoElement) {
   el.muted = true;
   el.defaultMuted = true;
   el.playsInline = true;
@@ -40,10 +40,21 @@ function prep(el: HTMLVideoElement) {
   el.setAttribute("webkit-playsinline", "");
 }
 
-function tryPlay(el: HTMLVideoElement) {
+export function tryPlay(el: HTMLVideoElement) {
   prep(el);
   const p = el.play();
   if (p) p.catch(() => bindUnlock());
+}
+
+/**
+ * Inclui um vídeo no desbloqueio por toque. `dataset.visible = "1"` marca os
+ * que devem continuar tocando depois do toque; os demais pausam em seguida.
+ */
+export function registerVideo(el: HTMLVideoElement) {
+  all.add(el);
+  return () => {
+    all.delete(el);
+  };
 }
 
 function bindUnlock() {

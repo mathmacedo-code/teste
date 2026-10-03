@@ -2,13 +2,13 @@ import { JsonLd } from "@/components/seo/JsonLd";
 import { site } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 import { vilaMediSchema } from "@/lib/schema";
+import { Bar } from "@/sections/home/Bar";
 import { BrandIntro } from "@/sections/home/BrandIntro";
 import { Cinematic } from "@/sections/home/Cinematic";
 import { Events } from "@/sections/home/Events";
 import { Experiences } from "@/sections/home/Experiences";
 import { Gastronomy } from "@/sections/home/Gastronomy";
 import { Hero } from "@/sections/home/Hero";
-import { Instagram } from "@/sections/home/Instagram";
 import { Location } from "@/sections/home/Location";
 import { Moments } from "@/sections/home/Moments";
 import { Testimonials } from "@/sections/home/Testimonials";
@@ -32,9 +32,9 @@ export default function Home() {
       <Gastronomy />
       <Moments />
       <Cinematic />
+      <Bar />
       <Events />
       <Testimonials />
-      <Instagram />
       <Location />
     </>
   );

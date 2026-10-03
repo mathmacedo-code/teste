@@ -10,6 +10,12 @@ import pratoPolvoRisoni from "@/assets/images/prato-polvo-risoni.jpg";
 import recorteBurrata from "@/assets/images/recorte-burrata.png";
 import recortePeixe from "@/assets/images/recorte-peixe.png";
 import recorteRisoni from "@/assets/images/recorte-risoni.png";
+// ambientes enviados pela casa: bar central e cozinhas
+import bar1 from "@/assets/images/bar-1.jpg";
+import bar2 from "@/assets/images/bar-2.jpg";
+import bar3 from "@/assets/images/bar-3.jpg";
+import cozinhaMiimar from "@/assets/images/cozinha-miimar.jpg";
+import cozinhaTemperani from "@/assets/images/cozinha-temperani.jpg";
 // ambientes (frames dos reels), usados na seção de momentos do dia
 import ambCelebracao from "@/assets/images/celebracao.jpg";
 import ambDrink from "@/assets/images/drink.jpg";
@@ -30,6 +36,11 @@ export const img = {
   "recorte-peixe": recortePeixe,
   /** bowl de orzo com polvo, em perspectiva */
   "recorte-risoni": recorteRisoni,
+  "bar-1": bar1,
+  "bar-2": bar2,
+  "bar-3": bar3,
+  "cozinha-miimar": cozinhaMiimar,
+  "cozinha-temperani": cozinhaTemperani,
   "amb-almoco": ambLabneh,
   "amb-sunset": ambRose,
   "amb-jantar": ambMesaPalha,
@@ -72,6 +83,10 @@ export const video = {
   noite: v("noite"),
   cru: v("cru"),
   miimar: v("miimar"),
+  /** drinks sendo montados (enviados pela casa) */
+  drinkTaca: v("drink-taca"),
+  drinkSpritz: v("drink-spritz"),
+  drinkSpritzDesktop: v("drink-spritz-desktop", 1920, 1080),
 } as const;
 
 export type VideoKey = keyof typeof video;
