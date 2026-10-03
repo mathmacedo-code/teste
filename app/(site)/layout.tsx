@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { GlobalStickyReserve } from "@/components/layout/GlobalStickyReserve";
 import { Header } from "@/components/layout/Header";
+import { SoundToggle } from "@/components/layout/SoundToggle";
 
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       <main id="conteudo">{children}</main>
       <Footer />
       <GlobalStickyReserve />
+      <SoundToggle />
     </>
   );
 }

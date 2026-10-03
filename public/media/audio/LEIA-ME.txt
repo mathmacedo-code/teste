@@ -1,0 +1,6 @@
+Coloque aqui a música do site com o nome:  trilha.mp3
+(MP3, 128–192 kbps é suficiente; até ~5 MB para carregar rápido no celular)
+
+O botão de som só aparece quando este arquivo existe.
+Título e artista exibidos ficam em data/soundtrack.ts.
+Lembre: música comercial em site de empresa precisa de licença de uso.

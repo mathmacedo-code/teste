@@ -80,6 +80,11 @@ Os vídeos enviados são reels verticais (720×1280). Por isso:
 - Câmera lenta com interpolação de movimento, dissolves de 0,8 s e loop sem emenda.
 - Cada vídeo em **MP4 (H.264)** (principal, todo celular toca) + **WebM** (reserva, vem depois), sem áudio, com poster WebP. O `AmbientVideo` foi feito para celular: só MP4, `<source>` já no HTML (o navegador escolhe a versão mobile pelo `media`), vídeo sempre visível com o poster por cima, e — se o sistema bloquear o autoplay (ex.: Modo de Pouca Energia do iPhone) — o primeiro toque na página libera todos os vídeos. Os vídeos e efeitos rodam mesmo com "reduzir movimento" ligado no aparelho (pedido da casa).
 
+### Música
+
+Botão de som no canto inferior esquerdo (`components/layout/SoundToggle.tsx`). Navegadores não deixam som tocar sozinho: a trilha começa no toque, com fade, em loop, e continua ao trocar de página.
+Coloque o arquivo em `public/media/audio/trilha.mp3`; título/artista em `data/soundtrack.ts`. Sem o arquivo, o botão não aparece. Use só faixas com licença de uso comercial.
+
 ### Fotos e elementos visuais
 
 - **Só fotos de verdade** (`assets/images`): os frames tirados dos vídeos foram removidos.
