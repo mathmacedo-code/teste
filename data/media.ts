@@ -37,11 +37,16 @@ export const imgFocus: Partial<Record<ImageKey, string>> = {
   "prato-polvo-risoni": "50% 68%",
 };
 
-/** Vídeos de ambientação (MP4 H.264, sem áudio, em loop contínuo) e poster WebP. */
-export type VideoSource = { mp4: string; poster: string; width: number; height: number };
+/**
+ * Vídeos de ambientação, sem áudio, em loop contínuo, e poster WebP.
+ * MP4 (H.264) é o principal: todo celular toca. WebM (VP9) é só reserva para
+ * navegadores sem H.264 (ex.: Chromium de Linux) e vem sempre depois.
+ */
+export type VideoSource = { mp4: string; webm: string; poster: string; width: number; height: number };
 
 const v = (name: string, width = 720, height = 1280): VideoSource => ({
   mp4: `/media/video/${name}.mp4`,
+  webm: `/media/video/${name}.webm`,
   poster: `/media/poster/${name}.webp`,
   width,
   height,

@@ -17,7 +17,7 @@ type Props = {
 
 /*
  * Por que é feito assim (celulares, iPhone em especial):
- * - Só MP4 H.264: é o único formato que todo celular decodifica por hardware.
+ * - MP4 H.264 primeiro: é o formato que todo celular decodifica por hardware.
  * - As <source> já vêm no HTML; o próprio navegador escolhe a versão mobile
  *   pelo atributo media. Nada de trocar src depois de montado.
  * - O <video> fica sempre visível (opacidade 1). O poster é uma imagem POR CIMA
@@ -49,7 +49,7 @@ function tryPlay(el: HTMLVideoElement) {
 function bindUnlock() {
   if (unlockBound) return;
   unlockBound = true;
-  const events = ["touchend", "pointerup", "click", "keydown"] as const;
+  const events = ["touchstart", "touchend", "pointerdown", "pointerup", "click", "keydown"] as const;
   const unlock = () => {
     events.forEach((e) => window.removeEventListener(e, unlock, true));
     unlockBound = false;
@@ -71,7 +71,7 @@ function bindUnlock() {
  * Vídeo de ambientação: sem áudio, em loop, inline.
  * - Fora do hero, só baixa quando chega perto da tela.
  * - Pausa fora da tela (bateria) e retoma ao voltar.
- * - Com "reduzir movimento" ativado no aparelho, fica no poster.
+ * - Toca mesmo com "reduzir movimento" ligado: é ambientação sem som, lenta e sem cortes bruscos.
  */
 export function AmbientVideo({ source, mobileSource, className, priority, label }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
@@ -82,10 +82,6 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
     const el = ref.current;
     const box = wrap.current;
     if (!el || !box) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.pause();
-      return;
-    }
     prep(el);
     all.add(el);
 
@@ -129,8 +125,11 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
         aria-hidden={label ? undefined : true}
         onPlaying={() => setPlaying(true)}
       >
+        {/* ordem importa: MP4 primeiro (celulares), WebM só como reserva */}
         {mobileSource && <source src={mobileSource.mp4} type="video/mp4" media="(max-width: 767px)" />}
         <source src={source.mp4} type="video/mp4" />
+        {mobileSource && <source src={mobileSource.webm} type="video/webm" media="(max-width: 767px)" />}
+        <source src={source.webm} type="video/webm" />
       </video>
       <picture>
         {mobileSource && <source media="(max-width: 767px)" srcSet={mobileSource.poster} type="image/webp" />}

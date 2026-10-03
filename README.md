@@ -78,7 +78,7 @@ Os vídeos enviados são reels verticais (720×1280). Por isso:
 - **Hero desktop** = tríptico 16:9 com três vídeos verticais lado a lado, trocando de cena em onda (sem esticar/borrar).
 - **Hero mobile** = vídeo vertical nativo.
 - Câmera lenta com interpolação de movimento, dissolves de 0,8 s e loop sem emenda.
-- Cada vídeo em **MP4 (H.264)**, sem áudio, com poster WebP. O `AmbientVideo` foi feito para celular: só MP4, `<source>` já no HTML (o navegador escolhe a versão mobile pelo `media`), vídeo sempre visível com o poster por cima, e — se o sistema bloquear o autoplay (ex.: Modo de Pouca Energia do iPhone) — o primeiro toque na página libera todos os vídeos. Com "reduzir movimento" ativado no aparelho, fica no poster.
+- Cada vídeo em **MP4 (H.264)** (principal, todo celular toca) + **WebM** (reserva, vem depois), sem áudio, com poster WebP. O `AmbientVideo` foi feito para celular: só MP4, `<source>` já no HTML (o navegador escolhe a versão mobile pelo `media`), vídeo sempre visível com o poster por cima, e — se o sistema bloquear o autoplay (ex.: Modo de Pouca Energia do iPhone) — o primeiro toque na página libera todos os vídeos. Os vídeos e efeitos rodam mesmo com "reduzir movimento" ligado no aparelho (pedido da casa).
 
 ### Fotos e elementos visuais
 

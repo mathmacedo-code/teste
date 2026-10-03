@@ -98,9 +98,8 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-}
+/* Sem bloqueio por "reduzir movimento": os efeitos são lentos, sem flashes, e fazem parte da experiência pedida pela casa. */
+
 
 /* Três experiências — painéis que se expandem no hover/foco (desktop) */
 @media (min-width: 768px) {
@@ -115,8 +114,8 @@
 /* Luz de vela (CandleGlow) */
 .glow {
   border-radius: 9999px;
-  background: radial-gradient(closest-side, rgb(214 150 72 / 0.32), rgb(214 150 72 / 0.08) 55%, transparent);
-  filter: blur(24px);
+  /* o degradê já é macio; sem filter: blur, que custa caro no iPhone em elementos animados */
+  background: radial-gradient(closest-side, rgb(214 150 72 / 0.3), rgb(214 150 72 / 0.12) 45%, rgb(214 150 72 / 0.04) 75%, transparent);
   animation: candle 14s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }

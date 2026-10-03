@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/ui/Motion";
 import { moments } from "@/data/moments";
 import { cn } from "@/lib/cn";
@@ -10,13 +10,39 @@ import { SkyScene } from "@/sections/home/SkyScene";
 export function Moments() {
   const [active, setActive] = useState(0);
   const [hold, setHold] = useState(false);
+  const rail = useRef<HTMLUListElement>(null);
 
   // passa sozinho pelas horas do dia enquanto ninguém está interagindo com a lista
   useEffect(() => {
-    if (hold || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (hold) return;
     const t = setInterval(() => setActive((a) => (a + 1) % moments.length), 4200);
     return () => clearInterval(t);
   }, [hold]);
+
+  // mobile: o carrossel avança sozinho enquanto está na tela; para de vez no primeiro toque
+  useEffect(() => {
+    const el = rail.current;
+    if (!el || window.matchMedia("(min-width: 768px)").matches) return;
+    let visible = false;
+    let stopped = false;
+    const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting), { threshold: 0.6 });
+    io.observe(el);
+    const stop = () => (stopped = true);
+    el.addEventListener("touchstart", stop, { passive: true });
+    const t = setInterval(() => {
+      if (!visible || stopped) return;
+      const card = el.firstElementChild as HTMLElement | null;
+      if (!card) return;
+      const step = card.offsetWidth + 12;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      el.scrollTo({ left: atEnd ? 0 : el.scrollLeft + step, behavior: "smooth" });
+    }, 3800);
+    return () => {
+      clearInterval(t);
+      io.disconnect();
+      el.removeEventListener("touchstart", stop);
+    };
+  }, []);
 
   return (
     <section id="momentos" className="bg-noite py-28 text-perola md:py-44">
@@ -55,7 +81,7 @@ export function Moments() {
           </div>
         </div>
 
-        <ul className="no-scrollbar -mx-5 mt-14 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 md:hidden">
+        <ul ref={rail} className="no-scrollbar -mx-5 mt-14 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto px-5 md:hidden">
           {moments.map((m) => (
             <li key={m.id} className="w-[78vw] shrink-0 snap-start">
               <SkyScene moments={[m]} active={0} className="arch-34 aspect-[3/4]" />

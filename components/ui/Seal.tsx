@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useId } from "react";
 import { Emblem } from "@/components/brand/Logo";
 import { cn } from "@/lib/cn";
@@ -17,13 +17,12 @@ export function Seal({
   className?: string;
 }) {
   const id = useId().replace(/:/g, "");
-  const reduce = useReducedMotion();
   const { scrollY } = useScroll();
   const rotate = useTransform(scrollY, (v) => v / 6);
 
   return (
     <div aria-hidden className={cn("relative aspect-square", className)}>
-      <motion.div className="absolute inset-0" style={reduce ? undefined : { rotate }}>
+      <motion.div className="absolute inset-0" style={{ rotate }}>
         <svg viewBox="0 0 200 200" className="h-full w-full animate-[spin_40s_linear_infinite] overflow-visible">
           <defs>
             <path id={id} d="M100,100 m-82,0 a82,82 0 1,1 164,0 a82,82 0 1,1 -164,0" />

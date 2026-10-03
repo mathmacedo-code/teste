@@ -78,9 +78,6 @@ export function SkyScene({ moments, active, className }: { moments: Moment[]; ac
         <div className="absolute inset-x-0 top-[40%] bottom-0 transition-colors duration-[1400ms]" style={{ background: sky.sea }} />
         <Wave color={sky.sea} className="top-[30%]" dur="14s" amp={4} offset={4} />
       </div>
-
-      {/* granulado leve: dá textura de impressão */}
-      <div className="absolute inset-0 opacity-[0.07] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%222%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')]" />
     </div>
   );
 }

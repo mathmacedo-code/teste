@@ -5,7 +5,7 @@ import {
   motion,
   useAnimationFrame,
   useMotionValue,
-  useReducedMotion,
+ 
   useScroll,
   useSpring,
   useTransform,
@@ -39,7 +39,6 @@ export function DishMarquee({
   speed?: number;
   tone?: "dark" | "light";
 }) {
-  const reduce = useReducedMotion();
   const base = useMotionValue(0);
   const { scrollY } = useScroll();
   const vel = useSpring(useVelocity(scrollY), { damping: 50, stiffness: 400 });
@@ -48,7 +47,6 @@ export function DishMarquee({
   const x = useTransform(base, (v) => `${wrap(-25, -50, v)}%`);
 
   useAnimationFrame((_, delta) => {
-    if (reduce) return;
     const f = factor.get();
     if (f < 0) dir.current = -1;
     else if (f > 0) dir.current = 1;
@@ -68,7 +66,7 @@ export function DishMarquee({
                 fill
                 sizes="96px"
                 className={cn(
-                  "object-contain [filter:drop-shadow(0_6px_8px_rgb(22_17_12/0.3))]",
+                  "object-contain",
                   it.k !== "recorte-risoni" && "animate-[spin_18s_linear_infinite]",
                 )}
               />
@@ -83,7 +81,7 @@ export function DishMarquee({
 
   return (
     <div aria-hidden className={cn("overflow-hidden py-[0.12em] text-[clamp(2.6rem,7.5vw,7.5rem)] leading-none", className)}>
-      <motion.div className="flex w-max" style={{ x }}>
+      <motion.div className="flex w-max will-change-transform" style={{ x }}>
         {run}
         {run}
         {run}

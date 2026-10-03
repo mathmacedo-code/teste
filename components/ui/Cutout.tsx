@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { img, type CutoutKey } from "@/data/media";
 import { cn } from "@/lib/cn";
@@ -27,12 +27,11 @@ type Props = {
 
 /**
  * Prato recortado (PNG sem fundo) como elemento gráfico solto na página.
- * A sombra fica no elemento que NÃO gira: a luz da sala não roda junto com o prato.
+ * A sombra fica fora do elemento que gira: a luz da sala não roda junto com o prato.
  * Decorativo: fica fora da leitura de tela.
  */
 export function Cutout({ k, sizes, className, motion: mode = "spin", turn = 70, drift = 12, tilt = 0, shadow = true }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const p = useSpring(scrollYProgress, { stiffness: 60, damping: 20, mass: 0.6 });
   const spin = mode === "spin" ? turn : turn / 6;
@@ -43,14 +42,21 @@ export function Cutout({ k, sizes, className, motion: mode = "spin", turn = 70, 
   return (
     <div ref={ref} aria-hidden className={cn("pointer-events-none select-none", className)}>
       <motion.div
-        className={cn("relative w-full", shadow && "[filter:drop-shadow(0_28px_30px_rgb(22_17_12/0.28))_drop-shadow(0_6px_8px_rgb(22_17_12/0.18))]")}
-        style={{ aspectRatio: `${src.width} / ${src.height}`, ...(reduce ? {} : { y }) }}
-        initial={{ opacity: 0, scale: reduce ? 1 : 0.88 }}
+        className="relative w-full"
+        style={{ aspectRatio: `${src.width} / ${src.height}`, y }}
+        initial={{ opacity: 0, scale: 0.88 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true, margin: "0px 0px -8% 0px" }}
         transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
       >
-        <motion.div className="absolute inset-0" style={reduce ? { rotate: tilt } : { rotate }}>
+        {/* sombra de mesa pronta (gradiente): nada de filter, que pesa no celular a cada quadro */}
+        {shadow && (
+          <div
+            className="absolute inset-[5%] translate-x-[2%] translate-y-[7%] rounded-full"
+            style={{ background: "radial-gradient(closest-side, rgb(22 17 12 / 0.34), rgb(22 17 12 / 0.14) 62%, transparent)" }}
+          />
+        )}
+        <motion.div className="absolute inset-0 will-change-transform" style={{ rotate }}>
           <Image src={src} alt="" fill sizes={sizes} quality={85} className="object-contain" />
         </motion.div>
       </motion.div>
