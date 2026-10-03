@@ -126,8 +126,6 @@ export function HeroSequence({ clips, className }: { clips: Clip[]; className?: 
           >
             {c.mobileSource && <source src={c.mobileSource.mp4} type="video/mp4" media="(max-width: 767px)" />}
             <source src={c.source.mp4} type="video/mp4" />
-            {c.mobileSource && <source src={c.mobileSource.webm} type="video/webm" media="(max-width: 767px)" />}
-            <source src={c.source.webm} type="video/webm" />
           </video>
           {/* capa do primeiro clipe até ele começar */}
           {i === 0 && (

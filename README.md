@@ -36,7 +36,7 @@ sections/       home/*, restaurant/RestaurantPage, lp/LandingPage, shared/DishRo
 data/           TODO o conteúdo editável: site, casas, pratos, cardápio, momentos, eventos, depoimentos, Instagram, LPs, mídia
 lib/            analytics (dataLayer + Meta Pixel), utm (atribuição), schema.org, metadata
 assets/         fontes (auto-hospedadas) e fotos-mestre (JPG → AVIF/WebP via next/image)
-public/         brand (SVGs do logo), media/video (WebM + MP4), media/poster (WebP)
+public/         brand (SVGs do logo), media/video (MP4), media/poster (WebP)
 scripts/media/  pipeline de vídeo/foto (ffmpeg + OpenCV)
 ```
 
@@ -78,7 +78,7 @@ Os vídeos enviados são reels verticais (720×1280). Por isso:
 - **Hero desktop** = tríptico 16:9 com três vídeos verticais lado a lado, trocando de cena em onda (sem esticar/borrar).
 - **Hero mobile** = vídeo vertical nativo.
 - Câmera lenta com interpolação de movimento, dissolves de 0,8 s e loop sem emenda.
-- Cada vídeo em **MP4 (H.264)** (principal, todo celular toca) + **WebM** (reserva, vem depois), sem áudio, com poster WebP. O `AmbientVideo` foi feito para celular: só MP4, `<source>` já no HTML (o navegador escolhe a versão mobile pelo `media`), vídeo sempre visível com o poster por cima, e — se o sistema bloquear o autoplay (ex.: Modo de Pouca Energia do iPhone) — o primeiro toque na página libera todos os vídeos. Os vídeos e efeitos rodam mesmo com "reduzir movimento" ligado no aparelho (pedido da casa).
+- Cada vídeo em **MP4 (H.264)**, sem áudio, com poster WebP. O `AmbientVideo` foi feito para celular: só MP4, `<source>` já no HTML (o navegador escolhe a versão mobile pelo `media`), vídeo sempre visível com o poster por cima, e — se o sistema bloquear o autoplay (ex.: Modo de Pouca Energia do iPhone) — o primeiro toque na página libera todos os vídeos. Os vídeos e efeitos rodam mesmo com "reduzir movimento" ligado no aparelho (pedido da casa).
 
 ### Música
 

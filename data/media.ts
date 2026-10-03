@@ -4,7 +4,6 @@ import type { StaticImageData } from "next/image";
 
 import plateauCru from "@/assets/images/plateau-cru.jpg";
 import pratoBurrata from "@/assets/images/prato-burrata.jpg";
-import pratoBurrataTopo from "@/assets/images/prato-burrata-topo.jpg";
 import pratoPeixeCru from "@/assets/images/prato-peixe-cru.jpg";
 import pratoPolvoRisoni from "@/assets/images/prato-polvo-risoni.jpg";
 import recorteBurrata from "@/assets/images/recorte-burrata.png";
@@ -12,7 +11,6 @@ import recortePeixe from "@/assets/images/recorte-peixe.png";
 import recorteRisoni from "@/assets/images/recorte-risoni.png";
 // ambientes enviados pela casa: bar central e cozinhas
 import bar1 from "@/assets/images/bar-1.jpg";
-import bar2 from "@/assets/images/bar-2.jpg";
 import bar3 from "@/assets/images/bar-3.jpg";
 import cozinhaMiimar from "@/assets/images/cozinha-miimar.jpg";
 import cozinhaTemperani from "@/assets/images/cozinha-temperani.jpg";
@@ -27,7 +25,6 @@ import ambRose from "@/assets/images/rose.jpg";
 export const img = {
   "plateau-cru": plateauCru,
   "prato-burrata": pratoBurrata,
-  "prato-burrata-topo": pratoBurrataTopo,
   "prato-peixe-cru": pratoPeixeCru,
   "prato-polvo-risoni": pratoPolvoRisoni,
   /** prato visto de cima, recortado em círculo */
@@ -37,7 +34,6 @@ export const img = {
   /** bowl de orzo com polvo, em perspectiva */
   "recorte-risoni": recorteRisoni,
   "bar-1": bar1,
-  "bar-2": bar2,
   "bar-3": bar3,
   "cozinha-miimar": cozinhaMiimar,
   "cozinha-temperani": cozinhaTemperani,
@@ -62,15 +58,13 @@ export const imgFocus: Partial<Record<ImageKey, string>> = {
 };
 
 /**
- * Vídeos de ambientação, sem áudio, em loop contínuo, e poster WebP.
- * MP4 (H.264) é o principal: todo celular toca. WebM (VP9) é só reserva para
- * navegadores sem H.264 (ex.: Chromium de Linux) e vem sempre depois.
+ * Vídeos de ambientação, sem áudio, e poster WebP.
+ * Só MP4 (H.264): é o formato que todo celular e navegador atual toca.
  */
-export type VideoSource = { mp4: string; webm: string; poster: string; width: number; height: number };
+export type VideoSource = { mp4: string; poster: string; width: number; height: number };
 
 const v = (name: string, width = 720, height = 1280): VideoSource => ({
   mp4: `/media/video/${name}.mp4`,
-  webm: `/media/video/${name}.webm`,
   poster: `/media/poster/${name}.webp`,
   width,
   height,

@@ -17,7 +17,7 @@ type Props = {
 
 /*
  * Por que é feito assim (celulares, iPhone em especial):
- * - MP4 H.264 primeiro: é o formato que todo celular decodifica por hardware.
+ * - Só MP4 H.264: é o formato que todo celular decodifica por hardware.
  * - As <source> já vêm no HTML; o próprio navegador escolhe a versão mobile
  *   pelo atributo media. Nada de trocar src depois de montado.
  * - O <video> fica sempre visível (opacidade 1). O poster é uma imagem POR CIMA
@@ -136,11 +136,8 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
         aria-hidden={label ? undefined : true}
         onPlaying={() => setPlaying(true)}
       >
-        {/* ordem importa: MP4 primeiro (celulares), WebM só como reserva */}
         {mobileSource && <source src={mobileSource.mp4} type="video/mp4" media="(max-width: 767px)" />}
         <source src={source.mp4} type="video/mp4" />
-        {mobileSource && <source src={mobileSource.webm} type="video/webm" media="(max-width: 767px)" />}
-        <source src={source.webm} type="video/webm" />
       </video>
       <picture>
         {mobileSource && <source media="(max-width: 767px)" srcSet={mobileSource.poster} type="image/webp" />}
