@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Vila Medí — tokens
+   Cal, areia e pedra vêm do fundo do logo e das paredes caiadas;
+   o azul é o do próprio logo e aparece só em detalhes.
+   ============================================================ */
+@theme {
+  --color-cal: #f3ede2;
+  --color-cal-claro: #f8f5ef;
+  --color-areia: #e4d6be;
+  --color-pedra: #a89780;
+  --color-oliva: #4f5233;
+  --color-oliva-fundo: #3d4027;
+  --color-azul: #11305e;
+  --color-azul-claro: #2b5390;
+  --color-grafite: #2a2723;
+  --color-noite: #16110c;
+  --color-perola: #efe8dc;
+
+  --font-serif: var(--font-newsreader), "Iowan Old Style", Georgia, serif;
+  --font-sans: var(--font-jost), "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+
+  --ease-lux: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-cal);
+    color: var(--color-grafite);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    font-family: var(--font-sans);
+    font-weight: 380;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  h1, h2, h3 { font-weight: 300; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  :focus-visible { outline: 1.5px solid currentColor; outline-offset: 4px; border-radius: 2px; }
+  ::selection { background: var(--color-azul); color: var(--color-cal); }
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  [id] { scroll-margin-top: 88px; }
+}
+
+/* Escala tipográfica — razão ~1.333 com saltos de display */
+@layer components {
+  .display-xl {
+    font-family: var(--font-serif); font-weight: 300;
+    font-size: clamp(2.85rem, 7.2vw, 7.4rem); line-height: 0.98; letter-spacing: -0.022em;
+  }
+  .display-l {
+    font-family: var(--font-serif); font-weight: 300;
+    font-size: clamp(2.35rem, 5vw, 5.2rem); line-height: 1.02; letter-spacing: -0.018em;
+  }
+  .display-m {
+    font-family: var(--font-serif); font-weight: 300;
+    font-size: clamp(1.85rem, 3.1vw, 3.3rem); line-height: 1.06; letter-spacing: -0.012em;
+  }
+  .title {
+    font-family: var(--font-serif); font-weight: 350;
+    font-size: clamp(1.4rem, 1.8vw, 1.85rem); line-height: 1.15; letter-spacing: -0.006em;
+  }
+  .lede { font-size: clamp(1.05rem, 1.15vw, 1.2rem); line-height: 1.62; font-weight: 340; }
+  .meta { font-size: 0.8125rem; line-height: 1.4; letter-spacing: 0.02em; }
+
+  .shell { width: 100%; max-width: 1480px; margin-inline: auto; padding-inline: clamp(1.25rem, 4vw, 4rem); }
+
+  /* link sublinhado que se recolhe no hover */
+  .link-u {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 100% 1px; background-position: 0 100%; background-repeat: no-repeat;
+    padding-bottom: 3px;
+    transition: background-size 0.7s var(--ease-lux);
+  }
+  .link-u:hover { background-size: 0% 1px; background-position: 100% 100%; }
+
+  .scrim-bottom { background: linear-gradient(to top, rgb(22 17 12 / 0.72), rgb(22 17 12 / 0.18) 45%, rgb(22 17 12 / 0) 70%); }
+  .scrim-top { background: linear-gradient(to bottom, rgb(22 17 12 / 0.5), rgb(22 17 12 / 0)); }
+
+  .field {
+    width: 100%; background: transparent; border: 0;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 32%, transparent);
+    padding: 0.7rem 0; font-size: 1.05rem; color: inherit; border-radius: 0;
+    transition: border-color 0.4s var(--ease-lux);
+    appearance: none;
+  }
+  .field:focus { outline: none; border-bottom-color: currentColor; }
+  .field::placeholder { color: color-mix(in srgb, currentColor 40%, transparent); }
+  select.field { cursor: pointer; padding-right: 1.5rem; }
+  select.field option { color: var(--color-grafite); }
+  input.field[type="date"] { min-height: 2.9rem; }
+
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* Três experiências — painéis que se expandem no hover/foco (desktop) */
+@media (min-width: 768px) {
+  .xp-row > .xp-panel { flex: 1 1 0%; transition: flex-grow 1.1s var(--ease-lux); }
+  .xp-row:hover > .xp-panel, .xp-row:focus-within > .xp-panel { flex-grow: 0.82; }
+  .xp-row > .xp-panel:hover, .xp-row > .xp-panel:focus-within { flex-grow: 1.75; }
+}
+/* Arco do logo: topo em semicírculo para qualquer largura (proporção 9:16) */
+.arch { border-radius: 50% 50% 0 0 / 28.125% 28.125% 0 0; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 0.85; transform: none; } }

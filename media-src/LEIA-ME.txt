@@ -1,0 +1,5 @@
+Coloque aqui os vídeos originais para regerar a mídia (npm run media):
+  noite.mp4  (reel noturno)
+  forno.mp4  (reel do forno)
+  pratos.mp4 (reel 'os artistas / a arte')
+Requer ffmpeg e Python 3 com opencv-python e numpy.
