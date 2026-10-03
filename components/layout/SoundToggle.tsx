@@ -6,9 +6,11 @@ import { soundtrack } from "@/data/soundtrack";
 import { cn } from "@/lib/cn";
 
 /*
- * Botão de música. Nenhum navegador deixa um site tocar som sozinho, então a
- * trilha começa no toque da pessoa, com fade-in, em loop. Como fica no layout,
- * continua tocando ao navegar entre as páginas.
+ * Música do site. A trilha tenta começar na primeira rolagem/interação da
+ * pessoa. Navegadores só liberam som depois de um gesto de verdade (toque,
+ * clique, tecla); a rolagem sozinha nem sempre conta, então tentamos de novo
+ * a cada interação até o navegador permitir. Entra com fade, em loop, e
+ * continua ao navegar entre as páginas. Se a pessoa desligar, não volta sozinha.
  * O fade usa Web Audio (GainNode): no iPhone o volume do <audio> não pode ser
  * alterado por código.
  */
@@ -84,30 +86,69 @@ export function SoundToggle() {
     return c;
   };
 
-  const start = () => {
+  /** Tenta tocar; resolve true se o navegador liberou o som. */
+  const start = (): Promise<boolean> => {
     const c = setup();
     wanted.current = true;
-    c.ctx?.resume();
-    c.el
+    c.ctx?.resume().catch(() => {});
+    return c.el
       .play()
       .then(() => {
-        ramp(soundtrack.volume, 1.8);
+        // com Web Audio, o som só sai com o contexto rodando (exige gesto)
+        if (c.ctx && c.ctx.state !== "running") {
+          c.el.pause();
+          throw new Error("contexto de áudio bloqueado");
+        }
+        ramp(soundtrack.volume, 2.2);
         setOn(true);
+        return true;
       })
       .catch(() => {
         wanted.current = false;
         setOn(false);
+        return false;
       });
   };
 
   const stop = () => {
     const c = chain.current;
+    try {
+      sessionStorage.setItem("vm-som-off", "1");
+    } catch {}
     wanted.current = false;
     setOn(false);
     if (!c) return;
     ramp(0, 0.7);
     setTimeout(() => !wanted.current && c.el.pause(), 750);
   };
+
+  // começa na primeira rolagem ou interação (e insiste a cada gesto até o navegador liberar)
+  useEffect(() => {
+    if (!available) return;
+    try {
+      if (sessionStorage.getItem("vm-som-off") === "1") return;
+    } catch {}
+    const events = ["scroll", "wheel", "touchstart", "touchend", "pointerdown", "click", "keydown"] as const;
+    let busy = false;
+    let done = false;
+    const off = () => events.forEach((e) => window.removeEventListener(e, attempt, true));
+    function attempt(e: Event) {
+      // o próprio botão de som decide sozinho (evita ligar e desligar no mesmo toque)
+      if ((e.target as Element | null)?.closest?.("[data-sound-toggle]")) return;
+      if (busy || done || wanted.current) return;
+      busy = true;
+      start().then((ok) => {
+        busy = false;
+        if (ok) {
+          done = true;
+          setHint(false);
+          off();
+        }
+      });
+    }
+    events.forEach((e) => window.addEventListener(e, attempt, { capture: true, passive: true }));
+    return off;
+  }, [available]);
 
   // pausa quando a pessoa sai da aba/app e volta a tocar ao retornar
   useEffect(() => {
@@ -133,8 +174,14 @@ export function SoundToggle() {
         onClick={() => {
           setHint(false);
           if (on) stop();
-          else start();
+          else {
+            try {
+              sessionStorage.removeItem("vm-som-off");
+            } catch {}
+            void start();
+          }
         }}
+        data-sound-toggle
         aria-pressed={on}
         aria-label={on ? `Desligar a música (${soundtrack.title})` : `Ligar a música (${soundtrack.title}, ${soundtrack.artist})`}
         className="flex h-11 cursor-pointer items-center gap-2.5 rounded-full bg-noite/85 px-4 text-perola shadow-[0_10px_30px_-10px_rgb(0_0_0/0.6)] transition-colors duration-500 hover:bg-noite"
@@ -160,7 +207,7 @@ export function SoundToggle() {
             transition={{ duration: 0.6 }}
             className="pointer-events-none rounded-full bg-cal/95 px-3 py-1.5 text-[0.78rem] text-grafite shadow-md"
           >
-            Ouça a trilha do Vila Medí
+            Toque para ouvir a trilha
           </motion.span>
         )}
       </AnimatePresence>
