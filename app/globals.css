@@ -129,9 +129,26 @@
   100% { transform: translate3d(-4%, 4%, 0) scale(0.94); opacity: 0.9; }
 }
 
-/* Mar ao fundo da cena dos momentos (SkyScene) */
-@keyframes swell { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+/* Cena do dia (DayScene): movimentos contínuos e lentos, em unidades do SVG */
+.swell-a { animation: swell-a 9s linear infinite; }
+.swell-b { animation: swell-b 14s linear infinite; }
+@keyframes swell-a { to { transform: translateX(-180px); } }
+@keyframes swell-b { to { transform: translateX(-196px); } }
+.sail { animation: sail 70s linear infinite; }
+@keyframes sail { from { transform: translateX(-30px); } to { transform: translateX(430px); } }
+.beam { transform-box: view-box; transform-origin: 372px 296px; animation: beam 7s ease-in-out infinite alternate; }
+@keyframes beam { from { transform: rotate(-10deg); } to { transform: rotate(16deg); } }
+.sway { transform-box: view-box; transform-origin: 400px 0; animation: sway 6s ease-in-out infinite alternate; }
+@keyframes sway { from { transform: rotate(-1.5deg); } to { transform: rotate(2deg); } }
+.drift-slow { animation: drift 38s ease-in-out infinite alternate; }
+.drift-slower { animation: drift 52s ease-in-out infinite alternate-reverse; }
+@keyframes drift { to { transform: translateX(46px); } }
+.twinkle { animation: twinkle 3.2s ease-in-out infinite alternate; }
+@keyframes twinkle { to { opacity: 0.15; } }
+.flicker { animation: flicker 4.6s steps(1) infinite; }
+@keyframes flicker { 0%, 100% { opacity: 1; } 47% { opacity: 0.35; } 52% { opacity: 1; } 80% { opacity: 0.6; } 83% { opacity: 1; } }
 /* Arco em semicírculo para outras proporções (o raio vertical = metade da largura) */
 .arch-45 { border-radius: 50% 50% 0 0 / 40% 40% 0 0; }
 .arch-34 { border-radius: 50% 50% 0 0 / 37.5% 37.5% 0 0; }
 .arch-23 { border-radius: 50% 50% 0 0 / 33.333% 33.333% 0 0; }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
