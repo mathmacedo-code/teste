@@ -1,6 +1,7 @@
 import { Cta } from "@/components/ui/Cta";
 import { Cutout } from "@/components/ui/Cutout";
 import { Reveal } from "@/components/ui/Motion";
+import { Float, LemonBranch } from "@/components/ui/Motifs";
 
 /**
  * "Mais que uma mesa." — a mesa sendo posta enquanto a página desce:
@@ -9,6 +10,9 @@ import { Reveal } from "@/components/ui/Motion";
 export function VilaExperience() {
   return (
     <section className="relative overflow-x-clip bg-cal pb-28 md:pb-44">
+      <Float className="absolute top-[38%] -right-12 w-[220px] rotate-[150deg] text-[#7d6a1e] opacity-35 md:top-auto md:right-auto md:bottom-[6%] md:-left-8 md:w-[320px] md:rotate-[20deg]" amount={70}>
+        <LemonBranch className="sway-branch" />
+      </Float>
       <div className="shell grid grid-cols-12 gap-x-3 gap-y-6 md:gap-x-6">
         <Reveal className="col-span-12 md:col-span-6 md:row-start-1 md:pt-10">
           <h2 className="display-l">

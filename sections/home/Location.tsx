@@ -1,11 +1,13 @@
 import { Cta } from "@/components/ui/Cta";
 import { Reveal } from "@/components/ui/Motion";
 import { site, whatsappLink } from "@/data/site";
+import { TileField } from "@/components/ui/Motifs";
 
 export function Location() {
   return (
-    <section id="localizacao" className="bg-areia py-28 md:py-40">
-      <div className="shell grid gap-x-6 gap-y-14 md:grid-cols-12">
+    <section id="localizacao" className="relative overflow-hidden bg-areia py-28 md:py-40">
+      <TileField size={84} className="absolute inset-y-0 left-0 w-[60%] text-grafite opacity-[0.06] [mask-image:radial-gradient(60%_70%_at_20%_40%,black,transparent)]" />
+      <div className="relative shell grid gap-x-6 gap-y-14 md:grid-cols-12">
         <div className="md:col-span-5">
           <Reveal>
             <h2 className="display-l max-w-[12ch]">No coração do Cidade Jardim.</h2>

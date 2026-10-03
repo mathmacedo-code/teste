@@ -1,4 +1,4 @@
-/* Fotos de pratos enviadas pela casa (assets/images).
+/* Fotos de pratos enviadas pela casa (assets/images) e, para os momentos do dia, frames dos reels (amb-*).
  * recorte-* são os mesmos pratos sem fundo (PNG com transparência), usados como elementos gráficos soltos. */
 import type { StaticImageData } from "next/image";
 
@@ -10,6 +10,13 @@ import pratoPolvoRisoni from "@/assets/images/prato-polvo-risoni.jpg";
 import recorteBurrata from "@/assets/images/recorte-burrata.png";
 import recortePeixe from "@/assets/images/recorte-peixe.png";
 import recorteRisoni from "@/assets/images/recorte-risoni.png";
+// ambientes (frames dos reels), usados na seção de momentos do dia
+import ambCelebracao from "@/assets/images/celebracao.jpg";
+import ambDrink from "@/assets/images/drink.jpg";
+import ambLabneh from "@/assets/images/prato-labneh.jpg";
+import ambMesaLonga from "@/assets/images/mesa-longa.jpg";
+import ambMesaPalha from "@/assets/images/mesa-palha.jpg";
+import ambRose from "@/assets/images/rose.jpg";
 
 export const img = {
   "plateau-cru": plateauCru,
@@ -23,6 +30,12 @@ export const img = {
   "recorte-peixe": recortePeixe,
   /** bowl de orzo com polvo, em perspectiva */
   "recorte-risoni": recorteRisoni,
+  "amb-almoco": ambLabneh,
+  "amb-sunset": ambRose,
+  "amb-jantar": ambMesaPalha,
+  "amb-drinks": ambDrink,
+  "amb-celebracoes": ambCelebracao,
+  "amb-privados": ambMesaLonga,
 } satisfies Record<string, StaticImageData>;
 
 export type ImageKey = keyof typeof img;

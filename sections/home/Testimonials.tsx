@@ -2,13 +2,15 @@ import { Reveal } from "@/components/ui/Motion";
 import { site } from "@/data/site";
 import { testimonials } from "@/data/testimonials";
 import { cn } from "@/lib/cn";
+import { WaveLines } from "@/components/ui/Motifs";
 
 const layout = ["md:col-span-8", "md:col-span-6 md:col-start-6", "md:col-span-7 md:col-start-2"];
 
 export function Testimonials() {
   return (
-    <section className="bg-cal py-28 md:py-44">
-      <div className="shell">
+    <section className="relative overflow-hidden bg-cal py-28 md:py-44">
+      <WaveLines className="absolute inset-x-0 bottom-0 h-[30%] text-azul opacity-[0.08] [mask-image:linear-gradient(to_top,black,transparent)]" />
+      <div className="shell relative">
         <Reveal>
           <h2 className="display-l max-w-[16ch]">Vila Medí por quem viveu a experiência.</h2>
         </Reveal>

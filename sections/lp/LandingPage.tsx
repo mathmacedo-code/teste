@@ -13,7 +13,7 @@ import { signatureMarquee } from "@/data/marquee";
 import { video } from "@/data/media";
 import { site } from "@/data/site";
 import { testimonials } from "@/data/testimonials";
-import { DishRow } from "@/sections/shared/DishRow";
+import { DishStack } from "@/sections/shared/DishStack";
 
 /**
  * Template de LP para mídia paga: navegação mínima, uma ação só (o formulário),
@@ -70,10 +70,8 @@ export function LandingPage({ l }: { l: Landing }) {
       </section>
 
       <section className="bg-areia py-24 md:py-36">
-        <div className="shell space-y-20 md:space-y-32">
-          {l.dishes.map((id, i) => (
-            <DishRow key={id} dish={dishes[id]} flip={i % 2 === 1} />
-          ))}
+        <div className="shell">
+          <DishStack dishes={l.dishes.map((id) => dishes[id])} />
         </div>
       </section>
 

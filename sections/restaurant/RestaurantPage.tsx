@@ -7,15 +7,16 @@ import { CandleGlow } from "@/components/ui/CandleGlow";
 import { Cutout } from "@/components/ui/Cutout";
 import { DishMarquee } from "@/components/ui/DishMarquee";
 import { Reveal } from "@/components/ui/Motion";
+import { Float, LemonBranch, Meander, TileField, WaveLines } from "@/components/ui/Motifs";
 import { Seal } from "@/components/ui/Seal";
 import { dishes } from "@/data/dishes";
 import { houseMarquee } from "@/data/marquee";
 import { video } from "@/data/media";
-import type { Restaurant, Theme } from "@/data/restaurants";
+import type { Restaurant, RestaurantSlug, Theme } from "@/data/restaurants";
 import { site } from "@/data/site";
 import { cn } from "@/lib/cn";
 import { restaurantSchema } from "@/lib/schema";
-import { DishRow } from "@/sections/shared/DishRow";
+import { DishStack } from "@/sections/shared/DishStack";
 
 /** Cada casa mantém a linguagem Vila Medí com temperatura própria. */
 const THEMES: Record<Theme, { page: string; alt: string; rule: string; cta: "solid" | "light" }> = {
@@ -23,6 +24,36 @@ const THEMES: Record<Theme, { page: string; alt: string; rule: string; cta: "sol
   branco: { page: "bg-cal-claro text-grafite", alt: "bg-[#e3e8ee]", rule: "border-azul/15", cta: "solid" },
   noite: { page: "bg-noite text-perola", alt: "bg-[#211a13]", rule: "border-perola/15", cta: "light" },
 };
+
+/** Motivo mediterrâneo de fundo de cada casa. */
+function HouseMotif({ slug, place }: { slug: RestaurantSlug; place: "concept" | "closing" }) {
+  if (slug === "temperani")
+    return (
+      <Float
+        className={cn(
+          "absolute w-[240px] text-[#7d6a1e] opacity-35 md:w-[360px]",
+          place === "concept" ? "bottom-[4%] -left-12 rotate-[15deg]" : "top-0 -right-14 rotate-[195deg]",
+        )}
+        amount={60}
+      >
+        <LemonBranch className="sway-branch" />
+      </Float>
+    );
+  if (slug === "miimar")
+    return place === "concept" ? (
+      <TileField size={80} className="absolute inset-y-0 left-0 w-[70%] text-azul opacity-[0.08] [mask-image:radial-gradient(60%_60%_at_25%_55%,black,transparent)]" />
+    ) : (
+      <Meander className="absolute inset-x-0 top-0 text-azul opacity-30" />
+    );
+  return (
+    <WaveLines
+      className={cn(
+        "absolute inset-x-0 h-[40%] text-perola opacity-[0.07]",
+        place === "concept" ? "bottom-0 [mask-image:linear-gradient(to_top,black,transparent)]" : "top-0 [mask-image:linear-gradient(to_bottom,black,transparent)]",
+      )}
+    />
+  );
+}
 
 export function RestaurantPage({ r }: { r: Restaurant }) {
   const t = THEMES[r.theme];
@@ -52,8 +83,9 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
       </section>
 
       {/* Conceito */}
-      <section className="overflow-x-clip py-28 md:py-44">
-        <div className="shell grid items-center gap-x-6 gap-y-14 md:grid-cols-12">
+      <section className="relative overflow-x-clip py-28 md:py-44">
+        <HouseMotif slug={r.slug} place="concept" />
+        <div className="shell relative grid items-center gap-x-6 gap-y-14 md:grid-cols-12">
           <Reveal className="md:col-span-5">
             <h2 className="display-l">{r.concept.title}</h2>
             {r.concept.text.map((p) => (
@@ -92,11 +124,7 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
           <Reveal>
             <h2 className="display-l">Da cozinha do {r.name.split(" ")[0] === "Cru" ? "Cru" : r.name}.</h2>
           </Reveal>
-          <div className="mt-20 space-y-24 md:mt-28 md:space-y-40">
-            {r.signatureDishes.map((id, i) => (
-              <DishRow key={id} dish={dishes[id]} flip={i % 2 === 1} />
-            ))}
-          </div>
+          <DishStack dishes={r.signatureDishes.map((id) => dishes[id])} className="mt-16 md:mt-24" />
           <div className="mt-28 grid gap-x-6 gap-y-10 md:mt-40 md:grid-cols-12">
             <Reveal className="md:col-span-4">
               <h3 className="title">Também no cardápio</h3>
@@ -147,8 +175,9 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
       </section>
 
       {/* Fechamento */}
-      <section className="pb-36 md:pb-48">
-        <div className="shell">
+      <section className="relative overflow-hidden pt-16 pb-36 md:pt-24 md:pb-48">
+        <HouseMotif slug={r.slug} place="closing" />
+        <div className="shell relative">
           <Reveal>
             <p className="display-l max-w-[16ch]">{r.closing}</p>
             <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">

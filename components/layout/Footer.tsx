@@ -2,10 +2,12 @@ import Link from "next/link";
 import { Emblem, Wordmark } from "@/components/brand/Logo";
 import { restaurantList } from "@/data/restaurants";
 import { site, whatsappLink } from "@/data/site";
+import { Meander } from "@/components/ui/Motifs";
 
 export function Footer() {
   return (
-    <footer className="bg-noite pt-24 pb-[calc(env(safe-area-inset-bottom)+6rem)] text-perola md:pb-14">
+    <footer className="relative bg-noite pt-24 pb-[calc(env(safe-area-inset-bottom)+6rem)] text-perola md:pb-14">
+      <Meander className="absolute inset-x-0 top-0 text-perola opacity-20" />
       <div className="shell">
         <div className="grid gap-14 md:grid-cols-12">
           <div className="md:col-span-4">

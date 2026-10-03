@@ -10,7 +10,7 @@ import { video } from "@/data/media";
 import { restaurantList, type Theme } from "@/data/restaurants";
 import { cn } from "@/lib/cn";
 import { pageMetadata } from "@/lib/seo";
-import { DishRow } from "@/sections/shared/DishRow";
+import { DishStack } from "@/sections/shared/DishStack";
 
 export const metadata = pageMetadata({
   title: "Gastronomia e cardápio | Vila Medí, Cidade Jardim",
@@ -73,11 +73,7 @@ export default function GastronomiaPage() {
           <Reveal>
             <h2 className="display-l">Pratos da casa.</h2>
           </Reveal>
-          <div className="mt-20 space-y-24 md:mt-28 md:space-y-40">
-            {gastronomyDishes.map((id, i) => (
-              <DishRow key={id} dish={dishes[id]} flip={i % 2 === 1} />
-            ))}
-          </div>
+          <DishStack dishes={gastronomyDishes.map((id) => dishes[id])} className="mt-16 md:mt-24" />
         </div>
       </section>
 

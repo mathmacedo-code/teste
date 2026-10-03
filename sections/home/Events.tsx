@@ -5,11 +5,18 @@ import { CandleGlow } from "@/components/ui/CandleGlow";
 import { Reveal } from "@/components/ui/Motion";
 import { eventTypes } from "@/data/events";
 import { video } from "@/data/media";
+import { Float, OliveBranch } from "@/components/ui/Motifs";
 
 export function Events() {
   return (
     <section id="eventos" className="relative overflow-hidden bg-oliva-fundo py-28 text-perola md:py-44">
       <CandleGlow />
+      <Float className="absolute -top-6 -right-16 w-[260px] rotate-[170deg] text-perola opacity-[0.13] md:w-[460px]" amount={80}>
+        <OliveBranch className="sway-branch" />
+      </Float>
+      <Float className="absolute bottom-10 -left-16 w-[220px] text-perola opacity-[0.1] md:w-[380px]" amount={60}>
+        <OliveBranch />
+      </Float>
       <div className="shell relative grid gap-x-6 gap-y-16 md:grid-cols-12">
         <div className="md:col-span-5">
           <Reveal>

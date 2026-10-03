@@ -1,14 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { useAnimationFrame, useMotionValue, useMotionValueEvent } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "@/components/ui/Motion";
+import { OliveBranch } from "@/components/ui/Motifs";
+import { img } from "@/data/media";
 import { moments } from "@/data/moments";
 import { cn } from "@/lib/cn";
-import { DayScene } from "@/sections/home/DayScene";
+import { fmtHour, mix, moonAt, paletteAt, sunAt } from "@/lib/daylight";
 
 /* Ritmo do dia (segundos): pausa em cada momento, viagem até o próximo e a madrugada mais rápida. */
-const DWELL = 4.6;
+const DWELL = 4.8;
 const TRAVEL = 2.2;
 const NIGHT = 5.5;
 const DRIFT = 0.35; // o relógio continua andando (≈20 min) enquanto o momento está na tela
@@ -33,21 +36,18 @@ function at(t: number) {
   const s = SEGMENTS[i];
   const k = Math.min(1, (t - START[i]) / s.dur);
   const hour = s.from + (s.to - s.from) * (s.travel ? ease(k) : k);
-  // na viagem, a legenda troca na metade do caminho
+  // na viagem, a foto e a legenda trocam na metade do caminho
   return { hour, idx: s.travel && k > 0.5 ? s.next : s.idx };
 }
 
-const fmt = (h: number) => {
-  const hh = ((h % 24) + 24) % 24;
-  const H = Math.floor(hh);
-  const M = Math.floor((hh - H) * 60);
-  return `${String(H).padStart(2, "0")}h${String(M).padStart(2, "0")}`;
-};
+const INK_DARK = "#2a2723";
+const INK_LIGHT = "#efe8dc";
+const SKY = 0.84; // fração da altura da seção ocupada pelo céu (o resto é mar)
 
 /**
- * Cada encontro pede um Vila Medí: um dia inteiro passa sozinho na paisagem
- * (sol, lua, mar, casas acendendo) e cada momento aparece na sua hora.
- * Toque/clique num momento para ir direto a ele.
+ * Cada encontro pede um Vila Medí. O fundo da seção é o céu de um dia inteiro:
+ * as cores mudam com a hora, o sol e a lua atravessam, o mar reflete a luz.
+ * Na frente, a foto de cada momento aparece na sua hora. Toque num momento para ir até ele.
  */
 export function Moments() {
   const hour = useMotionValue(moments[0].hour);
@@ -56,13 +56,48 @@ export function Moments() {
   const t = useRef(0);
   const visible = useRef(false);
   const hold = useRef(false);
-  const box = useRef<HTMLDivElement>(null);
+  const section = useRef<HTMLElement>(null);
+  const sky = useRef<HTMLDivElement>(null);
+  const sun = useRef<HTMLDivElement>(null);
+  const moon = useRef<HTMLDivElement>(null);
+  const glint = useRef<HTMLDivElement>(null);
+  const content = useRef<HTMLDivElement>(null);
   const clock = useRef<HTMLSpanElement>(null);
 
+  const paint = (h: number) => {
+    const p = paletteAt(h);
+    const st = sky.current?.style;
+    if (st) {
+      st.setProperty("--sky-top", p.skyTop);
+      st.setProperty("--sky-bottom", p.skyBottom);
+      st.setProperty("--sea", p.sea);
+      st.setProperty("--far", p.far);
+      st.setProperty("--glow", p.glow);
+      st.setProperty("--stars", String(p.stars));
+    }
+    const ink = mix(INK_DARK, INK_LIGHT, p.ink);
+    if (content.current) content.current.style.color = ink;
+
+    const s = sunAt(h);
+    const m = moonAt(h);
+    if (sun.current) {
+      sun.current.style.transform = `translate(${s.x * 100}cqw, ${s.y * SKY * 100}cqh) translate(-50%, -50%)`;
+      sun.current.style.background = mix("#ffb25c", "#fff6dc", Math.min(1, s.up * 1.6));
+    }
+    if (moon.current) moon.current.style.transform = `translate(${m.x * 100}cqw, ${m.y * SKY * 100}cqh) translate(-50%, -50%)`;
+    // brilho no mar embaixo do astro que estiver no céu
+    const body = s.visible ? s : m;
+    if (glint.current) {
+      glint.current.style.left = `${body.x * 100}%`;
+      glint.current.style.opacity = String(body.visible ? (s.visible ? 0.35 + (1 - s.up) * 0.55 : 0.4) : 0);
+    }
+  };
+
   useEffect(() => {
-    const el = box.current;
+    paint(hour.get());
+    const el = section.current;
     if (!el) return;
-    const io = new IntersectionObserver(([e]) => (visible.current = e.isIntersecting), { threshold: 0.15 });
+    const io = new IntersectionObserver(([e]) => (visible.current = e.isIntersecting), { threshold: 0.1 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -79,7 +114,8 @@ export function Moments() {
   });
 
   useMotionValueEvent(hour, "change", (h) => {
-    if (clock.current) clock.current.textContent = fmt(h);
+    paint(h);
+    if (clock.current) clock.current.textContent = fmtHour(h);
   });
 
   const jump = (i: number) => {
@@ -92,26 +128,83 @@ export function Moments() {
   const m = moments[active];
 
   return (
-    <section id="momentos" className="bg-noite py-28 text-perola md:py-44">
-      <div className="shell">
+    <section ref={section} id="momentos" className="relative isolate overflow-hidden pt-28 pb-[22vh] md:pt-40 md:pb-[26vh]">
+      {/* ===== céu do dia (fundo) ===== */}
+      <div ref={sky} aria-hidden className="absolute inset-0 -z-10 [container-type:size]">
+        <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, var(--sky-top), var(--sky-bottom) ${SKY * 100}%)` }} />
+        <div
+          className="absolute inset-x-0 top-0"
+          style={{
+            height: `${SKY * 100}%`,
+            opacity: "var(--stars)",
+            backgroundImage:
+              "radial-gradient(1px 1px at 8% 14%, #fffc, transparent), radial-gradient(1px 1px at 22% 30%, #fff9, transparent), radial-gradient(1.5px 1.5px at 37% 9%, #fffd, transparent), radial-gradient(1px 1px at 51% 24%, #fff9, transparent), radial-gradient(1px 1px at 64% 12%, #fffb, transparent), radial-gradient(1.5px 1.5px at 78% 33%, #fffc, transparent), radial-gradient(1px 1px at 91% 18%, #fff9, transparent), radial-gradient(1px 1px at 15% 52%, #fff8, transparent), radial-gradient(1px 1px at 45% 46%, #fff8, transparent), radial-gradient(1px 1px at 86% 58%, #fff8, transparent), radial-gradient(1.5px 1.5px at 70% 66%, #fff9, transparent), radial-gradient(1px 1px at 29% 70%, #fff7, transparent)",
+          }}
+        />
+        {/* sol e lua */}
+        <div
+          ref={sun}
+          className="absolute top-0 left-0 h-[clamp(52px,7vw,96px)] w-[clamp(52px,7vw,96px)] rounded-full will-change-transform"
+          style={{ boxShadow: "0 0 60px 22px var(--glow), 0 0 180px 80px color-mix(in srgb, var(--glow) 35%, transparent)" }}
+        />
+        <div
+          ref={moon}
+          className="absolute top-0 left-0 h-[clamp(34px,4.4vw,58px)] w-[clamp(34px,4.4vw,58px)] rounded-full bg-[#efe8dc] will-change-transform"
+          style={{ boxShadow: "0 0 40px 10px rgb(200 212 255 / 0.35), inset -6px -4px 0 rgb(0 0 0 / 0.06)" }}
+        />
+        {/* mar com ilhas no horizonte */}
+        <div className="absolute inset-x-0 bottom-0" style={{ top: `${SKY * 100}%`, background: "var(--sea)" }}>
+          <svg viewBox="0 0 400 20" preserveAspectRatio="none" className="absolute bottom-full left-0 h-[clamp(18px,3vw,40px)] w-full">
+            <path d="M0 20 L0 14 Q30 4 62 11 Q84 6 110 15 L118 20 Z M228 20 Q262 2 300 9 Q330 0 362 8 Q384 4 400 9 L400 20 Z" style={{ fill: "var(--far)" }} />
+          </svg>
+          <div ref={glint} className="absolute top-0 h-full w-[clamp(40px,8vw,120px)] -translate-x-1/2" style={{ background: "radial-gradient(50% 100% at 50% 0%, var(--glow), transparent)" }} />
+          <svg viewBox="0 0 800 60" preserveAspectRatio="none" className="absolute inset-x-0 top-[18%] h-[60%] w-[200%] opacity-25 swell-wide" fill="none" stroke="#fff" strokeWidth="1" vectorEffect="non-scaling-stroke">
+            <path d="M0 8 q10 -3 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0" vectorEffect="non-scaling-stroke" />
+            <path d="M0 30 q20 -4 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" vectorEffect="non-scaling-stroke" />
+            <path d="M0 52 q25 -5 50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0 t50 0" vectorEffect="non-scaling-stroke" />
+          </svg>
+        </div>
+        {/* ramo de oliveira no canto */}
+        <div className="absolute -top-6 -right-8 w-[clamp(170px,22vw,340px)] rotate-[160deg]" style={{ color: "var(--far)" }}>
+          <OliveBranch className="sway-branch opacity-40" />
+        </div>
+      </div>
+
+      {/* ===== conteúdo ===== */}
+      <div ref={content} className="shell transition-colors duration-300">
         <Reveal>
           <h2 className="display-l max-w-[14ch]">Cada encontro pede um Vila Medí.</h2>
         </Reveal>
 
-        <div className="mt-14 grid gap-10 md:mt-20 md:grid-cols-12 md:gap-6">
-          {/* a paisagem do dia */}
-          <div ref={box} className="relative md:col-span-6 md:col-start-7 md:row-start-1 md:mx-auto md:w-full md:max-w-[62svh]">
-            <div aria-hidden className="arch-45 pointer-events-none absolute -inset-[10px] border border-perola/25" />
-            <div className="arch-45 relative aspect-[4/5] overflow-hidden">
-              <DayScene hour={hour} className="absolute inset-0" />
-              {/* o momento aparece na sua hora */}
-              <div className="absolute inset-x-0 bottom-[17%] px-6 text-center text-perola [text-shadow:0_2px_16px_rgb(0_0_0/0.45)]">
-                <p key={m.id} className="animate-[rise_1.1s_var(--ease-lux)_both] font-serif text-[clamp(2rem,6vw,3.6rem)] leading-none font-light italic">
+        <div className="mt-12 grid gap-8 md:mt-20 md:grid-cols-12 md:gap-6">
+          {/* foto do momento */}
+          <div className="md:col-span-6 md:col-start-7 md:row-start-1">
+            <div className="relative mx-auto aspect-[4/5] w-full overflow-hidden rounded-[3px] bg-noite shadow-[0_30px_80px_-30px_rgb(0_0_0/0.6)] md:max-w-[min(100%,60svh)]">
+              {moments.map((x, i) => (
+                <div
+                  key={x.id}
+                  className={cn(
+                    "absolute inset-0 transition-opacity duration-[1200ms] ease-[var(--ease-lux)]",
+                    i === active ? "opacity-100" : "opacity-0",
+                  )}
+                >
+                  <Image
+                    src={img[x.image]}
+                    alt={x.alt}
+                    fill
+                    sizes="(min-width: 768px) 46vw, 92vw"
+                    quality={80}
+                    className={cn("object-cover", i === active && "animate-[kenburns_7.5s_ease-out_both]")}
+                  />
+                </div>
+              ))}
+              <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-noite/75 via-noite/10 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-6 text-perola md:p-8">
+                <p key={m.id} className="animate-[rise_1.1s_var(--ease-lux)_both] font-serif text-[clamp(2.1rem,5.4vw,3.4rem)] leading-none font-light italic">
                   {m.name}
                 </p>
-                {/* relógio: anda junto com o dia */}
-                <span ref={clock} className="mt-3 block font-sans text-[0.8rem] tracking-[0.2em] tabular-nums opacity-85">
-                  {fmt(moments[0].hour)}
+                <span ref={clock} className="mt-3 block text-[0.8rem] tracking-[0.2em] tabular-nums opacity-85">
+                  {fmtHour(moments[0].hour)}
                 </span>
               </div>
             </div>
@@ -133,36 +226,36 @@ export function Moments() {
                     aria-pressed={active === i}
                     className={cn(
                       "flex w-full cursor-pointer items-baseline justify-between gap-6 py-3 text-left transition-opacity duration-700",
-                      active === i ? "opacity-100" : "opacity-35 hover:opacity-70",
+                      active === i ? "opacity-100" : "opacity-40 hover:opacity-75",
                     )}
                   >
                     <span className="display-m">{x.name}</span>
-                    <span className="meta shrink-0 tabular-nums opacity-70">{fmt(x.hour)}</span>
+                    <span className="meta shrink-0 tabular-nums opacity-70">{fmtHour(x.hour)}</span>
                   </button>
                 </li>
               ))}
             </ul>
 
-            <div aria-live="polite" className="min-h-[7.5rem] md:mt-10 md:min-h-[4rem]">
+            <div aria-live="polite" className="min-h-[6.5rem] md:mt-10 md:min-h-[4rem]">
               <p key={m.id} className="animate-[fade_0.9s_var(--ease-lux)] md:max-w-[34ch]">
-                <span className="meta block opacity-60">{m.time}</span>
-                <span className="lede mt-2 block opacity-90">{m.text}</span>
+                <span className="meta block opacity-70">{m.time}</span>
+                <span className="lede mt-2 block">{m.text}</span>
               </p>
             </div>
 
             {/* linha do tempo (mobile) */}
-            <ol className="mt-6 grid grid-cols-6 border-t border-perola/15 md:hidden">
+            <ol className="mt-4 grid grid-cols-6 border-t border-current/20 md:hidden">
               {moments.map((x, i) => (
                 <li key={x.id}>
                   <button
                     type="button"
                     onClick={() => jump(i)}
-                    aria-label={`${x.name}, ${fmt(x.hour)}`}
+                    aria-label={`${x.name}, ${fmtHour(x.hour)}`}
                     className="flex w-full cursor-pointer flex-col items-center gap-2 pt-4 pb-2"
                   >
-                    <span className={cn("h-2 w-2 rounded-full transition-all duration-700", active === i ? "scale-150 bg-perola" : "bg-perola/30")} />
-                    <span className={cn("text-[0.7rem] tabular-nums transition-opacity duration-700", active === i ? "opacity-100" : "opacity-45")}>
-                      {fmt(x.hour)}
+                    <span className={cn("h-2 w-2 rounded-full bg-current transition-all duration-700", active === i ? "scale-150 opacity-100" : "opacity-30")} />
+                    <span className={cn("text-[0.7rem] tabular-nums transition-opacity duration-700", active === i ? "opacity-100" : "opacity-50")}>
+                      {fmtHour(x.hour)}
                     </span>
                   </button>
                 </li>
