@@ -4,13 +4,14 @@ Pipeline de mídia do Vila Medí
 ==============================
 
 Transforma os reels originais (verticais, 720x1280) em:
-  • vídeos de fundo em WebM (VP9) + MP4 (H.264), sem áudio, em loop contínuo
+  • vídeos de fundo em MP4 (H.264), sem áudio, em loop contínuo (o único formato
+    que todo celular decodifica por hardware; WebM foi removido)
   • versão desktop do hero em tríptico 16:9 (3 painéis verticais lado a lado)
-  • stills em JPG de alta qualidade (o next/image converte para AVIF/WebP)
+  • (opcional) stills tirados dos vídeos — o site NÃO usa mais; só fotos de verdade
   • posters WebP para cada vídeo
 
-Uso:  python3 scripts/media/build_media.py          (tudo)
-      python3 scripts/media/build_media.py stills   (só stills)
+Uso:  python3 scripts/media/build_media.py          (vídeos e posters)
+      python3 scripts/media/build_media.py stills   (só stills, em assets/images — não usados pelo site)
       python3 scripts/media/build_media.py videos   (só vídeos)
       python3 scripts/media/build_media.py triptych (só o hero desktop)
 
@@ -287,18 +288,14 @@ def rotate_loop(src: Path, offset: float, length: float, out: Path) -> None:
 def encode_web(master: Path, name: str, vp9_crf: int, h264_crf: int) -> None:
     OUT_VIDEO.mkdir(parents=True, exist_ok=True)
     OUT_POSTER.mkdir(parents=True, exist_ok=True)
-    webm = OUT_VIDEO / f"{name}.webm"
     mp4 = OUT_VIDEO / f"{name}.mp4"
-    run(["ffmpeg", "-v", "error", "-y", "-i", str(master), "-an",
-         "-c:v", "libvpx-vp9", "-b:v", "0", "-crf", str(vp9_crf), "-row-mt", "1",
-         "-deadline", "good", "-cpu-used", "2", "-pix_fmt", "yuv420p", str(webm)])
     run(["ffmpeg", "-v", "error", "-y", "-i", str(master), "-an",
          "-c:v", "libx264", "-crf", str(h264_crf), "-preset", "slow", "-profile:v", "high",
          "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(mp4)])
     # poster = primeiro frame (é o que aparece antes do vídeo carregar)
     run(["ffmpeg", "-v", "error", "-y", "-i", str(master), "-frames:v", "1",
          "-c:v", "libwebp", "-quality", "80", str(OUT_POSTER / f"{name}.webp")])
-    print(f"video {name}: webm {webm.stat().st_size/1e6:.2f} MB | mp4 {mp4.stat().st_size/1e6:.2f} MB")
+    print(f"video {name}: mp4 {mp4.stat().st_size/1e6:.2f} MB")
 
 
 def build_vertical(name: str, spec: dict, tmp: Path, crf=(36, 28)) -> None:
@@ -343,7 +340,7 @@ def main() -> None:
     for k, p in SOURCES.items():
         if not p.exists():
             raise SystemExit(f"Fonte ausente: {p}")
-    if what in ("all", "stills"):
+    if what == "stills":
         # mantém no manifesto as fotos adicionadas à mão (pratos fotografados), que não saem dos vídeos
         path = OUT_STILL / "_manifest.json"
         manifest = json.loads(path.read_text()) if path.exists() else {}

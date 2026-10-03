@@ -1,11 +1,14 @@
 import Link from "next/link";
 import { MenuContent } from "@/components/menu/MenuContent";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { Cta } from "@/components/ui/Cta";
 import { Photo } from "@/components/ui/Photo";
-import { PlateSpin } from "@/components/ui/PlateSpin";
-import { Reveal, RevealMedia } from "@/components/ui/Motion";
+import { Cutout } from "@/components/ui/Cutout";
+import { Reveal } from "@/components/ui/Motion";
 import { dishes, gastronomyDishes } from "@/data/dishes";
-import { restaurantList } from "@/data/restaurants";
+import { video } from "@/data/media";
+import { restaurantList, type Theme } from "@/data/restaurants";
+import { cn } from "@/lib/cn";
 import { pageMetadata } from "@/lib/seo";
 import { DishRow } from "@/sections/shared/DishRow";
 
@@ -16,6 +19,9 @@ export const metadata = pageMetadata({
   path: "/gastronomia",
   absoluteTitle: true,
 });
+
+/** fundo de cada casa atrás do prato recortado */
+const TILE: Record<Theme, string> = { cal: "bg-areia", branco: "bg-[#dfe6ee]", noite: "bg-noite" };
 
 export default function GastronomiaPage() {
   return (
@@ -41,8 +47,16 @@ export default function GastronomiaPage() {
           {restaurantList.map((r, i) => (
             <Reveal key={r.slug} delay={i * 0.1} className={i === 1 ? "md:mt-24" : undefined}>
               <Link href={r.path} className="group block">
-                <div className="relative aspect-[4/5] overflow-hidden">
-                  <Photo k={r.cover} alt="" sizes="(min-width: 768px) 31vw, 92vw" className="transition-transform duration-[1600ms] ease-[var(--ease-lux)] group-hover:scale-[1.04]" />
+                <div className={cn("arch-45 relative flex aspect-[4/5] items-center justify-center overflow-hidden", TILE[r.theme])}>
+                  <Cutout
+                    k={r.dish}
+                    motion={r.dish === "recorte-risoni" ? "float" : "spin"}
+                    turn={r.dish === "recorte-peixe" ? 36 : 90}
+                    tilt={r.dish === "recorte-peixe" ? -18 : 0}
+                    drift={6}
+                    sizes="(min-width: 768px) 28vw, 80vw"
+                    className={cn("transition-transform duration-[1600ms] ease-[var(--ease-lux)] group-hover:scale-[1.06]", r.dish === "recorte-risoni" ? "w-[96%]" : "w-[80%]")}
+                  />
                 </div>
                 <p className="meta mt-6 opacity-60">{r.origin}</p>
                 <h2 className="display-m mt-2">{r.name}</h2>
@@ -54,14 +68,9 @@ export default function GastronomiaPage() {
         </div>
       </section>
 
-      <section className="relative overflow-x-clip bg-areia py-28 md:py-44">
-        <div className="shell relative">
-          <PlateSpin
-            sizes="(min-width: 768px) 30vw, 60vw"
-            turn={90}
-            className="relative -mt-10 -mr-[16vw] mb-[-2.5rem] ml-auto w-[60vw] md:absolute md:top-[-6rem] md:right-[-6vw] md:m-0 md:w-[30vw] md:max-w-[520px]"
-          />
-          <Reveal className="relative">
+      <section className="bg-areia py-28 md:py-44">
+        <div className="shell">
+          <Reveal>
             <h2 className="display-l">Pratos da casa.</h2>
           </Reveal>
           <div className="mt-20 space-y-24 md:mt-28 md:space-y-40">
@@ -74,9 +83,9 @@ export default function GastronomiaPage() {
 
       <section className="bg-noite text-perola">
         <div className="grid md:grid-cols-2">
-          <RevealMedia className="aspect-[4/5] md:aspect-auto md:min-h-[86vh]">
-            <Photo k="drink" alt="Drink sendo servido no bar central" sizes="(min-width: 768px) 50vw, 100vw" />
-          </RevealMedia>
+          <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[86vh]">
+            <AmbientVideo source={video.noite} label="Bar central do Vila Medí: coquetéis sendo preparados e servidos" />
+          </div>
           <Reveal className="flex flex-col justify-center px-[clamp(1.25rem,6vw,6rem)] py-20">
             <h2 className="display-l">Bar central e carta de vinhos.</h2>
             <p className="lede mt-7 max-w-[38ch] opacity-85">

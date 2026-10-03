@@ -1,10 +1,9 @@
-import type { ImageKey } from "./media";
+import type { CutoutKey, ImageKey } from "./media";
 
 /**
- * Pratos em destaque.
- * Nomes com (imprensa) aparecem em matérias sobre a casa.
- * Os demais foram nomeados a partir das imagens — CONFIRMAR com a cozinha.
- * Os quatro primeiros usam as fotos de prato enviadas pela casa; os demais, frames dos reels.
+ * Pratos em destaque: só os que têm foto feita pela casa.
+ * Nomes e descrições foram escritos a partir das fotos — CONFIRMAR com a cozinha.
+ * O cardápio completo (só texto) fica em data/menu.ts.
  */
 export type Dish = {
   id: string;
@@ -13,6 +12,8 @@ export type Dish = {
   house: string;
   image: ImageKey;
   alt: string;
+  /** o mesmo prato recortado, quando existe (elemento gráfico) */
+  cutout?: CutoutKey;
 };
 
 export const dishes: Record<string, Dish> = {
@@ -31,14 +32,16 @@ export const dishes: Record<string, Dish> = {
     house: "Temperani Amalfi",
     image: "prato-burrata",
     alt: "Burrata recebendo um fio de azeite, sobre tomates confit, pesto e folhas de manjericão",
+    cutout: "recorte-burrata",
   },
-  "polvo-risoni": {
-    id: "polvo-risoni",
-    name: "Risoni al polpo", // CONFIRMAR
-    description: "Risoni cozido no molho de tomate, polvo na brasa, stracciatella e manjericão.",
-    house: "Temperani Amalfi",
+  "orzo-polvo": {
+    id: "orzo-polvo",
+    name: "Orzo com polvo", // CONFIRMAR
+    description: "Orzo cozido no molho de tomate, à moda grega, com polvo na brasa, stracciatella e manjericão.",
+    house: "MII Mar",
     image: "prato-polvo-risoni",
-    alt: "Risoni ao molho de tomate com tentáculo de polvo grelhado, stracciatella e manjericão em bowl verde",
+    alt: "Orzo ao molho de tomate com tentáculo de polvo grelhado, stracciatella e manjericão em bowl verde",
+    cutout: "recorte-risoni",
   },
   "peixe-cru": {
     id: "peixe-cru",
@@ -47,89 +50,10 @@ export const dishes: Record<string, Dish> = {
     house: "Cru Oyster Bar",
     image: "prato-peixe-cru",
     alt: "Peixe vermelho inteiro fatiado em sashimi sobre gelo, com molho ponzu ao lado",
-  },
-  "ostra-grelhada": {
-    id: "ostra-grelhada",
-    name: "Ostra grelhada", // (imprensa)
-    description: "Na brasa, com manteiga de missô e jerez. Servida sobre sal grosso.",
-    house: "Cru Oyster Bar",
-    image: "ostras",
-    alt: "Três ostras grelhadas sobre sal grosso",
-  },
-  couscous: {
-    id: "couscous",
-    name: "Couscous aux fruits de mer", // (imprensa)
-    description: "Polvo, camarão, peixe do dia e tomate confit.",
-    house: "MII Mar",
-    image: "prato-polvo",
-    alt: "Couscous com polvo e frutos do mar em bowl azul",
-  },
-  ravioli: {
-    id: "ravioli",
-    name: "Ravioli all'olio verde", // CONFIRMAR
-    description: "Massa fresca feita na casa, recheio cremoso e azeite de ervas.",
-    house: "Temperani Amalfi",
-    image: "prato-ravioli",
-    alt: "Ravioli de massa fresca com azeite verde",
-  },
-  pavlova: {
-    id: "pavlova",
-    name: "Pavlova", // CONFIRMAR
-    description: "Merengue crocante, creme leve e frutas vermelhas.",
-    house: "Sobremesas da casa",
-    image: "prato-pavlova",
-    alt: "Pavlova com frutas vermelhas e calda",
-  },
-  labneh: {
-    id: "labneh",
-    name: "Labneh", // CONFIRMAR
-    description: "Coalhada seca, azeite, endro e azeitona. Para começar e dividir.",
-    house: "MII Mar",
-    image: "prato-labneh",
-    alt: "Labneh com azeite, endro e azeitona",
-  },
-  kibbeh: {
-    id: "kibbeh",
-    name: "Kibbeh cru", // CONFIRMAR
-    description: "Cortado na faca, com cebola, hortelã e azeite.",
-    house: "MII Mar",
-    image: "prato-tartare",
-    alt: "Kibbeh cru em prato pintado de azul e branco",
-  },
-  cordeiro: {
-    id: "cordeiro",
-    name: "Cordeiro de cozimento lento", // CONFIRMAR
-    description: "Horas no forno até soltar do osso. Molho do próprio assado.",
-    house: "Temperani Amalfi",
-    image: "prato-cordeiro",
-    alt: "Pernil de cordeiro assado com molho escuro",
-  },
-  chocolate: {
-    id: "chocolate",
-    name: "Torta de chocolate e pistache", // CONFIRMAR
-    description: "Chocolate amargo e pistache tostado por cima.",
-    house: "Sobremesas da casa",
-    image: "prato-chocolate",
-    alt: "Fatia de torta de chocolate coberta de pistache",
-  },
-  "frutos-grelhados": {
-    id: "frutos-grelhados",
-    name: "Frutos do mar na brasa", // CONFIRMAR
-    description: "Da grelha direto para a mesa, sobre folhas, azeite e limão.",
-    house: "Cru Oyster Bar",
-    image: "frutos-do-mar",
-    alt: "Frutos do mar grelhados servidos sobre folhas",
-  },
-  lobster: {
-    id: "lobster",
-    name: "Lobster X.O.", // (imprensa)
-    description: "Lagosta na grelha com creme de couve-flor defumado.",
-    house: "Cru Oyster Bar",
-    image: "grelha",
-    alt: "Frutos do mar na grelha",
+    cutout: "recorte-peixe",
   },
 };
 
-/** Ordem da home (4 pratos) e da página Gastronomia (6). */
-export const homeDishes = ["plateau", "burrata", "polvo-risoni", "peixe-cru"];
-export const gastronomyDishes = ["plateau", "burrata", "polvo-risoni", "peixe-cru", "couscous", "ravioli", "labneh", "pavlova"];
+/** Ordem da home e da página Gastronomia. */
+export const homeDishes = ["plateau", "burrata", "orzo-polvo", "peixe-cru"];
+export const gastronomyDishes = ["plateau", "burrata", "orzo-polvo", "peixe-cru"];

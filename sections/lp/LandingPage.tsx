@@ -5,10 +5,11 @@ import { ReservationForm } from "@/components/forms/ReservationForm";
 import { StickyReserve } from "@/components/layout/StickyReserve";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { Cta } from "@/components/ui/Cta";
-import { Photo } from "@/components/ui/Photo";
-import { Reveal, RevealMedia } from "@/components/ui/Motion";
+import { DishMarquee } from "@/components/ui/DishMarquee";
+import { Reveal } from "@/components/ui/Motion";
 import { dishes } from "@/data/dishes";
 import type { Landing } from "@/data/landing-pages";
+import { signatureMarquee } from "@/data/marquee";
 import { video } from "@/data/media";
 import { site } from "@/data/site";
 import { testimonials } from "@/data/testimonials";
@@ -64,18 +65,8 @@ export function LandingPage({ l }: { l: Landing }) {
         </div>
       </section>
 
-      <section className="pb-24 md:pb-36" aria-label="Ambiente">
-        <div className="shell grid grid-cols-12 items-end gap-3 md:gap-6">
-          <RevealMedia className="col-span-7 aspect-[3/4] md:col-span-5">
-            <Photo k={l.gallery[0]} alt="" sizes="(min-width: 768px) 40vw, 58vw" />
-          </RevealMedia>
-          <RevealMedia className="col-span-5 aspect-[3/4] md:col-span-3" delay={0.1}>
-            <Photo k={l.gallery[1]} alt="" sizes="(min-width: 768px) 24vw, 40vw" />
-          </RevealMedia>
-          <RevealMedia className="col-span-12 aspect-[4/5] md:col-span-4 md:mb-24 md:aspect-[3/4]" delay={0.2}>
-            <Photo k={l.gallery[2]} alt="" sizes="(min-width: 768px) 32vw, 92vw" />
-          </RevealMedia>
-        </div>
+      <section className="pb-24 md:pb-36" aria-label="Pratos do Vila Medí">
+        <DishMarquee items={signatureMarquee} />
       </section>
 
       <section className="bg-areia py-24 md:py-36">

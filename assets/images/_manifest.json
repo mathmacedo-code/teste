@@ -1,139 +1,11 @@
 {
-  "prato-tartare": {
-    "w": 720,
-    "h": 900
-  },
-  "prato-labneh": {
-    "w": 720,
-    "h": 900
-  },
-  "prato-polvo": {
-    "w": 720,
-    "h": 900
-  },
-  "prato-ravioli": {
-    "w": 720,
-    "h": 900
-  },
-  "prato-chocolate": {
-    "w": 720,
-    "h": 900
-  },
-  "prato-pavlova": {
-    "w": 720,
-    "h": 900
-  },
-  "prato-cordeiro": {
-    "w": 720,
-    "h": 900
-  },
-  "equipe": {
-    "w": 720,
-    "h": 900
-  },
-  "fachada": {
-    "w": 720,
-    "h": 1280
-  },
-  "bartender": {
-    "w": 720,
-    "h": 1280
-  },
-  "adega": {
-    "w": 720,
-    "h": 1280
-  },
-  "luminarias": {
-    "w": 720,
-    "h": 1280
-  },
-  "rose": {
-    "w": 720,
-    "h": 1280
-  },
-  "bar-convidado": {
-    "w": 720,
-    "h": 1280
-  },
-  "dj": {
-    "w": 720,
-    "h": 1280
-  },
-  "escultura": {
-    "w": 720,
-    "h": 1280
-  },
-  "ostras": {
-    "w": 720,
-    "h": 1280
-  },
-  "celebracao": {
-    "w": 720,
-    "h": 1280
-  },
-  "pista": {
-    "w": 720,
-    "h": 1280
-  },
-  "teto": {
-    "w": 720,
-    "h": 1280
-  },
-  "mesa-palha": {
-    "w": 720,
-    "h": 1280
-  },
-  "franjas": {
-    "w": 720,
-    "h": 1280
-  },
-  "janela": {
-    "w": 720,
-    "h": 1280
-  },
-  "grelha": {
-    "w": 720,
-    "h": 1280
-  },
-  "mesa-longa": {
-    "w": 720,
-    "h": 1280
-  },
-  "frutos-do-mar": {
-    "w": 720,
-    "h": 1280
-  },
-  "drink": {
-    "w": 720,
-    "h": 1280
-  },
-  "negroni": {
-    "w": 720,
-    "h": 1280
-  },
-  "salao": {
-    "w": 720,
-    "h": 1280
-  },
-  "padeiro": {
-    "w": 720,
-    "h": 1280
-  },
-  "massa-maos": {
-    "w": 720,
-    "h": 1280
-  },
-  "massa-rolo": {
-    "w": 720,
-    "h": 1280
-  },
-  "forno": {
-    "w": 720,
-    "h": 1280
-  },
   "plateau-cru": {
     "w": 1440,
     "h": 1920
+  },
+  "prato-burrata-topo": {
+    "w": 640,
+    "h": 640
   },
   "prato-burrata": {
     "w": 640,
@@ -145,10 +17,18 @@
   },
   "prato-polvo-risoni": {
     "w": 1440,
-    "h": 1851
+    "h": 1888
   },
   "recorte-burrata": {
     "w": 562,
     "h": 562
+  },
+  "recorte-peixe": {
+    "w": 413,
+    "h": 357
+  },
+  "recorte-risoni": {
+    "w": 1000,
+    "h": 639
   }
 }

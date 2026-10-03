@@ -9,7 +9,7 @@ export function DishRow({ dish, flip, priority }: { dish: Dish; flip?: boolean; 
     <article className="grid grid-cols-12 items-center gap-y-8 md:gap-x-6">
       <RevealMedia
         className={cn(
-          "col-span-11 aspect-[4/5] md:col-span-6",
+          "arch-45 col-span-11 aspect-[4/5] md:col-span-6",
           flip ? "col-start-2 md:col-start-7 md:row-start-1" : "md:col-start-1",
         )}
       >

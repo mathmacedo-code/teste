@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Photo } from "@/components/ui/Photo";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { Reveal } from "@/components/ui/Motion";
+import { video } from "@/data/media";
 import { restaurantList } from "@/data/restaurants";
 
-/** Três casas como grandes painéis verticais. Desktop: o painel em foco se expande e troca o texto. */
+/** Três casas como grandes painéis verticais em vídeo. Desktop: o painel em foco se expande e troca o texto. */
 export function Experiences() {
   return (
     <section id="experiencias" className="bg-cal pb-28 md:pb-44">
@@ -20,10 +21,8 @@ export function Experiences() {
             href={r.path}
             className="xp-panel group relative block aspect-[4/5] overflow-hidden bg-noite text-perola md:aspect-auto"
           >
-            <Photo
-              k={r.cover}
-              alt=""
-              sizes="(min-width: 768px) 50vw, 100vw"
+            <AmbientVideo
+              source={video[r.cover]}
               className="transition-transform duration-[1800ms] ease-[var(--ease-lux)] group-hover:scale-[1.05]"
             />
             <div aria-hidden className="scrim-bottom absolute inset-0" />

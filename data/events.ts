@@ -1,4 +1,4 @@
-import type { ImageKey } from "./media";
+import type { VideoKey } from "./media";
 
 export const eventTypes = [
   { name: "Eventos corporativos", text: "Almoços de negócios, lançamentos e jantares com clientes." },
@@ -11,10 +11,10 @@ export const eventTypes = [
 
 export const eventFormOptions = [...eventTypes.map((e) => e.name), "Outro"];
 
-export const spaces: { name: string; text: string; image: ImageKey }[] = [
-  { name: "Salão principal", text: "Arcos, pedra e janelões. Ideal para eventos com a casa toda.", image: "salao" },
-  { name: "Mesas longas", text: "Jantares sentados sob as luminárias de palha, para grupos.", image: "mesa-longa" },
-  { name: "Bar central", text: "Coquetel em pé, música e o balcão como ponto de encontro.", image: "bartender" },
+export const spaces: { name: string; text: string; video: VideoKey }[] = [
+  { name: "Salão principal", text: "Arcos, pedra e janelões. Ideal para eventos com a casa toda.", video: "heroMobile" },
+  { name: "Mesas longas", text: "Jantares sentados sob as luminárias de palha, para grupos.", video: "noite" },
+  { name: "Bar central", text: "Coquetel em pé, música e o balcão como ponto de encontro.", video: "cru" },
 ];
 
 export const eventSteps = [

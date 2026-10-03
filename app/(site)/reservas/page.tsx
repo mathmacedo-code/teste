@@ -1,5 +1,6 @@
 import { ReservationForm } from "@/components/forms/ReservationForm";
-import { Photo } from "@/components/ui/Photo";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
+import { video } from "@/data/media";
 import { HOUSES, site, whatsappLink } from "@/data/site";
 import { pageMetadata } from "@/lib/seo";
 
@@ -18,8 +19,8 @@ export default async function ReservasPage({ searchParams }: { searchParams: Pro
     <section className="bg-cal pt-[76px]">
       <div className="grid lg:min-h-[calc(100svh-76px)] lg:grid-cols-2">
         <div className="relative hidden lg:block">
-          <div className="sticky top-[76px] h-[calc(100svh-76px)]">
-            <Photo k="mesa-palha" alt="Mesa posta sob luminária de palha no Vila Medí" sizes="50vw" priority className="object-[50%_40%]" />
+          <div className="sticky top-[76px] h-[calc(100svh-76px)] bg-noite">
+            <AmbientVideo source={video.noite} label="A noite no Vila Medí: bar, coquetéis e luminárias" />
           </div>
         </div>
         <div className="shell py-16 md:py-24 lg:px-[clamp(2rem,5vw,6rem)]">

@@ -1,13 +1,16 @@
 import { OpenEventButton } from "@/components/overlays/Overlays";
 import { Cta } from "@/components/ui/Cta";
-import { Photo } from "@/components/ui/Photo";
-import { Reveal, RevealMedia } from "@/components/ui/Motion";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
+import { CandleGlow } from "@/components/ui/CandleGlow";
+import { Reveal } from "@/components/ui/Motion";
 import { eventTypes } from "@/data/events";
+import { video } from "@/data/media";
 
 export function Events() {
   return (
-    <section id="eventos" className="bg-oliva-fundo py-28 text-perola md:py-44">
-      <div className="shell grid gap-x-6 gap-y-16 md:grid-cols-12">
+    <section id="eventos" className="relative overflow-hidden bg-oliva-fundo py-28 text-perola md:py-44">
+      <CandleGlow />
+      <div className="shell relative grid gap-x-6 gap-y-16 md:grid-cols-12">
         <div className="md:col-span-5">
           <Reveal>
             <h2 className="display-l">Celebre no Vila Medí.</h2>
@@ -31,16 +34,14 @@ export function Events() {
           </div>
         </div>
 
-        <div className="grid grid-cols-6 gap-3 md:col-span-6 md:col-start-7 md:gap-5">
-          <RevealMedia className="col-span-6 aspect-[4/5]">
-            <Photo k="mesa-longa" alt="Mesa longa posta para um evento privado" sizes="(min-width: 768px) 46vw, 92vw" />
-          </RevealMedia>
-          <RevealMedia className="col-span-3 aspect-[3/4]" delay={0.1}>
-            <Photo k="franjas" alt="Luminárias de franjas sobre o salão" sizes="(min-width: 768px) 23vw, 46vw" />
-          </RevealMedia>
-          <RevealMedia className="col-span-3 mt-16 aspect-[3/4]" delay={0.2}>
-            <Photo k="bartender" alt="Bartender preparando coquetel no bar central" sizes="(min-width: 768px) 23vw, 46vw" />
-          </RevealMedia>
+        <div className="md:col-span-6 md:col-start-7 md:self-center">
+          <Reveal className="relative mx-auto w-[86%] md:w-[78%]">
+            {/* arco duplo, como no emblema */}
+            <div aria-hidden className="arch-23 absolute -inset-[10px] border border-perola/30" />
+            <div className="arch-23 relative aspect-[2/3] overflow-hidden">
+              <AmbientVideo source={video.heroMobile} label="O salão do Vila Medí à noite, com mesas postas e coquetéis" />
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

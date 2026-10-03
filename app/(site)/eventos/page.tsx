@@ -1,8 +1,9 @@
 import { EventForm } from "@/components/forms/EventForm";
 import { Cta } from "@/components/ui/Cta";
-import { Photo } from "@/components/ui/Photo";
-import { Reveal, RevealMedia } from "@/components/ui/Motion";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
+import { Reveal } from "@/components/ui/Motion";
 import { eventSteps, eventTypes, spaces } from "@/data/events";
+import { video } from "@/data/media";
 import { site } from "@/data/site";
 import { cn } from "@/lib/cn";
 import { pageMetadata } from "@/lib/seo";
@@ -19,7 +20,7 @@ export default function EventosPage() {
   return (
     <>
       <section className="relative h-[100svh] min-h-[620px] overflow-hidden bg-noite text-perola">
-        <Photo k="mesa-longa" alt="" sizes="100vw" priority className="object-[50%_40%]" />
+        <AmbientVideo source={video.heroDesktop} mobileSource={video.heroMobile} priority label="O salão do Vila Medí à noite" />
         <div aria-hidden className="scrim-bottom absolute inset-0" />
         <div className="shell relative flex h-full flex-col justify-end pb-[max(3.25rem,7vh)]">
           <Reveal>
@@ -61,9 +62,9 @@ export default function EventosPage() {
           <div className="mt-16 grid gap-14 md:mt-24 md:grid-cols-3 md:gap-6">
             {spaces.map((s, i) => (
               <article key={s.name} className={cn(i === 1 && "md:mt-28", i === 2 && "md:mt-12")}>
-                <RevealMedia className="aspect-[3/4]" delay={i * 0.1}>
-                  <Photo k={s.image} alt={s.name} sizes="(min-width: 768px) 31vw, 92vw" />
-                </RevealMedia>
+                <Reveal className="arch-23 relative aspect-[2/3] overflow-hidden bg-noite" delay={i * 0.1}>
+                  <AmbientVideo source={video[s.video]} label={s.name} />
+                </Reveal>
                 <h3 className="title mt-6">{s.name}</h3>
                 <p className="mt-2 max-w-[34ch] opacity-75">{s.text}</p>
               </article>

@@ -3,9 +3,13 @@ import { OpenMenuButton } from "@/components/overlays/Overlays";
 import { StickyReserve } from "@/components/layout/StickyReserve";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { Cta } from "@/components/ui/Cta";
-import { Photo } from "@/components/ui/Photo";
-import { Reveal, RevealMedia } from "@/components/ui/Motion";
+import { CandleGlow } from "@/components/ui/CandleGlow";
+import { Cutout } from "@/components/ui/Cutout";
+import { DishMarquee } from "@/components/ui/DishMarquee";
+import { Reveal } from "@/components/ui/Motion";
+import { Seal } from "@/components/ui/Seal";
 import { dishes } from "@/data/dishes";
+import { houseMarquee } from "@/data/marquee";
 import { video } from "@/data/media";
 import type { Restaurant, Theme } from "@/data/restaurants";
 import { site } from "@/data/site";
@@ -30,11 +34,7 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
 
       {/* Hero */}
       <section className="relative h-[100svh] min-h-[620px] overflow-hidden bg-noite text-perola">
-        {r.hero.video ? (
-          <AmbientVideo source={video[r.hero.video]} priority label={`Ambiente do ${r.name}`} />
-        ) : (
-          <Photo k={r.hero.image} alt="" sizes="100vw" priority />
-        )}
+        <AmbientVideo source={video[r.hero.video]} priority label={`Ambiente do ${r.name}`} />
         <div aria-hidden className="scrim-bottom absolute inset-0" />
         <div className="shell relative flex h-full flex-col justify-end pb-[max(3.25rem,7vh)]">
           <Reveal>
@@ -52,7 +52,7 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
       </section>
 
       {/* Conceito */}
-      <section className="py-28 md:py-44">
+      <section className="overflow-x-clip py-28 md:py-44">
         <div className="shell grid items-center gap-x-6 gap-y-14 md:grid-cols-12">
           <Reveal className="md:col-span-5">
             <h2 className="display-l">{r.concept.title}</h2>
@@ -60,9 +60,14 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
               <p key={p} className="lede mt-7 max-w-[40ch] opacity-85">{p}</p>
             ))}
           </Reveal>
-          <RevealMedia className="aspect-[4/5] md:col-span-6 md:col-start-7">
-            <Photo k={r.concept.image} alt={r.concept.imageAlt} sizes="(min-width: 768px) 46vw, 92vw" />
-          </RevealMedia>
+          <Cutout
+            k={r.dish}
+            motion={r.dish === "recorte-risoni" ? "float" : "spin"}
+            turn={r.dish === "recorte-peixe" ? 40 : 80}
+            tilt={r.dish === "recorte-peixe" ? -20 : 0}
+            sizes="(min-width: 768px) 46vw, 92vw"
+            className="-mr-[14vw] ml-[6vw] md:col-span-6 md:col-start-7 md:mr-[-4vw] md:ml-0"
+          />
         </div>
       </section>
 
@@ -70,9 +75,9 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
       {r.kitchen && (
         <section className={cn("py-28 md:py-40", t.alt)}>
           <div className="shell grid items-end gap-x-6 gap-y-12 md:grid-cols-12">
-            <RevealMedia className="aspect-[4/5] md:col-span-5">
-              <Photo k={r.kitchen.image} alt={r.kitchen.imageAlt} sizes="(min-width: 768px) 40vw, 92vw" />
-            </RevealMedia>
+            <div className="md:col-span-5">
+              <Seal text={`${r.name} · Feito à mão · Forno a lenha · `} className="w-[150px] md:w-[220px]" />
+            </div>
             <Reveal className="md:col-span-5 md:col-start-7 md:pb-10">
               <h2 className="display-l">{r.kitchen.title}</h2>
               <p className="lede mt-7 max-w-[38ch] opacity-85">{r.kitchen.text}</p>
@@ -118,37 +123,27 @@ export function RestaurantPage({ r }: { r: Restaurant }) {
             <h2 className="display-l">{r.ambience.title}</h2>
             <p className="lede mt-7 max-w-[34ch] opacity-85">{r.ambience.text}</p>
           </Reveal>
-          <RevealMedia className="col-span-7 mt-8 aspect-[3/4] md:col-span-4 md:col-start-6 md:row-start-1 md:mt-0">
-            <Photo k={r.ambience.images[0]} alt="" sizes="(min-width: 768px) 32vw, 58vw" />
-          </RevealMedia>
-          <RevealMedia className="col-span-5 mt-24 aspect-[3/4] md:col-span-3 md:col-start-10 md:row-start-1 md:mt-40" delay={0.15}>
-            <Photo k={r.ambience.images[1]} alt="" sizes="(min-width: 768px) 24vw, 40vw" />
-          </RevealMedia>
-        </div>
-      </section>
-
-      {/* Destaque: vinhos / grelha / coquetelaria */}
-      <section className={t.alt}>
-        <div className="grid md:grid-cols-2">
-          <RevealMedia className="aspect-[4/5] md:aspect-auto md:min-h-[86vh]">
-            <Photo k={r.feature.image} alt={r.feature.imageAlt} sizes="(min-width: 768px) 50vw, 100vw" />
-          </RevealMedia>
-          <Reveal className="flex flex-col justify-center px-[clamp(1.25rem,6vw,6rem)] py-20">
-            <h2 className="display-l">{r.feature.title}</h2>
-            <p className="lede mt-7 max-w-[38ch] opacity-85">{r.feature.text}</p>
+          <Reveal className="relative col-span-10 col-start-2 mt-12 md:col-span-5 md:col-start-7 md:row-start-1 md:mt-0" delay={0.1}>
+            <div aria-hidden className="arch-23 absolute -inset-[10px] border border-current/25" />
+            <div className="arch-23 relative aspect-[2/3] overflow-hidden bg-noite">
+              <AmbientVideo source={video[r.ambience.video]} label={`Ambiente do ${r.name}`} />
+            </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Galeria */}
-      <section className="py-28 md:py-40" aria-label={`Galeria do ${r.name}`}>
-        <ul className="no-scrollbar flex snap-x snap-mandatory scroll-px-[clamp(1.25rem,4vw,4rem)] gap-3 overflow-x-auto px-[clamp(1.25rem,4vw,4rem)] md:gap-5">
-          {r.gallery.map((k, i) => (
-            <li key={k + i} className={cn("relative w-[72vw] shrink-0 snap-start overflow-hidden md:w-[30vw]", i % 2 ? "aspect-[3/4] md:mt-20" : "aspect-[4/5]")}>
-              <Photo k={k} alt="" sizes="(min-width: 768px) 30vw, 72vw" quality={70} />
-            </li>
-          ))}
-        </ul>
+      {/* Destaque: vinhos / grelha / coquetelaria */}
+      <section className="relative overflow-hidden bg-noite py-32 text-perola md:py-48">
+        <CandleGlow />
+        <Reveal className="shell relative text-center">
+          <h2 className="display-xl mx-auto max-w-[14ch] italic">{r.feature.title}</h2>
+          <p className="lede mx-auto mt-8 max-w-[44ch] opacity-85">{r.feature.text}</p>
+        </Reveal>
+      </section>
+
+      {/* Faixa de pratos da casa */}
+      <section className="py-24 md:py-36" aria-label={`Pratos do ${r.name}`}>
+        <DishMarquee items={houseMarquee[r.slug]} />
       </section>
 
       {/* Fechamento */}

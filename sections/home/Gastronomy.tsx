@@ -1,6 +1,6 @@
 import { OpenMenuButton } from "@/components/overlays/Overlays";
 import { Reveal } from "@/components/ui/Motion";
-import { PlateSpin } from "@/components/ui/PlateSpin";
+import { Cutout } from "@/components/ui/Cutout";
 import { dishes, homeDishes } from "@/data/dishes";
 import { DishRow } from "@/sections/shared/DishRow";
 
@@ -8,7 +8,8 @@ export function Gastronomy() {
   return (
     <section id="gastronomia" className="relative overflow-x-clip bg-areia py-28 md:py-44">
       <div className="shell relative">
-        <PlateSpin
+        <Cutout
+          k="recorte-burrata"
           sizes="(min-width: 768px) 36vw, 66vw"
           className="relative -mt-10 -mr-[18vw] mb-[-3rem] ml-auto w-[66vw] md:absolute md:top-[-5rem] md:right-[-7vw] md:m-0 md:w-[36vw] md:max-w-[600px]"
         />

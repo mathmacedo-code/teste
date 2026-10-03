@@ -28,7 +28,6 @@ export const menu: MenuHouse[] = [
           { name: "Pappardelle al ragù di ossobuco", description: "Massa larga e ragù de ossobuco" }, // (imprensa)
           { name: "Ravioli all'olio verde", description: "Massa fresca, recheio cremoso e azeite de ervas" },
           { name: "Linguine alle vongole", description: "Vôngoles, alho, vinho branco e salsinha" },
-          { name: "Risoni al polpo", description: "Polvo na brasa, tomate, stracciatella e manjericão" }, // CONFIRMAR
         ],
       },
       {
@@ -60,6 +59,7 @@ export const menu: MenuHouse[] = [
           { name: "Moussaka", description: "Berinjela, ragù de cordeiro e bechamel" }, // (imprensa)
           { name: "Roz a djej", description: "Arroz basmati, bombom de alcatra e crispy de frango" }, // (imprensa)
           { name: "Couscous aux fruits de mer", description: "Polvo, camarão, peixe do dia e tomate confit" }, // (imprensa)
+          { name: "Orzo com polvo", description: "Molho de tomate, polvo na brasa, stracciatella e manjericão" }, // CONFIRMAR
         ],
       },
     ],

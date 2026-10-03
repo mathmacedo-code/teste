@@ -78,7 +78,15 @@ Os vídeos enviados são reels verticais (720×1280). Por isso:
 - **Hero desktop** = tríptico 16:9 com três vídeos verticais lado a lado, trocando de cena em onda (sem esticar/borrar).
 - **Hero mobile** = vídeo vertical nativo.
 - Câmera lenta com interpolação de movimento, dissolves de 0,8 s e loop sem emenda.
-- Cada vídeo em **WebM (VP9)** + **MP4 (H.264)**, sem áudio, com poster WebP. O componente `AmbientVideo` só baixa o vídeo quando ele entra na tela, escolhe a versão mobile/desktop antes de baixar e respeita "reduzir movimento" e economia de dados.
+- Cada vídeo em **MP4 (H.264)**, sem áudio, com poster WebP. O `AmbientVideo` foi feito para celular: só MP4, `<source>` já no HTML (o navegador escolhe a versão mobile pelo `media`), vídeo sempre visível com o poster por cima, e — se o sistema bloquear o autoplay (ex.: Modo de Pouca Energia do iPhone) — o primeiro toque na página libera todos os vídeos. Com "reduzir movimento" ativado no aparelho, fica no poster.
+
+### Fotos e elementos visuais
+
+- **Só fotos de verdade** (`assets/images`): os frames tirados dos vídeos foram removidos.
+- `recorte-*.png`: os pratos sem fundo, usados como elementos gráficos (`components/ui/Cutout`) — giram e flutuam com o scroll.
+- `DishMarquee`: faixa infinita com nomes de pratos e mini-pratos girando; acelera e inverte com o scroll.
+- `Seal`: selo circular com o emblema; `CandleGlow`: luz de vela animada em CSS; `SkyScene`: céu, astro e mar que mudam com o momento do dia.
+- Para novos recortes: foto do prato **de cima**, prato inteiro no quadro, fundo liso e contrastante.
 
 Pontos de corte usados (arquivo `scripts/media/build_media.py`):
 

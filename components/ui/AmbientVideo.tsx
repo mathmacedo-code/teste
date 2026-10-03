@@ -9,153 +9,144 @@ type Props = {
   /** versão vertical/leve para telas < 768px */
   mobileSource?: VideoSource;
   className?: string;
-  /** hero: carrega imediatamente e prioriza o poster (LCP) */
+  /** hero: começa a tocar sozinho, sem esperar o JavaScript */
   priority?: boolean;
   /** descrição para leitores de tela; vazio = decorativo */
   label?: string;
 };
 
-/**
- * Safari (iOS e macOS) toca H.264 por hardware; WebM/VP9 ali é decodificado por
- * software ou nem toca — então Apple recebe só o MP4. Os demais navegadores
- * continuam preferindo o WebM, que é mais leve.
+/*
+ * Por que é feito assim (celulares, iPhone em especial):
+ * - Só MP4 H.264: é o único formato que todo celular decodifica por hardware.
+ * - As <source> já vêm no HTML; o próprio navegador escolhe a versão mobile
+ *   pelo atributo media. Nada de trocar src depois de montado.
+ * - O <video> fica sempre visível (opacidade 1). O poster é uma imagem POR CIMA
+ *   que some quando o vídeo começa. O WebKit não dá autoplay para vídeos que
+ *   considera invisíveis, então o vídeo nunca pode estar transparente.
+ * - Mudo de verdade: propriedade + atributo, antes de qualquer play().
+ * - Se o sistema bloquear o autoplay (Modo de Pouca Energia, economia de dados),
+ *   o primeiro toque na página libera TODOS os vídeos de uma vez.
  */
-function isApple() {
-  const ua = navigator.userAgent;
-  return /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && /Safari/.test(ua) && !/Chrome|Chromium|Edg|Firefox/.test(ua));
-}
 
-/**
- * O iOS recusa autoplay em algumas situações (Modo de Pouca Energia, economia
- * de dados, primeira visita em certos contextos). Nesses casos o play() é
- * rejeitado; os vídeos ficam numa fila e começam no primeiro toque na página.
- */
-const waiting = new Set<HTMLVideoElement>();
-let gestureBound = false;
-function playOnFirstGesture(el: HTMLVideoElement) {
-  waiting.add(el);
-  if (gestureBound) return;
-  gestureBound = true;
-  const resume = () => {
-    waiting.forEach((v) => {
-      if (v.isConnected && v.dataset.visible === "1") v.play().catch(() => {});
-    });
-    waiting.clear();
-    gestureBound = false;
-    events.forEach((e) => window.removeEventListener(e, resume, true));
-  };
-  const events = ["touchend", "click", "keydown"] as const;
-  events.forEach((e) => window.addEventListener(e, resume, { capture: true, passive: true }));
-}
+const all = new Set<HTMLVideoElement>();
+let unlockBound = false;
 
-function tryPlay(el: HTMLVideoElement) {
-  // o iOS exige que o vídeo esteja mudo de fato (propriedade + atributo) para autoplay
+function prep(el: HTMLVideoElement) {
   el.muted = true;
   el.defaultMuted = true;
+  el.playsInline = true;
   el.setAttribute("muted", "");
   el.setAttribute("playsinline", "");
   el.setAttribute("webkit-playsinline", "");
+}
+
+function tryPlay(el: HTMLVideoElement) {
+  prep(el);
   const p = el.play();
-  if (p) p.catch(() => playOnFirstGesture(el));
+  if (p) p.catch(() => bindUnlock());
+}
+
+function bindUnlock() {
+  if (unlockBound) return;
+  unlockBound = true;
+  const events = ["touchend", "pointerup", "click", "keydown"] as const;
+  const unlock = () => {
+    events.forEach((e) => window.removeEventListener(e, unlock, true));
+    unlockBound = false;
+    all.forEach((v) => {
+      if (!v.isConnected) return;
+      prep(v);
+      // dentro do gesto: o play() concede permissão ao elemento; os que estão fora da tela pausam em seguida
+      v.play()
+        .then(() => {
+          if (v.dataset.visible !== "1") v.pause();
+        })
+        .catch(() => {});
+    });
+  };
+  events.forEach((e) => window.addEventListener(e, unlock, { capture: true, passive: true }));
 }
 
 /**
- * Vídeo de ambientação: sem áudio, em loop, playsinline.
- * - Só baixa o vídeo quando entra na tela (ou de imediato, se priority).
- * - Escolhe desktop/mobile antes de baixar (nunca as duas versões).
- * - Com "reduzir movimento" ou economia de dados, fica no poster.
- * - Pausa fora da tela para poupar bateria.
+ * Vídeo de ambientação: sem áudio, em loop, inline.
+ * - Fora do hero, só baixa quando chega perto da tela.
+ * - Pausa fora da tela (bateria) e retoma ao voltar.
+ * - Com "reduzir movimento" ativado no aparelho, fica no poster.
  */
 export function AmbientVideo({ source, mobileSource, className, priority, label }: Props) {
+  const wrap = useRef<HTMLDivElement>(null);
   const ref = useRef<HTMLVideoElement>(null);
-  const [active, setActive] = useState<{ src: VideoSource; mp4Only: boolean } | null>(null);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
-    if (reduce || conn?.saveData) return;
-    const pick = () =>
-      mobileSource && !window.matchMedia("(min-width: 768px)").matches ? mobileSource : source;
-    let started = false;
+    const box = wrap.current;
+    if (!el || !box) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.pause();
+      return;
+    }
+    prep(el);
+    all.add(el);
+
     const io = new IntersectionObserver(
       ([entry]) => {
         el.dataset.visible = entry.isIntersecting ? "1" : "0";
-        if (entry.isIntersecting) {
-          if (!started) {
-            started = true;
-            setActive({ src: pick(), mp4Only: isApple() });
-          } else {
-            tryPlay(el);
-          }
-        } else if (started) {
-          el.pause();
-        }
+        if (entry.isIntersecting) tryPlay(el);
+        else if (!el.paused) el.pause();
       },
-      { rootMargin: priority ? "0px" : "300px 0px" },
+      { rootMargin: priority ? "0px" : "200px 0px" },
     );
-    io.observe(el);
+    io.observe(box);
 
-    // ao voltar para a aba/app o iOS pausa os vídeos; retoma os visíveis
-    const onVisibility = () => {
-      if (document.visibilityState === "visible" && started && el.dataset.visible === "1" && el.paused) tryPlay(el);
+    // o iOS pausa tudo ao trocar de app/aba
+    const resume = () => {
+      if (document.visibilityState === "visible" && el.dataset.visible === "1" && el.paused) tryPlay(el);
     };
-    document.addEventListener("visibilitychange", onVisibility);
-    window.addEventListener("pageshow", onVisibility);
+    document.addEventListener("visibilitychange", resume);
+    window.addEventListener("pageshow", resume);
     return () => {
       io.disconnect();
-      waiting.delete(el);
-      document.removeEventListener("visibilitychange", onVisibility);
-      window.removeEventListener("pageshow", onVisibility);
+      all.delete(el);
+      document.removeEventListener("visibilitychange", resume);
+      window.removeEventListener("pageshow", resume);
     };
-  }, [source, mobileSource, priority]);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !active) return;
-    el.load();
-    tryPlay(el);
-  }, [active]);
+  }, [priority]);
 
   return (
-    <div className={cn("absolute inset-0 overflow-hidden", className)}>
+    <div ref={wrap} className={cn("absolute inset-0 overflow-hidden", className)}>
+      <video
+        ref={ref}
+        className="absolute inset-0 h-full w-full object-cover"
+        muted
+        loop
+        playsInline
+        autoPlay={priority}
+        preload={priority ? "auto" : "none"}
+        disablePictureInPicture
+        disableRemotePlayback
+        aria-label={label || undefined}
+        aria-hidden={label ? undefined : true}
+        onPlaying={() => setPlaying(true)}
+      >
+        {mobileSource && <source src={mobileSource.mp4} type="video/mp4" media="(max-width: 767px)" />}
+        <source src={source.mp4} type="video/mp4" />
+      </video>
       <picture>
         {mobileSource && <source media="(max-width: 767px)" srcSet={mobileSource.poster} type="image/webp" />}
         <img
           src={source.poster}
           alt=""
           aria-hidden
-          className="absolute inset-0 h-full w-full object-cover"
+          className={cn(
+            "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-[1200ms] ease-[var(--ease-lux)]",
+            playing && "opacity-0",
+          )}
           loading={priority ? "eager" : "lazy"}
           decoding="async"
           fetchPriority={priority ? "high" : "auto"}
         />
       </picture>
-      <video
-        ref={ref}
-        className={cn(
-          "absolute inset-0 h-full w-full object-cover transition-opacity duration-[1400ms] ease-[var(--ease-lux)]",
-          playing ? "opacity-100" : "opacity-0",
-        )}
-        muted
-        loop
-        playsInline
-        disablePictureInPicture
-        disableRemotePlayback
-        preload="none"
-        aria-label={label || undefined}
-        aria-hidden={label ? undefined : true}
-        onPlaying={() => setPlaying(true)}
-      >
-        {active && (
-          <>
-            {!active.mp4Only && <source src={active.src.webm} type='video/webm; codecs="vp9"' />}
-            <source src={active.src.mp4} type="video/mp4" />
-          </>
-        )}
-      </video>
     </div>
   );
 }
