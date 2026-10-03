@@ -63,7 +63,7 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
       image: "equipe",
       imageAlt: "Equipe de cozinha do Vila Medí reunida no passe",
     },
-    signatureDishes: ["ravioli", "cordeiro"],
+    signatureDishes: ["burrata", "polvo-risoni", "ravioli"],
     menuHighlights: [
       { name: "Gnocchi alla Sorrentina", note: "Fior di latte e molho de tomate fresco" },
       { name: "Pappardelle al ragù di ossobuco", note: "Massa larga e ragù cozido lentamente" },
@@ -81,7 +81,7 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
       image: "adega",
       imageAlt: "Parede de vinhos iluminada no Vila Medí",
     },
-    gallery: ["padeiro", "forno", "adega", "mesa-palha", "prato-chocolate", "luminarias"],
+    gallery: ["prato-burrata", "forno", "adega", "mesa-palha", "padeiro", "luminarias"],
     closing: "A mesa está posta na Costa Amalfitana.",
   },
   miimar: {
@@ -143,7 +143,7 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     origin: "Mar",
     line: "Mar, crudos, ostras e coquetelaria.",
     hoverLine: "Ostras, crudos e o balcão que vira noite.",
-    cover: "ostras",
+    cover: "plateau-cru",
     theme: "noite",
     cta: "Reservar no Cru Oyster Bar",
     seo: {
@@ -154,7 +154,7 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
     },
     hero: {
       video: "cru",
-      image: "ostras",
+      image: "plateau-cru",
       headline: "Mar, crudos e a noite que começa no balcão.",
       sub: "Ostras, peixes crus e coquetéis autorais em um balcão feito para ficar mais um pouco.",
     },
@@ -167,7 +167,7 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
       image: "bartender",
       imageAlt: "Bartender montando um coquetel no balcão",
     },
-    signatureDishes: ["ostra-grelhada", "frutos-grelhados", "lobster"],
+    signatureDishes: ["plateau", "peixe-cru", "ostra-grelhada"],
     menuHighlights: [
       { name: "Ostras frescas", note: "Abertas na hora, com limão e mignonette" },
       { name: "Ostra grelhada", note: "Manteiga de missô e jerez" },
@@ -185,7 +185,7 @@ export const restaurants: Record<RestaurantSlug, Restaurant> = {
       image: "negroni",
       imageAlt: "Negroni com casca de laranja sobre guardanapo do Vila Medí",
     },
-    gallery: ["ostras", "drink", "negroni", "bar-convidado", "rose", "celebracao"],
+    gallery: ["prato-peixe-cru", "drink", "ostras", "bar-convidado", "negroni", "celebracao"],
     closing: "O balcão está à sua espera.",
   },
 };

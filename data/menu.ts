@@ -17,7 +17,7 @@ export const menu: MenuHouse[] = [
         title: "Antipasti",
         items: [
           { name: "Cubos de lasanha", description: "Empanados e fritos, molho de tomate" }, // (imprensa)
-          { name: "Burrata", description: "Tomates, manjericão e azeite" },
+          { name: "Burrata con pomodorini", description: "Tomatinhos confitados, pesto de manjericão e azeite" }, // CONFIRMAR
           { name: "Carpaccio di polpo", description: "Polvo, limão siciliano e alcaparras" },
         ],
       },
@@ -28,6 +28,7 @@ export const menu: MenuHouse[] = [
           { name: "Pappardelle al ragù di ossobuco", description: "Massa larga e ragù de ossobuco" }, // (imprensa)
           { name: "Ravioli all'olio verde", description: "Massa fresca, recheio cremoso e azeite de ervas" },
           { name: "Linguine alle vongole", description: "Vôngoles, alho, vinho branco e salsinha" },
+          { name: "Risoni al polpo", description: "Polvo na brasa, tomate, stracciatella e manjericão" }, // CONFIRMAR
         ],
       },
       {
@@ -73,6 +74,7 @@ export const menu: MenuHouse[] = [
         items: [
           { name: "Ostras frescas", description: "Abertas na hora, limão e mignonette" },
           { name: "Ostra grelhada", description: "Manteiga de missô e jerez" }, // (imprensa)
+          { name: "Plateau Cru", description: "Ostras, sashimis do dia, caviar e torradas, no gelo" }, // CONFIRMAR
         ],
       },
       {
@@ -80,6 +82,7 @@ export const menu: MenuHouse[] = [
         items: [
           { name: "Tuna tartare", description: "Mayo de kombu" }, // (imprensa)
           { name: "Crudo de peixe branco", description: "Leite de tigre, pimenta e coentro" },
+          { name: "Peixe do dia em sashimi", description: "Inteiro, fatiado no balcão, com ponzu" }, // CONFIRMAR
         ],
       },
       {

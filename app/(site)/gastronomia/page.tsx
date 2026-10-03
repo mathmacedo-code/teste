@@ -2,6 +2,7 @@ import Link from "next/link";
 import { MenuContent } from "@/components/menu/MenuContent";
 import { Cta } from "@/components/ui/Cta";
 import { Photo } from "@/components/ui/Photo";
+import { PlateSpin } from "@/components/ui/PlateSpin";
 import { Reveal, RevealMedia } from "@/components/ui/Motion";
 import { dishes, gastronomyDishes } from "@/data/dishes";
 import { restaurantList } from "@/data/restaurants";
@@ -20,8 +21,10 @@ export default function GastronomiaPage() {
   return (
     <>
       <section className="relative h-[100svh] min-h-[620px] overflow-hidden bg-noite text-perola">
-        <Photo k="grelha" alt="" sizes="100vw" priority />
+        <Photo k="plateau-cru" alt="" sizes="100vw" priority />
         <div aria-hidden className="scrim-bottom absolute inset-0" />
+        {/* a foto é cheia de detalhe: escurece o lado do título para manter a leitura */}
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-noite/65 via-noite/20 to-transparent" />
         <div className="shell relative flex h-full flex-col justify-end pb-[max(3.25rem,7vh)]">
           <Reveal>
             <h1 className="display-xl max-w-[13ch]">Sabores que atravessam o Mediterrâneo.</h1>
@@ -51,9 +54,14 @@ export default function GastronomiaPage() {
         </div>
       </section>
 
-      <section className="bg-areia py-28 md:py-44">
-        <div className="shell">
-          <Reveal>
+      <section className="relative overflow-x-clip bg-areia py-28 md:py-44">
+        <div className="shell relative">
+          <PlateSpin
+            sizes="(min-width: 768px) 30vw, 60vw"
+            turn={90}
+            className="relative -mt-10 -mr-[16vw] mb-[-2.5rem] ml-auto w-[60vw] md:absolute md:top-[-6rem] md:right-[-6vw] md:m-0 md:w-[30vw] md:max-w-[520px]"
+          />
+          <Reveal className="relative">
             <h2 className="display-l">Pratos da casa.</h2>
           </Reveal>
           <div className="mt-20 space-y-24 md:mt-28 md:space-y-40">

@@ -344,8 +344,11 @@ def main() -> None:
         if not p.exists():
             raise SystemExit(f"Fonte ausente: {p}")
     if what in ("all", "stills"):
-        manifest = build_stills()
-        (OUT_STILL / "_manifest.json").write_text(json.dumps(manifest, indent=2))
+        # mantém no manifesto as fotos adicionadas à mão (pratos fotografados), que não saem dos vídeos
+        path = OUT_STILL / "_manifest.json"
+        manifest = json.loads(path.read_text()) if path.exists() else {}
+        manifest.update(build_stills())
+        path.write_text(json.dumps(manifest, indent=2))
     if what in ("all", "videos", "triptych"):
         with tempfile.TemporaryDirectory() as td:
             tmp = Path(td)

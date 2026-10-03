@@ -130,5 +130,25 @@
   "forno": {
     "w": 720,
     "h": 1280
+  },
+  "plateau-cru": {
+    "w": 1440,
+    "h": 1920
+  },
+  "prato-burrata": {
+    "w": 640,
+    "h": 640
+  },
+  "prato-peixe-cru": {
+    "w": 481,
+    "h": 640
+  },
+  "prato-polvo-risoni": {
+    "w": 1440,
+    "h": 1851
+  },
+  "recorte-burrata": {
+    "w": 562,
+    "h": 562
   }
 }

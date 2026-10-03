@@ -1,4 +1,5 @@
-/* Gerado a partir de assets/images (ver scripts/media/build_media.py). */
+/* Gerado a partir de assets/images (ver scripts/media/build_media.py).
+ * Fotos de pratos enviadas pela casa: plateau-cru, prato-burrata, prato-peixe-cru, prato-polvo-risoni, recorte-burrata. */
 import type { StaticImageData } from "next/image";
 
 import adega from "@/assets/images/adega.jpg";
@@ -21,6 +22,11 @@ import massaRolo from "@/assets/images/massa-rolo.jpg";
 import mesaLonga from "@/assets/images/mesa-longa.jpg";
 import mesaPalha from "@/assets/images/mesa-palha.jpg";
 import negroni from "@/assets/images/negroni.jpg";
+import plateauCru from "@/assets/images/plateau-cru.jpg";
+import pratoBurrata from "@/assets/images/prato-burrata.jpg";
+import pratoPeixeCru from "@/assets/images/prato-peixe-cru.jpg";
+import pratoPolvoRisoni from "@/assets/images/prato-polvo-risoni.jpg";
+import recorteBurrata from "@/assets/images/recorte-burrata.png";
 import ostras from "@/assets/images/ostras.jpg";
 import padeiro from "@/assets/images/padeiro.jpg";
 import pista from "@/assets/images/pista.jpg";
@@ -56,6 +62,12 @@ export const img = {
   "mesa-longa": mesaLonga,
   "mesa-palha": mesaPalha,
   "negroni": negroni,
+  "plateau-cru": plateauCru,
+  "prato-burrata": pratoBurrata,
+  "prato-peixe-cru": pratoPeixeCru,
+  "prato-polvo-risoni": pratoPolvoRisoni,
+  /** prato recortado em círculo, com fundo transparente (elemento gráfico) */
+  "recorte-burrata": recorteBurrata,
   "ostras": ostras,
   "padeiro": padeiro,
   "pista": pista,
@@ -72,6 +84,15 @@ export const img = {
 } satisfies Record<string, StaticImageData>;
 
 export type ImageKey = keyof typeof img;
+
+/**
+ * Ponto focal das fotos em que o prato não está no centro (CSS object-position).
+ * Vale em todo lugar onde a foto aparece recortada (object-cover).
+ */
+export const imgFocus: Partial<Record<ImageKey, string>> = {
+  "plateau-cru": "50% 78%",
+  "prato-polvo-risoni": "50% 68%",
+};
 
 /** Vídeos de ambientação (WebM VP9 + MP4 H.264, sem áudio, em loop contínuo). */
 export type VideoSource = { webm: string; mp4: string; poster: string; width: number; height: number };

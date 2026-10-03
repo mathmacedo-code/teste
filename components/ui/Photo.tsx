@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { img, type ImageKey } from "@/data/media";
+import { img, imgFocus, type ImageKey } from "@/data/media";
 import { cn } from "@/lib/cn";
 
 type Props = {
@@ -23,6 +23,7 @@ export function Photo({ k, alt, sizes, className, priority, quality = 75 }: Prop
       priority={priority}
       placeholder="blur"
       className={cn("object-cover", className)}
+      style={imgFocus[k] ? { objectPosition: imgFocus[k] } : undefined}
     />
   );
 }

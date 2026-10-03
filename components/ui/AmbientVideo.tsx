@@ -16,6 +16,50 @@ type Props = {
 };
 
 /**
+ * Safari (iOS e macOS) toca H.264 por hardware; WebM/VP9 ali é decodificado por
+ * software ou nem toca — então Apple recebe só o MP4. Os demais navegadores
+ * continuam preferindo o WebM, que é mais leve.
+ */
+function isApple() {
+  const ua = navigator.userAgent;
+  return /iPad|iPhone|iPod/.test(ua) || (/Macintosh/.test(ua) && /Safari/.test(ua) && !/Chrome|Chromium|Edg|Firefox/.test(ua));
+}
+
+/**
+ * O iOS recusa autoplay em algumas situações (Modo de Pouca Energia, economia
+ * de dados, primeira visita em certos contextos). Nesses casos o play() é
+ * rejeitado; os vídeos ficam numa fila e começam no primeiro toque na página.
+ */
+const waiting = new Set<HTMLVideoElement>();
+let gestureBound = false;
+function playOnFirstGesture(el: HTMLVideoElement) {
+  waiting.add(el);
+  if (gestureBound) return;
+  gestureBound = true;
+  const resume = () => {
+    waiting.forEach((v) => {
+      if (v.isConnected && v.dataset.visible === "1") v.play().catch(() => {});
+    });
+    waiting.clear();
+    gestureBound = false;
+    events.forEach((e) => window.removeEventListener(e, resume, true));
+  };
+  const events = ["touchend", "click", "keydown"] as const;
+  events.forEach((e) => window.addEventListener(e, resume, { capture: true, passive: true }));
+}
+
+function tryPlay(el: HTMLVideoElement) {
+  // o iOS exige que o vídeo esteja mudo de fato (propriedade + atributo) para autoplay
+  el.muted = true;
+  el.defaultMuted = true;
+  el.setAttribute("muted", "");
+  el.setAttribute("playsinline", "");
+  el.setAttribute("webkit-playsinline", "");
+  const p = el.play();
+  if (p) p.catch(() => playOnFirstGesture(el));
+}
+
+/**
  * Vídeo de ambientação: sem áudio, em loop, playsinline.
  * - Só baixa o vídeo quando entra na tela (ou de imediato, se priority).
  * - Escolhe desktop/mobile antes de baixar (nunca as duas versões).
@@ -24,7 +68,7 @@ type Props = {
  */
 export function AmbientVideo({ source, mobileSource, className, priority, label }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
-  const [active, setActive] = useState<VideoSource | null>(null);
+  const [active, setActive] = useState<{ src: VideoSource; mp4Only: boolean } | null>(null);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
@@ -38,12 +82,13 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
     let started = false;
     const io = new IntersectionObserver(
       ([entry]) => {
+        el.dataset.visible = entry.isIntersecting ? "1" : "0";
         if (entry.isIntersecting) {
           if (!started) {
             started = true;
-            setActive(pick());
+            setActive({ src: pick(), mp4Only: isApple() });
           } else {
-            el.play().catch(() => {});
+            tryPlay(el);
           }
         } else if (started) {
           el.pause();
@@ -52,15 +97,26 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
       { rootMargin: priority ? "0px" : "300px 0px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // ao voltar para a aba/app o iOS pausa os vídeos; retoma os visíveis
+    const onVisibility = () => {
+      if (document.visibilityState === "visible" && started && el.dataset.visible === "1" && el.paused) tryPlay(el);
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+    window.addEventListener("pageshow", onVisibility);
+    return () => {
+      io.disconnect();
+      waiting.delete(el);
+      document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener("pageshow", onVisibility);
+    };
   }, [source, mobileSource, priority]);
 
   useEffect(() => {
     const el = ref.current;
     if (!el || !active) return;
-    el.muted = true;
     el.load();
-    el.play().catch(() => {});
+    tryPlay(el);
   }, [active]);
 
   return (
@@ -86,6 +142,8 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
         muted
         loop
         playsInline
+        disablePictureInPicture
+        disableRemotePlayback
         preload="none"
         aria-label={label || undefined}
         aria-hidden={label ? undefined : true}
@@ -93,8 +151,8 @@ export function AmbientVideo({ source, mobileSource, className, priority, label 
       >
         {active && (
           <>
-            <source src={active.webm} type='video/webm; codecs="vp9"' />
-            <source src={active.mp4} type="video/mp4" />
+            {!active.mp4Only && <source src={active.src.webm} type='video/webm; codecs="vp9"' />}
+            <source src={active.src.mp4} type="video/mp4" />
           </>
         )}
       </video>

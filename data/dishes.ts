@@ -4,6 +4,7 @@ import type { ImageKey } from "./media";
  * Pratos em destaque.
  * Nomes com (imprensa) aparecem em matérias sobre a casa.
  * Os demais foram nomeados a partir das imagens — CONFIRMAR com a cozinha.
+ * Os quatro primeiros usam as fotos de prato enviadas pela casa; os demais, frames dos reels.
  */
 export type Dish = {
   id: string;
@@ -15,6 +16,38 @@ export type Dish = {
 };
 
 export const dishes: Record<string, Dish> = {
+  plateau: {
+    id: "plateau",
+    name: "Plateau Cru", // CONFIRMAR
+    description: "Ostras frescas, sashimis do dia e caviar, servidos no gelo com torradas e alga crocante.",
+    house: "Cru Oyster Bar",
+    image: "plateau-cru",
+    alt: "Plateau do Cru com ostras, sashimis de atum, salmão e peixe branco no gelo, caviar e torradas em caixas de madeira",
+  },
+  burrata: {
+    id: "burrata",
+    name: "Burrata con pomodorini", // CONFIRMAR
+    description: "Burrata cremosa sobre tomatinhos confitados, pesto de manjericão e um fio de azeite na hora.",
+    house: "Temperani Amalfi",
+    image: "prato-burrata",
+    alt: "Burrata recebendo um fio de azeite, sobre tomates confit, pesto e folhas de manjericão",
+  },
+  "polvo-risoni": {
+    id: "polvo-risoni",
+    name: "Risoni al polpo", // CONFIRMAR
+    description: "Risoni cozido no molho de tomate, polvo na brasa, stracciatella e manjericão.",
+    house: "Temperani Amalfi",
+    image: "prato-polvo-risoni",
+    alt: "Risoni ao molho de tomate com tentáculo de polvo grelhado, stracciatella e manjericão em bowl verde",
+  },
+  "peixe-cru": {
+    id: "peixe-cru",
+    name: "Peixe do dia em sashimi", // CONFIRMAR
+    description: "O peixe inteiro, fatiado no balcão e servido sobre gelo, com ponzu e cerefólio.",
+    house: "Cru Oyster Bar",
+    image: "prato-peixe-cru",
+    alt: "Peixe vermelho inteiro fatiado em sashimi sobre gelo, com molho ponzu ao lado",
+  },
   "ostra-grelhada": {
     id: "ostra-grelhada",
     name: "Ostra grelhada", // (imprensa)
@@ -98,5 +131,5 @@ export const dishes: Record<string, Dish> = {
 };
 
 /** Ordem da home (4 pratos) e da página Gastronomia (6). */
-export const homeDishes = ["ostra-grelhada", "couscous", "ravioli", "pavlova"];
-export const gastronomyDishes = ["ostra-grelhada", "couscous", "ravioli", "labneh", "cordeiro", "chocolate"];
+export const homeDishes = ["plateau", "burrata", "polvo-risoni", "peixe-cru"];
+export const gastronomyDishes = ["plateau", "burrata", "polvo-risoni", "peixe-cru", "couscous", "ravioli", "labneh", "pavlova"];
