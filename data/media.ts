@@ -86,6 +86,9 @@ export const video = {
   /** drinks sendo montados (enviados pela casa) */
   drinkTaca: v("drink-taca"),
   drinkSpritz: v("drink-spritz"),
+  /** chegada: escada rolante, entrada, recepção e passeio pelo salão até a cozinha */
+  chegada: v("chegada"),
+  chegadaDesktop: v("chegada-desktop", 1920, 1080),
 } as const;
 
 export type VideoKey = keyof typeof video;

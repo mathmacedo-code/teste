@@ -2,23 +2,22 @@
 
 import { motion } from "framer-motion";
 import { Wordmark } from "@/components/brand/Logo";
-import { AmbientVideo } from "@/components/ui/AmbientVideo";
+import { HeroSequence } from "@/components/ui/HeroSequence";
 import { Cta } from "@/components/ui/Cta";
 import { EASE } from "@/components/ui/Motion";
 import { video } from "@/data/media";
 
 const lines = ["O Mediterrâneo", "encontra São Paulo."];
 
-/** Hero: tríptico em vídeo no desktop (material original é vertical), vídeo vertical no mobile. */
+/** Hero: abre com o vídeo do salão e, em seguida, a chegada (escada rolante até a cozinha) fica bem mais tempo. Vertical no mobile. */
 export function Hero() {
   return (
     <section className="relative h-[100svh] min-h-[640px] w-full overflow-hidden bg-noite text-perola">
-      {/* Para a abertura em sequência (ex.: + vídeo do elevador), trocar por <HeroSequence clips={[...]} /> */}
-      <AmbientVideo
-        source={video.heroDesktop}
-        mobileSource={video.heroMobile}
-        priority
-        label="Ambientes do Vila Medí à noite: fachada, luminárias, mesas e coquetéis"
+      <HeroSequence
+        clips={[
+          { source: video.heroDesktop, mobileSource: video.heroMobile, plays: 1, label: "Ambientes do Vila Medí à noite: fachada, luminárias, mesas e coquetéis" },
+          { source: video.chegadaDesktop, mobileSource: video.chegada, plays: 1, label: "A chegada ao Vila Medí: escada rolante, entrada, recepção, salão e cozinha" },
+        ]}
       />
       <div aria-hidden className="scrim-bottom absolute inset-0" />
 
