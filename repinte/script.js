@@ -166,20 +166,6 @@ if (!reduced) {
   demo.observe(ba);
 }
 
-/* ---------------- mofo: a parede é "pintada" conforme você rola ---------------- */
-const wipe = $("#wipe");
-if (wipe) {
-  const upd = () => {
-    if (reduced) { wipe.style.setProperty("--w", 1); return; }
-    const r = wipe.getBoundingClientRect();
-    const k = (innerHeight * 0.88 - r.top) / (innerHeight * 0.55 + r.height * 0.35);
-    wipe.style.setProperty("--w", Math.max(0, Math.min(1, k)).toFixed(3));
-  };
-  addEventListener("scroll", upd, { passive: true });
-  addEventListener("resize", upd);
-  upd();
-}
-
 /* ---------------- toque (celular): sem "passar o mouse", o item no meio da tela ativa o efeito ---------------- */
 if (matchMedia("(hover:none)").matches) {
   const lit = new IntersectionObserver(
