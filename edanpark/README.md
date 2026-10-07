@@ -1,0 +1,114 @@
+# Edan Park — site do polo industrial e logístico
+
+Reconstrução do site do **Edan Park** (Estiva · MG) pensada para **carregar rápido**: HTML/CSS/JS puros, sem framework, sem
+biblioteca de animação, sem fonte de ícones, sem scripts de terceiros. Cada aba é uma página estática.
+
+> Está numa subpasta (`edanpark/`) porque a raiz deste repositório tem outro projeto (Vila Medí, em Next.js), que não foi alterado.
+
+## Rodar
+
+```bash
+cd edanpark
+npm install          # só o esbuild (empacotador de CSS/JS)
+npm run dev          # http://localhost:4173 — reconstrói ao salvar
+npm run build        # gera dist/ (é o que se publica)
+```
+
+## Abas (e onde editar)
+
+| Aba | Rota | Arquivo |
+|---|---|---|
+| Início | `/` | `src/pages/index.mjs` |
+| Empreendimento | `/empreendimento/` | `src/pages/empreendimento.mjs` |
+| Infraestrutura | `/infraestrutura/` | `src/pages/infraestrutura.mjs` |
+| Localização | `/localizacao/` | `src/pages/localizacao.mjs` |
+| **Tour 360°** | `/tour-360/` | `src/pages/tour-360.mjs` · `src/data/tour.mjs` |
+| Contato | `/contato/` | `src/pages/contato.mjs` |
+
+**Textos, números, lista de abas, contatos e coordenadas ficam em `src/data/site.mjs`** (um só lugar). Para renomear/reordenar
+uma aba, edite `nav` ali.
+
+## Por que carrega rápido
+
+| | |
+|---|---|
+| CSS | ~8 KB gzip (todas as abas) + 3 KB só no tour |
+| JS | 1,5 KB (comum) + 0,3–3 KB por aba, módulos ES sem dependências |
+| Fontes | 2 arquivos `woff2` (~58 KB), com *preload* |
+| Início (celular), 1ª carga | ~140 KB: HTML + CSS + JS + fontes + poster do hero |
+| Vídeo do hero | **só começa a baixar depois do evento `load`**; celular recebe a versão de 1,3 MB, desktop a de 2,6 MB (original: 6,2 MB com áudio) |
+| LCP | é o *poster* (WebP, com `preload` e `fetchpriority=high`); o hero **não depende de JS** para aparecer |
+| Economia de dados | com `saveData`/2G ou "reduzir movimento" o vídeo não é baixado; há um botão de reproduzir |
+| Mapa | iframe só carrega se a pessoa clicar |
+| Navegação | `prefetch` das outras abas ao passar o mouse/tocar + transições entre páginas (View Transitions) |
+| Cache | `assets/*`, `media/*` e `fonts/*` com `Cache-Control: immutable` (arquivos com *hash* no nome) |
+
+## Hero em vídeo
+
+`public/media/hero.mp4` (desktop) e `hero-sm.mp4` (celular), gerados do reel original **sem áudio**, com um dissolve embutido
+entre o fim e o começo (o loop não tem corte). O vídeo pausa fora da tela, com a aba em segundo plano e pelo botão. No
+desktop, a cor do vídeo "vaza" para o fundo (um canvas de 48 px + blur em CSS, bem leve).
+
+Para regerar a mídia (precisa de `ffmpeg`): coloque o reel em `media-src/reel-original.mp4` e rode `npm run media`.
+O original não é versionado. Os recortes de tempo estão em `scripts/media.sh`.
+
+## Tour 360°
+
+Você fica no centro de uma cúpula ao entardecer; as 5 paradas ficam num arco ao seu redor, como num panorama, e depois da
+última o giro de 360° termina num cartão de contato.
+
+- **Arrastar** gira (inércia + encaixe na parada); setas do teclado; trackpad horizontal; giroscópio no celular.
+- **Entrar na cena** avança a câmera até a foto e mostra os *hotspots* (rótulos). **Tour guiado** faz isso sozinho.
+- Radar no canto indica para onde você olha; pontos para pular direto a uma parada; tela cheia.
+- Tudo em CSS 3D (sem WebGL, sem biblioteca) e o laço de animação para sozinho quando nada se move.
+
+### Usar uma imagem 360° de verdade
+
+As paradas hoje são quadros do vídeo aéreo (fotos verticais). Se houver uma foto 360° do empreendimento
+(JPG equirretangular, proporção 2:1, ex.: 8192×4096):
+
+1. Copie para `public/media/tour/panorama.jpg`.
+2. Em `src/data/tour.mjs` use `panorama: { src: "/media/tour/panorama.jpg" }`.
+
+Ela passa a ser o cenário que gira atrás das paradas. **Para testar sem editar nada:** abra `/tour-360/#preview` e **arraste
+a imagem** para a página.
+
+Para trocar/adicionar paradas, edite `scenes` em `src/data/tour.mjs` (imagem 9:16, texto e *hotspots* em % da foto) e gere o
+halo de cada uma em `scripts/media.sh` (funções `scene` e `aura`).
+
+## Contato / formulário
+
+O site é estático. O formulário envia para o `formEndpoint` (Formspree, Netlify Forms, Make, n8n…) se houver; senão abre o
+**WhatsApp** ou o **e-mail** já com a mensagem pronta. Preencha `contact` em `src/data/site.mjs`. Enquanto estiver vazio,
+o formulário avisa que os canais ainda não foram configurados (e o build lista a pendência).
+
+## Publicar
+
+`npm run build` e publique a pasta `dist/` em qualquer hospedagem estática (Vercel, Netlify, Cloudflare Pages, S3/CloudFront…).
+
+- **Vercel:** *Root Directory* = `edanpark`; o `vercel.json` já define build, saída e cache.
+- **Netlify / Cloudflare Pages:** build `npm run build`, pasta `dist`; o arquivo `_headers` já vai em `dist/`.
+- Domínio: defina `SITE_URL` no build (`SITE_URL=https://edanpark.com.br npm run build`) para o canonical, OG e sitemap.
+
+## ⚠️ Antes de publicar (marcado como CONFIRMAR em `src/data/site.mjs`)
+
+- **Abas e textos:** a estrutura foi montada sem acesso ao site original (o domínio estava bloqueado no ambiente de desenvolvimento).
+  Confira nomes/ordem das abas e o conteúdo.
+- **Números** (13 lotes, 5–35 mil m², R$ 20 mi, ~750 empregos, R$ 60 mi/+200 do CD Edan): vieram de reportagem pública.
+- **Andamento da obra** e descrições de infraestrutura: baseados no que aparece no vídeo.
+- **Contato** (WhatsApp, e-mail, telefone, endereço) e **coordenadas exatas** (hoje, centro de Estiva).
+- **Logotipo:** o ícone foi redesenhado a partir do cartão final do vídeo; troque pelo arquivo oficial (`src/lib/ui.mjs` e
+  `public/brand/favicon.svg`).
+- Uso da música: o vídeo vem sem áudio de propósito (trilha de reel pode não ter licença para site).
+
+## Estrutura
+
+```
+src/data/        conteúdo editável (site.mjs, tour.mjs)
+src/pages/       uma página por aba (módulos que devolvem HTML)
+src/layout.mjs   <head>, SEO, cabeçalho, rodapé
+src/css/         main.css (todas as abas) · tour.css (só no tour)
+src/js/          main.js (comum) + um arquivo por aba
+scripts/         build.mjs · dev.mjs · media.sh
+public/          vídeo, imagens, fontes, favicon (copiado para dist/)
+```

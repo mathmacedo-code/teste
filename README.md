@@ -1,5 +1,7 @@
 # Vila Medí — site institucional + landing pages
 
+> 🆕 Este repositório também contém o **site do Edan Park** (HTML/CSS/JS estático, com hero em vídeo e tour 360°) em [`edanpark/`](edanpark/README.md).
+
 Next.js 16 (App Router) · React 19 · Tailwind CSS 4 · Framer Motion · TypeScript
 
 ## Rodar
