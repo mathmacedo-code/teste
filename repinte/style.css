@@ -108,13 +108,27 @@ h3{font-weight:800;font-stretch:108%;font-size:1.25rem;line-height:1.2;color:#f1
 @keyframes edge{0%{left:0;opacity:1}92%{opacity:1}100%{left:calc(100% - .16em);opacity:0}}
 .no-js .paintword::after,.paintword.done::after{clip-path:none}
 
-.hero-logo{position:relative;justify-self:end;width:min(100%,420px);aspect-ratio:1;perspective:900px}
-.hero-logo img{position:relative;width:100%;height:100%;object-fit:cover;border-radius:22px;border:1px solid #2c2c2c;box-shadow:0 30px 80px rgba(0,0,0,.65),0 0 0 6px rgba(232,104,10,.12),0 0 90px rgba(232,104,10,.25);transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out;
-}
-.hero-logo img{animation:floaty 6s ease-in-out infinite}
 @keyframes floaty{50%{translate:0 -10px}}
-.hero-logo .glow{position:absolute;inset:4%;border-radius:50%;background:radial-gradient(circle,rgba(232,104,10,.35),transparent 65%);filter:blur(30px);animation:pulse 5s ease-in-out infinite}
 @keyframes pulse{50%{transform:scale(1.18);opacity:.7}}
+/* vídeo do topo: cartão vertical + selo do logo; "pintado" por um painel laranja que sai */
+.hero-media{position:relative;justify-self:end;width:min(100%,380px);perspective:900px}
+.hero-media .glow{position:absolute;inset:6%;border-radius:50%;background:radial-gradient(circle,rgba(232,104,10,.4),transparent 65%);filter:blur(34px);animation:pulse 5s ease-in-out infinite}
+.vcard{position:relative;aspect-ratio:480/620;border-radius:22px;overflow:hidden;background:#111;border:1px solid #2c2c2c;
+  box-shadow:0 30px 80px rgba(0,0,0,.65),0 0 0 6px rgba(232,104,10,.12),0 0 90px rgba(232,104,10,.22);
+  transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s ease-out}
+.vcard video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.vcard::after{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,var(--or),var(--or2));transform-origin:right;transform:scaleX(0);transition:transform 1.1s var(--ease) .5s}
+.js .hero-media .vcard::after,.js .mov-video .vcard::after{transform:scaleX(1)}
+.js.ready .hero-media .vcard::after,.js .mov-video.in .vcard::after{transform:scaleX(0)}
+.vlogo{position:absolute;left:-52px;bottom:-30px;width:150px;height:150px;object-fit:cover;border-radius:16px;border:1px solid #333;z-index:3;
+  box-shadow:0 18px 44px rgba(0,0,0,.7);rotate:-5deg;animation:floaty 6s ease-in-out infinite}
+@keyframes floaty{50%{translate:0 -10px}}
+
+/* seção "em movimento" */
+.mov{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:clamp(30px,7vw,100px);align-items:center}
+.mov-video{width:100%}
+.vcard-b{aspect-ratio:336/596}
+.mov-copy .sec-head{margin-bottom:30px}
 .scroll-hint{position:absolute;left:50%;bottom:22px;width:26px;height:42px;border:2px solid #444;border-radius:20px;transform:translateX(-50%)}
 .scroll-hint i{position:absolute;left:50%;top:8px;width:4px;height:8px;border-radius:2px;background:var(--or);transform:translateX(-50%);animation:drip 1.7s infinite}
 @keyframes drip{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,16px)}}
@@ -286,10 +300,22 @@ h3{font-weight:800;font-stretch:108%;font-size:1.25rem;line-height:1.2;color:#f1
 @media (max-width:860px){
   .nav nav{display:none}
   .nav{justify-content:space-between}
-  .hero{padding-top:96px;align-items:flex-start}
-  .hero-grid{grid-template-columns:1fr;gap:0}
-  .hero-logo{order:-1;width:min(58%,230px);margin:0 auto 22px;justify-self:center}
-  .scroll-hint{display:none}
+  .hero{align-items:flex-end;padding:96px 0 64px}
+  .hero-media{position:absolute;inset:0;width:100%;z-index:0;perspective:none}
+  .hero-media .glow{display:none}
+  .hero-media::before{content:"";position:absolute;inset:0;z-index:4;pointer-events:none;background:linear-gradient(180deg,rgba(9,9,9,.55) 0%,rgba(9,9,9,.12) 26%,rgba(9,9,9,.78) 62%,#090909 100%)}
+  .hero-media .vcard{position:absolute;inset:0;aspect-ratio:auto;border-radius:0;border:0;box-shadow:none;transform:none}
+  .hero-media .vcard video{object-position:50% 30%}
+  .vlogo{left:auto;right:16px;top:auto;bottom:70px;width:78px;height:78px;rotate:6deg;z-index:5}
+  .hero-grid{position:static}
+  .hero-copy{position:relative;z-index:2}
+  .lead{color:#dcdcdc}
+  .mov{grid-template-columns:1fr;justify-items:center;text-align:left}
+  .mov-video{width:min(86%,340px)}
+  .mov-copy{width:100%}
+  .hero-grid{grid-template-columns:minmax(0,1fr);gap:0}
+  .hero h1{font-size:min(10.2vw,5rem)}
+    .scroll-hint{display:none}
   .ba{aspect-ratio:1/1}
   .checks{grid-template-columns:1fr}
   .checks li:nth-last-child(2){border-bottom:0}

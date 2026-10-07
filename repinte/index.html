@@ -89,9 +89,15 @@
       </ul>
     </div>
 
-    <div class="hero-logo hv" style="--d:3" aria-hidden="true">
-      <div class="glow"></div>
-      <img src="img/logo.webp" alt="" width="1254" height="1254" decoding="async">
+    <div class="hero-media hv" style="--d:3">
+      <div class="glow" aria-hidden="true"></div>
+      <div class="vcard">
+        <video data-auto muted loop playsinline preload="auto" poster="media/pintura-poster.webp" aria-label="Equipe pintando a fachada de um prédio" disablepictureinpicture>
+          <source src="media/pintura.mp4" type="video/mp4">
+          <source src="media/pintura.webm" type="video/webm">
+        </video>
+      </div>
+      <img class="vlogo" src="img/logo.webp" alt="Repinte, pintura que transforma" width="1254" height="1254" decoding="async">
     </div>
   </div>
 
@@ -230,6 +236,30 @@
       <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois">
     </div>
     <p class="cap rv">Arraste o rolo para os lados e compare.</p>
+  </div>
+</section>
+
+<!-- EM MOVIMENTO -->
+<section class="sec sec-alt" id="movimento">
+  <div class="wrap mov">
+    <div class="mov-video rv">
+      <div class="vcard vcard-b">
+        <video data-auto muted loop playsinline preload="metadata" poster="media/apartamento-poster.webp" aria-label="Apartamento vazio que vira um ambiente pronto e decorado" disablepictureinpicture>
+          <source src="media/apartamento.mp4" type="video/mp4">
+          <source src="media/apartamento.webm" type="video/webm">
+        </video>
+      </div>
+    </div>
+    <div class="mov-copy">
+      <header class="sec-head rv">
+        <p class="eyebrow">Em movimento</p>
+        <h2>Do vazio ao <em>pronto.</em></h2>
+        <p>Parede preparada, pintura uniforme e acabamento limpo mudam o ambiente por completo. Veja a transformação acontecendo.</p>
+      </header>
+      <a class="btn btn-lg rv" data-wa="Olá! Vim pelo site e quero transformar meu ambiente com uma pintura nova." href="#orcamento">
+        <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Quero transformar o meu
+      </a>
+    </div>
   </div>
 </section>
 

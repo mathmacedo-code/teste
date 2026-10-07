@@ -126,7 +126,7 @@ const io = new IntersectionObserver(
 $$(".rv").forEach((el) => io.observe(el));
 
 /* ---------------- logo inclina com o mouse ---------------- */
-const logo = $(".hero-logo");
+const logo = $(".hero-media");
 if (logo && matchMedia("(hover:hover)").matches && !reduced) {
   addEventListener("pointermove", (e) => {
     const x = e.clientX / innerWidth - 0.5, y = e.clientY / innerHeight - 0.5;
@@ -208,3 +208,19 @@ form.addEventListener("submit", (e) => {
   window.open(wa(linhas.join("\n")), "_blank", "noopener");
 });
 $$("input", form).forEach((i) => i.addEventListener("change", () => (err.hidden = true)));
+
+/* ---------------- vídeos: tocam só quando aparecem; o primeiro toque libera se o celular bloquear ---------------- */
+const vids = $$("video[data-auto]");
+vids.forEach((v) => { v.muted = true; v.defaultMuted = true; v.playsInline = true; });
+if (reduced) {
+  vids.forEach((v) => { v.removeAttribute("autoplay"); v.pause(); });
+} else {
+  const seen = new Set();
+  const vio = new IntersectionObserver((es) => es.forEach((e) => {
+    const v = e.target;
+    if (e.isIntersecting) { seen.add(v); v.play().catch(() => {}); }
+    else { seen.delete(v); v.pause(); }
+  }), { threshold: 0.2 });
+  vids.forEach((v) => vio.observe(v));
+  addEventListener("pointerdown", () => seen.forEach((v) => v.paused && v.play().catch(() => {})), { once: true, passive: true });
+}
