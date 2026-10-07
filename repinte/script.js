@@ -135,32 +135,58 @@ if (logo && matchMedia("(hover:hover)").matches && !reduced) {
   }, { passive: true });
 }
 
-/* ---------------- antes e depois ---------------- */
+/* ---------------- antes e depois: o rolo passa e revela a casa pintada ---------------- */
 const ba = $("#ba");
 const range = $(".ba-range", ba);
 const setBA = (v) => ba.style.setProperty("--p", v + "%");
-range.addEventListener("input", () => setBA(range.value));
+let touched = false;
+const markTouched = () => { touched = true; ba.classList.add("touched"); };
+range.addEventListener("pointerdown", markTouched);
+range.addEventListener("input", () => { markTouched(); setBA(range.value); });
+range.addEventListener("keydown", markTouched);
 setBA(range.value);
 
 if (!reduced) {
-  // demonstração: ao entrar na tela, a divisória passeia sozinha uma vez
-  let touched = false;
-  range.addEventListener("pointerdown", () => (touched = true), { once: true });
+  // começa tudo "antes" e, ao entrar na tela, o rolo cruza da direita para a esquerda pintando
+  range.value = 100; setBA(100);
   const demo = new IntersectionObserver((es) => {
     if (!es[0].isIntersecting) return;
     demo.disconnect();
-    const t0 = performance.now(), dur = 2400;
+    const t0 = performance.now(), dur = 2600;
     const tick = (t) => {
       if (touched) return;
       const k = Math.min(1, (t - t0) / dur);
-      const v = 50 + Math.sin(k * Math.PI * 2) * 38 * (1 - k * 0.35);
+      const e = 1 - Math.pow(1 - k, 3);          // desacelera no final
+      const v = 100 - e * 50;                    // 100% -> 50%
       range.value = v; setBA(v.toFixed(1));
       if (k < 1) requestAnimationFrame(tick);
-      else { range.value = 50; setBA(50); }
     };
-    requestAnimationFrame(tick);
-  }, { threshold: 0.6 });
+    setTimeout(() => requestAnimationFrame(tick), 450);
+  }, { threshold: 0.55 });
   demo.observe(ba);
+}
+
+/* ---------------- mofo: a parede é "pintada" conforme você rola ---------------- */
+const wipe = $("#wipe");
+if (wipe) {
+  const upd = () => {
+    if (reduced) { wipe.style.setProperty("--w", 1); return; }
+    const r = wipe.getBoundingClientRect();
+    const k = (innerHeight * 0.88 - r.top) / (innerHeight * 0.55 + r.height * 0.35);
+    wipe.style.setProperty("--w", Math.max(0, Math.min(1, k)).toFixed(3));
+  };
+  addEventListener("scroll", upd, { passive: true });
+  addEventListener("resize", upd);
+  upd();
+}
+
+/* ---------------- toque (celular): sem "passar o mouse", o item no meio da tela ativa o efeito ---------------- */
+if (matchMedia("(hover:none)").matches) {
+  const lit = new IntersectionObserver(
+    (es) => es.forEach((e) => e.target.classList.toggle("lit", e.isIntersecting)),
+    { rootMargin: "-40% 0px -40% 0px" }
+  );
+  $$(".card, .cities a").forEach((el) => lit.observe(el));
 }
 
 /* ---------------- cidades -> formulário ---------------- */
