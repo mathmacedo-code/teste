@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Repinte | Pintura que transforma em Indaiatuba, Vinhedo, Itu e Campinas</title>
+<meta name="description" content="Pintura de casas, apartamentos, galpões, mercados e comércios. Reparo de rachaduras, massa corrida e acabamento fino com recorte limpo. Peça seu orçamento pelo WhatsApp.">
+<meta name="theme-color" content="#090909">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Repinte | Pintura que transforma">
+<meta property="og:description" content="Reparo de rachaduras, preparação de parede e acabamento fino. Indaiatuba, Vinhedo, Itu e Campinas. Orçamento pelo WhatsApp.">
+<meta property="og:image" content="img/logo.webp">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HousePainter","name":"Repinte","slogan":"Pintura que transforma.",
+ "areaServed":["Indaiatuba","Vinhedo","Itu","Campinas"],
+ "description":"Pintura residencial e comercial, reparo de rachaduras, massa corrida e acabamento fino."}
+</script>
+</head>
+<body>
+
+<!-- Abertura: o rolo pinta a tela em zigue-zague e revela o site -->
+<div id="loader" aria-hidden="true">
+  <div class="bands"></div>
+  <div class="roller"><i></i></div>
+  <div class="loader-brand"><span>RE</span><b>PINTE</b></div>
+  <button class="loader-skip" type="button" tabindex="-1">pular</button>
+</div>
+
+<div class="progress" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#topo" aria-label="Repinte, início"><span>RE</span><b>PINTE</b></a>
+  <nav aria-label="Principal">
+    <a href="#imoveis">Imóveis</a>
+    <a href="#processo">Como trabalhamos</a>
+    <a href="#antes-depois">Antes e depois</a>
+    <a href="#regioes">Regiões</a>
+    <a href="#duvidas">Dúvidas</a>
+  </nav>
+  <a class="btn btn-sm" data-wa="Olá! Vim pelo site e quero um orçamento de pintura." href="#orcamento">
+    <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Orçamento
+  </a>
+</header>
+
+<main id="topo">
+
+<!-- HERO -->
+<section class="hero">
+  <svg class="stroke-bg" viewBox="0 0 1400 800" preserveAspectRatio="none" aria-hidden="true">
+    <defs>
+      <filter id="rough" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency=".02 .08" numOctaves="3" seed="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="38"/>
+      </filter>
+    </defs>
+    <path class="s1" d="M-80 640 C 220 470, 470 760, 760 560 S 1180 380, 1500 520" filter="url(#rough)"/>
+    <path class="s2" d="M-80 150 C 260 260, 520 60, 860 190 S 1220 260, 1500 120" filter="url(#rough)"/>
+  </svg>
+
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow hv" style="--d:0">Pintura residencial e comercial</p>
+      <h1>
+        <span class="hv" style="--d:1">Pintura</span>
+        <span class="hv" style="--d:2">que</span>
+        <span class="hv" style="--d:3"><span class="paintword" data-text="transforma.">transforma.</span></span>
+      </h1>
+      <p class="lead hv" style="--d:4">
+        Abrimos e reparamos rachaduras, preparamos a parede com massa corrida e entregamos
+        acabamento fino, com recorte limpo e sem tinta onde não deveria estar.
+      </p>
+      <div class="cta-row hv" style="--d:5">
+        <a class="btn btn-lg" data-wa="Olá! Vim pelo site e quero um orçamento de pintura." href="#orcamento">
+          <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Pedir orçamento no WhatsApp
+        </a>
+        <a class="btn btn-ghost btn-lg" href="#processo">Ver como trabalhamos</a>
+      </div>
+      <ul class="trust hv" style="--d:6">
+        <li>Orçamento sem compromisso</li>
+        <li>Resposta direto no WhatsApp</li>
+        <li>Indaiatuba · Vinhedo · Itu · Campinas</li>
+      </ul>
+    </div>
+
+    <div class="hero-logo hv" style="--d:3" aria-hidden="true">
+      <div class="glow"></div>
+      <img src="img/logo.webp" alt="" width="1254" height="1254" decoding="async">
+    </div>
+  </div>
+
+  <a class="scroll-hint" href="#imoveis" aria-label="Rolar para baixo"><i></i></a>
+</section>
+
+<!-- FITAS (referência à fita de pintor) -->
+<div class="tapes" aria-hidden="true">
+  <div class="tape t1"><div class="track">
+    <span>Casas</span><span>Apartamentos</span><span>Galpões</span><span>Mercados</span><span>Comércios</span>
+    <span>Casas</span><span>Apartamentos</span><span>Galpões</span><span>Mercados</span><span>Comércios</span>
+  </div></div>
+  <div class="tape t2"><div class="track rev">
+    <span>Reparo de rachaduras</span><span>Massa corrida</span><span>Acabamento fino</span><span>Recorte limpo</span>
+    <span>Reparo de rachaduras</span><span>Massa corrida</span><span>Acabamento fino</span><span>Recorte limpo</span>
+  </div></div>
+</div>
+
+<!-- IMÓVEIS -->
+<section class="sec" id="imoveis">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <p class="eyebrow">Onde atuamos</p>
+      <h2>Do apartamento ao <em>galpão.</em></h2>
+      <p>Cada tipo de imóvel pede um preparo, uma tinta e um ritmo de obra diferentes. A gente se adapta, você não precisa parar a operação.</p>
+    </header>
+
+    <div class="cards">
+      <article class="card rv" style="--i:0">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3 11l9-8 9 8v10H3z"/><path d="M10 21v-6h4v6"/></svg>
+        <h3>Casas</h3><p>Fachada, muros, áreas internas e externas, com preparo para sol e chuva.</p>
+      </article>
+      <article class="card rv" style="--i:1">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><rect x="5" y="3" width="14" height="18"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M10 21v-4h4v4"/></svg>
+        <h3>Apartamentos</h3><p>Paredes e tetos com reparo de trincas e recorte limpo em cada canto.</p>
+      </article>
+      <article class="card rv" style="--i:2">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M2 21V9l10-5 10 5v12"/><path d="M7 21v-7h10v7M7 17h10"/></svg>
+        <h3>Galpões</h3><p>Grandes áreas com ritmo de equipe, para entregar sem eternizar a obra.</p>
+      </article>
+      <article class="card rv" style="--i:3">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3 4h2l2.5 11h10l2-8H6.5"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/></svg>
+        <h3>Mercados</h3><p>Pintura planejada para o negócio continuar de pé, com horários combinados.</p>
+      </article>
+      <article class="card rv" style="--i:4">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M3 9l2-5h14l2 5H3z"/><path d="M5 9v11h14V9M10 20v-5h4v5"/></svg>
+        <h3>Lojas e escritórios</h3><p>Visual novo para receber melhor o cliente, sem bagunça e sem demora.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="sec sec-alt" id="processo">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <p class="eyebrow">Como trabalhamos</p>
+      <h2>A tinta é o <em>último</em> passo.</h2>
+      <p>O que dura de verdade está embaixo dela. Por isso o trabalho começa na parede, não no balde.</p>
+    </header>
+
+    <ol class="steps" id="steps">
+      <li class="step rv">
+        <span class="num">01</span>
+        <div><h3>Abrimos a fissura</h3>
+        <p>A rachadura é aberta no formato certo para o material entrar e fixar, em vez de só ser coberta por cima e voltar em poucos meses.</p></div>
+      </li>
+      <li class="step rv">
+        <span class="num">02</span>
+        <div><h3>Reparamos a rachadura</h3>
+        <p>Tratamos e recompomos a área com o material adequado, deixando a superfície firme e uniforme.</p></div>
+      </li>
+      <li class="step rv">
+        <span class="num">03</span>
+        <div><h3>Preparamos a parede</h3>
+        <p>Lixa, massa corrida onde precisa e fundo/selador para a tinta aderir, render mais e não mostrar imperfeição.</p></div>
+      </li>
+      <li class="step rv">
+        <span class="num">04</span>
+        <div><h3>Pintamos</h3>
+        <p>Demãos no tempo certo, cobertura uniforme e sem marca de rolo, do jeito que a parede merece.</p></div>
+      </li>
+      <li class="step rv">
+        <span class="num">05</span>
+        <div><h3>Acabamento fino</h3>
+        <p>Recortes de teto, rodapé, batentes e cantos feitos com cuidado, <strong>sem vazamento de tinta</strong>. Fecha o serviço e deixa o ambiente limpo.</p></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ANTES E DEPOIS -->
+<section class="sec" id="antes-depois">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <p class="eyebrow">Antes e depois</p>
+      <h2>Arraste e veja a <em>diferença.</em></h2>
+      <p>Rachadura tratada e recorte do teto sem vazamento: os dois detalhes que mais entregam o nível do serviço.</p>
+    </header>
+
+    <div class="ba rv" id="ba">
+      <!-- ANTES -->
+      <svg class="ba-layer ba-before" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Parede com rachaduras e recorte do teto manchado">
+        <defs>
+          <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .22 0"/></filter>
+          <radialGradient id="damp" cx=".12" cy=".9" r=".6"><stop offset="0" stop-color="#6e644f" stop-opacity=".65"/><stop offset="1" stop-color="#6e644f" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="800" height="500" fill="#bfb7a8"/>
+        <rect width="800" height="500" fill="url(#damp)"/>
+        <ellipse cx="640" cy="170" rx="120" ry="70" fill="#a89f8c" opacity=".35"/>
+        <!-- teto com recorte torto e tinta vazando -->
+        <path d="M0 0H800V64C60 84 90 50 160 66S260 92 330 62S440 46 520 74S640 92 720 60S780 72 800 66V0Z" fill="#ebe8e1"/>
+        <path d="M118 68q5 22 0 38q-5-16 0-38zM304 64q5 26 1 46q-6-20-1-46zM488 72q4 18 0 30q-5-12 0-30zM690 64q5 20 0 34q-5-14 0-34z" fill="#ebe8e1"/>
+        <!-- reboco soltando -->
+        <path d="M560 300l40-18 34 14 20 36-14 34-46 8-30-26z" fill="#d6cfc0"/>
+        <path d="M560 300l40-18 34 14 20 36-14 34-46 8-30-26z" fill="none" stroke="#7d745f" stroke-width="2"/>
+        <!-- rachaduras -->
+        <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M400 72L388 130 410 172 380 232 402 282 370 350 392 412 380 450" stroke="#2a251e" stroke-width="4"/>
+          <path d="M410 172L450 196 470 242" stroke="#2a251e" stroke-width="3"/>
+          <path d="M380 232L332 250 300 304" stroke="#2a251e" stroke-width="3"/>
+          <path d="M402 282L440 300" stroke="#2a251e" stroke-width="2"/>
+          <path d="M400 72L388 130 410 172 380 232 402 282 370 350 392 412" stroke="#e6dfcf" stroke-width="1" opacity=".55" transform="translate(2 0)"/>
+        </g>
+        <!-- rodapé sujo -->
+        <rect y="446" width="800" height="54" fill="#8a8170"/>
+        <rect y="446" width="800" height="4" fill="#5d5546"/>
+        <rect width="800" height="500" filter="url(#grain)"/>
+      </svg>
+
+      <!-- DEPOIS -->
+      <svg class="ba-layer ba-after" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Parede lisa, pintada, com recorte do teto reto">
+        <defs>
+          <linearGradient id="lite" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f6f2ea"/><stop offset="1" stop-color="#e3ddd1"/></linearGradient>
+          <linearGradient id="ceil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#f1efe9"/></linearGradient>
+        </defs>
+        <rect width="800" height="500" fill="url(#lite)"/>
+        <rect width="800" height="64" fill="url(#ceil)"/>
+        <rect y="64" width="800" height="3" fill="#000" opacity=".1"/>
+        <rect y="64" width="800" height="1.5" fill="#fff" opacity=".8"/>
+        <rect x="560" y="64" width="240" height="382" fill="#E8680A" opacity=".0"/>
+        <rect y="446" width="800" height="54" fill="#ffffff"/>
+        <rect y="446" width="800" height="3" fill="#000" opacity=".12"/>
+        <rect x="0" y="449" width="800" height="1.5" fill="#E8680A"/>
+        <rect width="800" height="500" filter="url(#grain)" opacity=".5"/>
+      </svg>
+
+      <span class="tag tag-l">Antes</span>
+      <span class="tag tag-r">Depois</span>
+
+      <div class="ba-handle" aria-hidden="true">
+        <i></i>
+        <span><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></span>
+      </div>
+      <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Comparar antes e depois">
+    </div>
+    <p class="cap rv">Arraste para os lados. Ilustração do tipo de resultado que entregamos.</p>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS + CHAMADA -->
+<section class="sec sec-alt">
+  <div class="wrap trio">
+    <article class="rv" style="--i:0">
+      <span class="dot"></span>
+      <h3>Equipe que domina o serviço</h3>
+      <p>Do reparo da rachadura ao último recorte. Cada etapa tem quem sabe fazer, e isso aparece no resultado.</p>
+    </article>
+    <article class="rv" style="--i:1">
+      <span class="dot"></span>
+      <h3>Recorte sem vazamento</h3>
+      <p>Teto, rodapé, batente e canto com linha reta e limpa. É o detalhe que separa pintura comum de pintura bem feita.</p>
+    </article>
+    <article class="rv" style="--i:2">
+      <span class="dot"></span>
+      <h3>Ambiente protegido e limpo</h3>
+      <p>Protegemos piso e móveis antes de começar e deixamos tudo em ordem na entrega.</p>
+    </article>
+  </div>
+</section>
+
+<!-- REGIÕES -->
+<section class="sec" id="regioes">
+  <div class="wrap">
+    <header class="sec-head rv">
+      <p class="eyebrow">Regiões de atuação</p>
+      <h2>Perto de <em>você.</em></h2>
+    </header>
+    <ul class="cities">
+      <li class="rv" style="--i:0"><a href="#orcamento" data-city="Indaiatuba"><span>Indaiatuba</span><i>→</i></a></li>
+      <li class="rv" style="--i:1"><a href="#orcamento" data-city="Vinhedo"><span>Vinhedo</span><i>→</i></a></li>
+      <li class="rv" style="--i:2"><a href="#orcamento" data-city="Itu"><span>Itu</span><i>→</i></a></li>
+      <li class="rv" style="--i:3"><a href="#orcamento" data-city="Campinas"><span>Campinas</span><i>→</i></a></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ORÇAMENTO -->
+<section class="sec quote" id="orcamento">
+  <div class="wrap quote-grid">
+    <div class="quote-copy rv">
+      <p class="eyebrow">Orçamento</p>
+      <h2>Conte o que precisa. <em>A gente responde.</em></h2>
+      <p>Responda em 30 segundos e o WhatsApp abre com a mensagem pronta. Se puder, mande fotos das paredes: o orçamento sai mais rápido e mais certo.</p>
+      <a class="btn btn-ghost" data-wa="Olá! Vim pelo site e quero um orçamento de pintura.">
+        <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Prefiro chamar direto
+      </a>
+    </div>
+
+    <form class="form rv" id="form" novalidate>
+      <label class="field">
+        <span>Seu nome</span>
+        <input type="text" name="nome" autocomplete="given-name" placeholder="Como podemos te chamar?" required>
+      </label>
+
+      <fieldset class="chips">
+        <legend>Tipo de imóvel</legend>
+        <label><input type="radio" name="tipo" value="Casa" required><span>Casa</span></label>
+        <label><input type="radio" name="tipo" value="Apartamento"><span>Apartamento</span></label>
+        <label><input type="radio" name="tipo" value="Galpão"><span>Galpão</span></label>
+        <label><input type="radio" name="tipo" value="Mercado"><span>Mercado</span></label>
+        <label><input type="radio" name="tipo" value="Loja ou escritório"><span>Loja / escritório</span></label>
+        <label><input type="radio" name="tipo" value="Outro"><span>Outro</span></label>
+      </fieldset>
+
+      <fieldset class="chips">
+        <legend>Cidade</legend>
+        <label><input type="radio" name="cidade" value="Indaiatuba" required><span>Indaiatuba</span></label>
+        <label><input type="radio" name="cidade" value="Vinhedo"><span>Vinhedo</span></label>
+        <label><input type="radio" name="cidade" value="Itu"><span>Itu</span></label>
+        <label><input type="radio" name="cidade" value="Campinas"><span>Campinas</span></label>
+      </fieldset>
+
+      <fieldset class="chips">
+        <legend>O que precisa <small>(pode marcar mais de um)</small></legend>
+        <label><input type="checkbox" name="servico" value="Reparo de rachaduras"><span>Rachaduras</span></label>
+        <label><input type="checkbox" name="servico" value="Massa corrida"><span>Massa corrida</span></label>
+        <label><input type="checkbox" name="servico" value="Pintura completa"><span>Pintura completa</span></label>
+        <label><input type="checkbox" name="servico" value="Acabamento e retoques"><span>Acabamento / retoques</span></label>
+      </fieldset>
+
+      <label class="field">
+        <span>Detalhes <small>(opcional)</small></span>
+        <textarea name="detalhes" rows="3" placeholder="Metragem aproximada, prazo, algo que a gente deva saber…"></textarea>
+      </label>
+
+      <p class="err" id="err" role="alert" hidden>Escolha o tipo de imóvel e a cidade para continuar.</p>
+
+      <button class="btn btn-lg btn-block" type="submit">
+        <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Enviar pelo WhatsApp
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec sec-alt" id="duvidas">
+  <div class="wrap faq-wrap">
+    <header class="sec-head rv">
+      <p class="eyebrow">Dúvidas</p>
+      <h2>Perguntas <em>frequentes.</em></h2>
+    </header>
+    <div class="faq rv">
+      <details>
+        <summary>Quanto custa pintar?</summary>
+        <p>Depende da metragem, do estado das paredes e do tipo de acabamento. Mande fotos no WhatsApp e passamos um orçamento sem compromisso.</p>
+      </details>
+      <details>
+        <summary>Vocês consertam rachaduras antes de pintar?</summary>
+        <p>Sim. Abrimos a fissura, reparamos e preparamos a parede antes da tinta. Se a rachadura parecer estrutural (muito larga, com desnível ou crescendo), avisamos e recomendamos uma avaliação de engenheiro antes.</p>
+      </details>
+      <details>
+        <summary>Preciso tirar os móveis?</summary>
+        <p>Não necessariamente. Combinamos antes: o que pode ficar é protegido, e o que atrapalha é afastado e recolocado.</p>
+      </details>
+      <details>
+        <summary>Atendem galpões e mercados?</summary>
+        <p>Sim, além de casas, apartamentos, lojas e escritórios. Para comércio, planejamos horários que atrapalhem o mínimo possível a operação.</p>
+      </details>
+      <details>
+        <summary>Quais cidades vocês atendem?</summary>
+        <p>Indaiatuba, Vinhedo, Itu e Campinas.</p>
+      </details>
+      <details>
+        <summary>Como peço o orçamento?</summary>
+        <p>Preencha o formulário acima ou chame direto no WhatsApp. Se puder, envie fotos das paredes e a metragem aproximada.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMADA FINAL -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="rv">Sua parede merece<br>um <span class="paintword2">recomeço.</span></h2>
+    <a class="btn btn-lg rv" data-wa="Olá! Vim pelo site e quero um orçamento de pintura." href="#orcamento">
+      <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> Chamar no WhatsApp
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-grid">
+    <div>
+      <img src="img/simbolo.webp" alt="Repinte" width="160" height="120" loading="lazy">
+      <p class="tag-line">Pintura que <b>transforma.</b></p>
+    </div>
+    <p>Indaiatuba · Vinhedo · Itu · Campinas</p>
+    <a class="btn btn-sm" data-wa="Olá! Vim pelo site e quero um orçamento de pintura." href="#orcamento">
+      <svg class="wa" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg> WhatsApp
+    </a>
+  </div>
+  <p class="copy">© <span id="yr">2026</span> Repinte. Todos os direitos reservados.</p>
+</footer>
+
+<a class="fab" data-wa="Olá! Vim pelo site e quero um orçamento de pintura." href="#orcamento" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
+</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+</svg>
+
+<script src="script.js"></script>
+</body>
+</html>
