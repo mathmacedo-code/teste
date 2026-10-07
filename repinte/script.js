@@ -6,7 +6,8 @@ const WHATSAPP = "5519900000000";
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
 const root = document.documentElement;
-const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Efeitos e vídeos são parte da identidade da marca: rodam mesmo com "Reduzir Movimento" ligado no aparelho.
+const reduced = false;
 const wa = (msg) => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`;
 
 /* links de WhatsApp */
@@ -24,7 +25,8 @@ function runLoader() {
   if (reduced) { loader.remove(); return Promise.resolve(); }
 
   document.body.classList.add("lock");
-  const N = 5;
+  const small = innerWidth < 700;
+  const N = small ? 4 : 5;
   const W = innerWidth, H = innerHeight;
   const bandH = H / N;
   const bands = $(".bands", loader);
@@ -32,7 +34,7 @@ function runLoader() {
   const els = $$("i", bands);
 
   const roller = $(".roller", loader);
-  const rw = Math.max(22, Math.min(bandH * 0.3, 46));
+  const rw = Math.max(26, Math.min(bandH * 0.3, 58));
   roller.style.width = rw + "px";
   roller.style.height = bandH * 0.9 + "px";
   roller.style.setProperty("--hh", Math.max(18, bandH * 0.22) + "px");
@@ -42,7 +44,7 @@ function runLoader() {
   const skip = () => (skipped = true);
   loader.addEventListener("click", skip);
 
-  const pass = 330;
+  const pass = small ? 430 : 340;
   const ease = "cubic-bezier(.55,.05,.3,1)";
   const timeline = async () => {
     for (let i = 0; i < N && !skipped; i++) {
@@ -100,6 +102,9 @@ const bar = $(".progress");
 const nav = $("#nav");
 const steps = $("#steps");
 const fab = $(".fab");
+const fabHide = new Set();
+new IntersectionObserver((es) => es.forEach((e) => { e.isIntersecting ? fabHide.add(e.target) : fabHide.delete(e.target); fab.classList.toggle("away", fabHide.size > 0); }), { threshold: 0.25 })
+  .observe($("#form"));
 function onScroll() {
   const max = document.documentElement.scrollHeight - innerHeight;
   bar.style.transform = `scaleY(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
@@ -209,18 +214,46 @@ form.addEventListener("submit", (e) => {
 });
 $$("input", form).forEach((i) => i.addEventListener("change", () => (err.hidden = true)));
 
-/* ---------------- vídeos: tocam só quando aparecem; o primeiro toque libera se o celular bloquear ---------------- */
+/* ---------------- vídeos: tocam sozinhos (iPhone/Safari inclusive) ---------------- */
 const vids = $$("video[data-auto]");
-vids.forEach((v) => { v.muted = true; v.defaultMuted = true; v.playsInline = true; });
-if (reduced) {
-  vids.forEach((v) => { v.removeAttribute("autoplay"); v.pause(); });
-} else {
-  const seen = new Set();
-  const vio = new IntersectionObserver((es) => es.forEach((e) => {
-    const v = e.target;
-    if (e.isIntersecting) { seen.add(v); v.play().catch(() => {}); }
-    else { seen.delete(v); v.pause(); }
-  }), { threshold: 0.2 });
-  vids.forEach((v) => vio.observe(v));
-  addEventListener("pointerdown", () => seen.forEach((v) => v.paused && v.play().catch(() => {})), { once: true, passive: true });
+const inView = new Set();
+
+function prepare(v) {
+  // Safari/iOS só deixa tocar sozinho se estiver mudo + playsinline (e às vezes só após o 1º toque)
+  v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
+  v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("webkit-playsinline", "");
+  v.controls = false;
+
+  const card = v.closest(".vcard");
+  const btn = document.createElement("button");
+  btn.type = "button"; btn.className = "vplay"; btn.hidden = true;
+  btn.setAttribute("aria-label", "Tocar vídeo");
+  btn.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+  card.appendChild(btn);
+
+  const hide = () => (btn.hidden = true);
+  v.addEventListener("playing", hide);
+  btn.addEventListener("click", (e) => { e.stopPropagation(); play(v); });
+  v._btn = btn;
 }
+
+function play(v) {
+  const p = v.play();
+  if (p && p.then) p.then(() => (v._btn.hidden = true)).catch(() => (v._btn.hidden = false)); // bloqueado (Modo de Pouca Energia): mostra o botão
+}
+
+vids.forEach(prepare);
+
+const vio = new IntersectionObserver((es) => es.forEach((e) => {
+  const v = e.target;
+  if (e.isIntersecting) { inView.add(v); play(v); }
+  else { inView.delete(v); v.pause(); }
+}), { threshold: 0.15 });
+vids.forEach((v) => vio.observe(v));
+
+// o iOS só libera o play depois de um gesto "de verdade": qualquer toque/clique tenta de novo
+const resume = () => inView.forEach((v) => v.paused && play(v));
+["touchend", "pointerup", "click", "keydown"].forEach((ev) => addEventListener(ev, resume, { passive: true, capture: true }));
+document.addEventListener("visibilitychange", () => !document.hidden && resume());
+addEventListener("pageshow", resume);
+vids.forEach((v) => v.addEventListener("loadeddata", () => inView.has(v) && play(v)));

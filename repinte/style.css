@@ -287,6 +287,7 @@ h3{font-weight:800;font-stretch:108%;font-size:1.25rem;line-height:1.2;color:#f1
 .fab svg{width:34px;height:34px;fill:#fff}
 .fab::before{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #25D366;animation:ring 2.2s infinite}
 .fab.show{opacity:1;pointer-events:auto;transform:none}
+.fab.show.away{opacity:0;pointer-events:none;transform:scale(.6)}
 .fab.show:hover{transform:scale(1.1) rotate(-6deg)}
 @keyframes ring{0%{transform:scale(1);opacity:.8}100%{transform:scale(1.7);opacity:0}}
 
@@ -324,6 +325,7 @@ h3{font-weight:800;font-stretch:108%;font-size:1.25rem;line-height:1.2;color:#f1
   .progress{width:4px}
 }
 @media (max-width:520px){
+  .hide-m{display:none}
   body{font-size:16px}
   .cards{grid-template-columns:1fr}
   .card:last-child{grid-column:auto}
@@ -332,10 +334,10 @@ h3{font-weight:800;font-stretch:108%;font-size:1.25rem;line-height:1.2;color:#f1
   .tapes{height:170px}
   .faq details p{padding-right:0}
 }
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .js .rv,.js .hv{opacity:1;transform:none}
-  .paintword::after{clip-path:none}
-  .stroke-bg path{stroke-dashoffset:0}
-  .tape .track{animation:none}
-}
+
+/* botão "tocar" (aparece só se o celular bloquear o autoplay) */
+.vplay{position:absolute;left:50%;top:50%;z-index:6;width:68px;height:68px;margin:-34px 0 0 -34px;border:0;border-radius:50%;cursor:pointer;
+  background:rgba(232,104,10,.94);display:grid;place-items:center;box-shadow:0 10px 34px rgba(0,0,0,.55),0 0 0 8px rgba(232,104,10,.25);animation:pulse 2s ease-in-out infinite}
+.vplay[hidden]{display:none}
+.vplay svg{width:30px;height:30px;fill:#fff;margin-left:4px}
+@media (max-width:860px){.hero-media .vplay{left:auto;right:16px;top:86px;margin:0;width:54px;height:54px}.hero-media .vplay svg{width:24px;height:24px}}
