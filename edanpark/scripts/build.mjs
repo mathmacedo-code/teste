@@ -9,7 +9,8 @@ import { join, dirname, basename } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const dist = join(root, "dist");
+const preview = process.argv.includes("--preview"); // versão que abre direto do computador (file://)
+const dist = join(root, preview ? "dist-preview" : "dist");
 
 const list = async (dir, ext) => (await readdir(join(root, dir))).filter((f) => f.endsWith(ext)).sort();
 
@@ -32,6 +33,22 @@ async function walk(dir) {
 
 const fmt = (n) => (n < 1024 ? n + " B" : n < 1048576 ? (n / 1024).toFixed(1) + " KB" : (n / 1048576).toFixed(2) + " MB");
 
+// Versão "abrir no computador": todos os caminhos viram relativos e links de pasta apontam para index.html.
+function relativize(html, path) {
+  const depth = path.endsWith(".html") ? 0 : path.split("/").filter(Boolean).length;
+  const rel = "../".repeat(depth);
+  return html
+    .replace(/<link rel="preload" href="\/fonts\/[^>]*>\n?/g, "") // preload de fonte exige CORS: não vale em file://
+    .replace(/\b(href|src|srcset|data-src|data-src-lg|data-src-sm|poster)="\/(?!\/)([^"]*)"/g, (_, attr, p) => {
+      const [pathPart, tail = ""] = p.split(/(?=[?#])/);
+      const target = pathPart === "" || pathPart.endsWith("/") ? pathPart + "index.html" : pathPart;
+      return `${attr}="${rel}${target}${tail}"`;
+    })
+    .replace(/url\(\/(?!\/)/g, `url(${rel}`)
+    .replace('data-root="/"', `data-root="${rel}"`)
+    .replace('data-idx=""', 'data-idx="index.html"');
+}
+
 export async function buildSite() {
   await rm(dist, { recursive: true, force: true });
   await mkdir(join(dist, "assets"), { recursive: true });
@@ -45,12 +62,12 @@ export async function buildSite() {
       ...jsFiles.map((f) => ({ in: `src/js/${f}`, out: basename(f, ".js") })),
       ...cssFiles.map((f) => ({ in: `src/css/${f}`, out: basename(f, ".css") })),
     ],
-    outdir: "dist/assets",
+    outdir: preview ? "dist-preview/assets" : "dist/assets",
     entryNames: "[name].[hash]",
     bundle: true,
     splitting: false,
     minify: true,
-    format: "esm",
+    format: "iife", // scripts clássicos com defer: funcionam também por duplo clique (file://)
     target: ["es2020", "chrome90", "safari14", "firefox90"],
     external: ["/fonts/*", "/media/*", "/brand/*"],
     metafile: true,
@@ -58,10 +75,17 @@ export async function buildSite() {
     logLevel: "warning",
   });
 
+  if (preview) {
+    for (const f of await list("dist-preview/assets", ".css")) {
+      const file = join(dist, "assets", f);
+      await writeFile(file, (await readFile(file, "utf8")).replace(/url\(\/(?!\/)/g, "url(../"));
+    }
+  }
+
   const assets = {};
   for (const [out, meta] of Object.entries(result.metafile.outputs)) {
     if (!meta.entryPoint) continue;
-    assets[basename(meta.entryPoint)] = "/" + out.replace(/^dist\//, "");
+    assets[basename(meta.entryPoint)] = "/" + out.replace(/^dist(-preview)?\//, "");
   }
   const ctx = {
     asset(name) {
@@ -77,7 +101,8 @@ export async function buildSite() {
   for (const f of await list("src/pages", ".mjs")) {
     const page = (await import(pathToFileURL(join(root, "src/pages", f)).href)).default;
     pages.push(page);
-    const html = squeeze(layout(page, ctx));
+    let html = squeeze(layout(page, ctx));
+    if (preview) html = relativize(html, page.path);
     const file = page.path === "/404.html" ? join(dist, "404.html") : join(dist, page.path, "index.html");
     await mkdir(dirname(file), { recursive: true });
     await writeFile(file, html);

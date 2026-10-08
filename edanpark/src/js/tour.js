@@ -11,6 +11,7 @@ function init(root) {
   const M = +root.dataset.n; // paradas (cenas + cartão final)
   const SCENES = +root.dataset.scenes;
   const STEP = +root.dataset.step; // graus entre paradas
+  const SITE = document.documentElement.dataset;
 
   const world = $("[data-world]");
   const cam = $("[data-cam]");
@@ -205,7 +206,7 @@ function init(root) {
     wake();
   }
   // Botão principal / tecla Enter: entra/sai da cena, ou segue para o contato no cartão final
-  const primary = () => (focus >= SCENES ? (location.href = "/contato/") : setEntered(!dollyT));
+  const primary = () => (focus >= SCENES ? (location.href = `${SITE.root ?? "/"}contato/${SITE.idx ?? ""}`) : setEntered(!dollyT));
   const touched = () => root.classList.add("is-touched");
 
   /* ---------- Mouse / toque ---------- */

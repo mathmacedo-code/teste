@@ -88,9 +88,9 @@ export function layout(page, ctx) {
   const url = site.url + page.path;
   const title = page.nav === "inicio" ? `${site.name} — ${site.tagline} em ${site.city}, ${site.state}` : `${page.title} · ${site.name}`;
   const css = ["main.css", ...(page.css || [])].map((f) => `<link rel="stylesheet" href="${ctx.asset(f)}">`).join("");
-  const js = ["main.js", ...(page.scripts || [])].map((f) => `<script type="module" src="${ctx.asset(f)}"></script>`).join("");
+  const js = ["main.js", ...(page.scripts || [])].map((f) => `<script defer src="${ctx.asset(f)}"></script>`).join("");
   return `<!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-root="/" data-idx="">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">

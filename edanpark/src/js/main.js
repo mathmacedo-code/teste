@@ -117,7 +117,7 @@ const seen = new Set();
 const prefetch = (a) => {
   const u = new URL(a.href, location.href);
   if (u.origin !== location.origin || seen.has(u.pathname) || u.pathname === location.pathname) return;
-  if (navigator.connection?.saveData) return;
+  if (navigator.connection?.saveData || location.protocol === "file:") return;
   seen.add(u.pathname);
   const l = document.createElement("link");
   l.rel = "prefetch";

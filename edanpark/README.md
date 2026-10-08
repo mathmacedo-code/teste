@@ -12,6 +12,7 @@ cd edanpark
 npm install          # só o esbuild (empacotador de CSS/JS)
 npm run dev          # http://localhost:4173 — reconstrói ao salvar
 npm run build        # gera dist/ (é o que se publica)
+npm run build:preview  # gera dist-preview/: versão com caminhos relativos, abre por duplo clique em index.html (sem servidor)
 ```
 
 ## Abas (e onde editar)
