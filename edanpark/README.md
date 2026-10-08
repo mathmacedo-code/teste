@@ -32,14 +32,17 @@ O logo virou layout, não só marca no canto:
 `npm run build:single` gera **`dist-single/index.html`**: um só arquivo com tudo dentro (CSS, JS, fontes, imagens, vídeo e as
 6 abas, trocadas pelo endereço: `#empreendimento`, `#tour`…). É só subir esse arquivo na hospedagem.
 
-- ~1,7 MB (≈ 1,2 MB transferidos com gzip). O arquivo é ordenado para a tela aparecer enquanto o resto ainda chega
-  (poster do hero embutido no topo; fotos, vídeo e JS por último).
-- Usa uma versão mais leve do vídeo (540×960, ~0,8 MB) e das fotos do tour; o vídeo é decodificado do próprio HTML.
+- ~1,0 MB (≈ 0,8 MB com gzip). A ordem do arquivo foi pensada para a página funcionar enquanto o resto ainda chega:
+  CSS + fonte → cabeçalho e abas (poster do hero já embutido) → **JS** (menu e abas já respondem) → fotos, uma a uma → vídeo (por último).
+- Usa versões leves do vídeo (432×768, ~0,4 MB) e das fotos do tour (~45 KB cada); o vídeo é decodificado do próprio HTML.
+- Medido em 4G lento simulado (1,6 Mbps, 150 ms, CPU 4× mais lenta): 1º paint em ~0,5 s, abas e menu respondendo em ~1 s,
+  fotos do tour prontas em ~1,9 s e vídeo tocando em ~4,2 s (antes: abas só aos ~7 s, porque o JS ficava depois do vídeo).
+  Em 4G bom: 0,2 s / 0,5 s / 0,5 s / 1,0 s.
 - Sem `og:image` (link de pré-visualização no WhatsApp/redes não terá imagem) nem `sitemap`: não há como referenciar arquivos externos.
 - Para a **melhor performance** em celular, prefira o site em várias páginas (`npm run build`): o primeiro carregamento
   é ~140 KB e o vídeo vem depois. No Lighthouse (celular simulado) o arquivo único marca ~60 porque o simulador
   conta o download inteiro antes do primeiro paint; na prática a página aparece em ~150 ms.
-- As fotos leves e o vídeo leve ficam em `single/` (gerados por `npm run media`).
+- As fotos leves, o poster e o vídeo leve ficam em `single/` (gerados por `npm run media`).
 
 ## Abas (e onde editar)
 

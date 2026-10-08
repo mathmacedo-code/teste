@@ -57,12 +57,14 @@ aura heliponto 3.5
 aura galpao 12.2
 aura modulos 17.7
 
-# Versão leve das cenas (540x960) para o arquivo único (npm run build:single)
+# Versão leve (432x768) para o arquivo único (npm run build:single): tudo vai dentro do HTML, então cada KB conta
 mkdir -p single/lite
-lite() { ffmpeg -v error -y -ss "$2" -i "$SRC" -frames:v 1 -vf "scale=540:960:flags=lanczos" -c:v libwebp -quality 58 -compression_level 6 "single/lite/$1.webp"; }
-# vídeo leve (~0,8 MB) que vai embutido no arquivo único
-ffmpeg -v error -y -i "$SRC" -filter_complex "$FILTER;[v]fps=24,scale=540:960:flags=lanczos[o]" -map "[o]" \
-  -an -c:v libx264 -preset slow -crf 37 -profile:v main -level 4.0 -pix_fmt yuv420p -g 120 -movflags +faststart single/hero-lite.mp4
+lite() { ffmpeg -v error -y -ss "$2" -i "$SRC" -frames:v 1 -vf "scale=432:768:flags=lanczos" -c:v libwebp -quality 54 -compression_level 6 "single/lite/$1.webp"; }
+# vídeo leve (~0,4 MB) que vai embutido no arquivo único
+ffmpeg -v error -y -i "$SRC" -filter_complex "$FILTER;[v]fps=24,scale=432:768:flags=lanczos[o]" -map "[o]" \
+  -an -c:v libx264 -preset veryslow -crf 38 -profile:v main -level 3.1 -pix_fmt yuv420p -g 240 \
+  -x264-params "aq-mode=3:deblock=1,1" -movflags +faststart single/hero-lite.mp4
+lite poster 1.4   # = 1º quadro do vídeo
 lite fachada 1.4
 lite visao-geral 5.8
 lite heliponto 3.5

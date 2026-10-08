@@ -10,12 +10,14 @@ if (hero) {
   const conn = navigator.connection;
   const saver = !!(conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || "")));
 
-  const embedded = document.getElementById("hv"); // arquivo único: o vídeo vem dentro do HTML, em base64
   let loaded = false, loading = null, userPaused = false, visible = true;
 
   const load = () =>
     (loading ||= (async () => {
-      if (embedded) {
+      if (document.documentElement.hasAttribute("data-single")) {
+        // arquivo único: o vídeo vem dentro do HTML (base64), no fim do arquivo; espera chegar (se ainda não chegou) e decodifica
+        if (document.readyState === "loading") await new Promise((r) => addEventListener("DOMContentLoaded", r, { once: true }));
+        const embedded = document.getElementById("hv");
         const blob = await (await fetch("data:video/mp4;base64," + embedded.textContent.trim())).blob();
         embedded.textContent = ""; // libera a cópia em texto
         video.src = URL.createObjectURL(blob);
