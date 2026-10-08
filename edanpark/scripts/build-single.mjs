@@ -54,7 +54,7 @@ const videoB64 = await b64(join(root, "single/hero-lite.mp4"));
 // ---------- Abas
 const LINKS = { "": "#inicio", empreendimento: "#empreendimento", infraestrutura: "#infraestrutura", localizacao: "#localizacao", "tour-360": "#tour", contato: "#contato" };
 async function transform(html) {
-  html = html.replace(/href="\/([a-z0-9-]*)\/?"/g, (m, k) => (k in LINKS ? `href="${LINKS[k]}"` : m));
+  html = html.replace(/href="\/([a-z0-9-]*)\/?(\?[^"]*)?"/g, (m, k, q = "") => (k in LINKS ? `href="${LINKS[k]}${q}"` : m));
   // poster do hero: imagem embutida direto no HTML (é o LCP)
   html = html.replace(/<picture>[\s\S]*?<img[^>]*alt="([^"]*)"[^>]*>\s*<\/picture>/, (_, alt) => `<img src="${posterUri}" width="540" height="960" alt="${alt}" decoding="async" data-poster>`);
   // fotos: viram data-src="/media/tour/x.webp" e são preenchidas pelo dicionário (sem repetir o base64)
