@@ -1,6 +1,7 @@
 import { site } from "../data/site.mjs";
 import { icon, esc, logoIcon } from "../lib/ui.mjs";
 import { ctaBand, pageHero, mapsUrl } from "../lib/sections.mjs";
+import { geoMap } from "../lib/geomap.mjs";
 
 const { lat, lon } = site.geo;
 const osm = `https://www.openstreetmap.org/export/embed.html?bbox=${lon - 0.04},${lat - 0.025},${lon + 0.04},${lat + 0.025}&layer=mapnik&marker=${lat},${lon}`;
@@ -10,13 +11,16 @@ export default {
   nav: "localizacao",
   title: "Localização",
   description: "O Edan Park fica em Estiva, no Sul de Minas Gerais. Veja a localização do polo industrial e logístico e como visitar.",
-  scripts: ["map.js"],
+  css: ["geomap.css"],
+  scripts: ["map.js", "geomap.js"],
   body: () => `
 ${pageHero({
   eyebrow: "Localização",
   title: "No Sul de Minas, em Estiva.",
-  lead: "O Edan Park fica em Estiva (MG), entre serras, com a estrutura de um polo industrial e logístico.",
+  lead: "O Edan Park fica em Estiva (MG), no Sul de Minas, perto da divisa com São Paulo.",
 })}
+
+${geoMap()}
 
 <section class="sec" style="padding-top:clamp(40px,5vw,72px)">
   <div class="wrap loc">

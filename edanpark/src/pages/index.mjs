@@ -1,6 +1,7 @@
 import { site, stats, pillars, phases } from "../data/site.mjs";
 import { icon, esc, logoIcon, frameLines } from "../lib/ui.mjs";
-import { ctaBand, segmentsStrip, tourTeaser } from "../lib/sections.mjs";
+import { ctaBand, segmentsStrip } from "../lib/sections.mjs";
+import { lotMapSection } from "../lib/lotmap.mjs";
 
 const stat = (s, i) => `
 <div class="stat" data-reveal style="--d:${i}">
@@ -13,7 +14,8 @@ export default {
   nav: "inicio",
   title: "Início",
   description: "Edan Park: polo industrial e logístico em Estiva, Sul de Minas Gerais. 13 lotes modulares de 5.000 a 35.000 m², estrutura pronta e a Edan como empresa âncora.",
-  scripts: ["hero.js"],
+  css: ["lotmap.css"],
+  scripts: ["hero.js", "lotmap.js"],
   head: `<link rel="preload" as="image" href="/media/hero-poster-sm.webp" type="image/webp" media="(max-width:899px)" fetchpriority="high">
 <link rel="preload" as="image" href="/media/hero-poster.webp" type="image/webp" media="(min-width:900px)" fetchpriority="high">`,
   body: () => `
@@ -78,7 +80,7 @@ ${segmentsStrip()}
   </div>
 </section>
 
-${tourTeaser()}
+${lotMapSection()}
 
 <section class="sec" aria-labelledby="obra-t">
   <div class="wrap">

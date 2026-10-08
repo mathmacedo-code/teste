@@ -89,6 +89,26 @@ TBT ≤ 9 ms e CLS ≈ 0 em todas. Em Chrome sem simulação o hero pinta em ~15
 São números de laboratório; na hospedagem real variam com rede, CDN e compressão (use Brotli/gzip). Para repetir:
 `npx lighthouse http://localhost:4173/ --only-categories=performance,accessibility,best-practices,seo` com `npm run start` rodando.
 
+## Mapa de lotes (Início)
+
+Seção `#lotes` da página inicial (no lugar do carrossel de fotos): planta 2D e vista 3D do empreendimento com os 13 lotes
+clicáveis, no estilo do site antigo.
+
+- **Clique num lote** (no mapa ou na lista) para ampliar, ver quadra, tamanho relativo e o botão *Quero este lote*, que abre o
+  contato já com o lote escolhido na mensagem (`?lote=B02`).
+- **Planta 2D / Vista 3D**: duas imagens do empreendimento com contornos próprios; a seleção se mantém ao trocar.
+- **Fazer o percurso**: um marcador percorre as vias internas, da entrada da Edan até a última quadra, e a câmera vai parando
+  em cada lote (~55 s; pausa, avança e volta pelas setas; `Esc` volta ao mapa inteiro). Com "reduzir movimento" a câmera não desliza.
+- Pelo teclado/leitor de tela, use a **lista de lotes** ao lado (as etiquetas sobre a imagem são só visuais).
+- A planta só baixa quando o mapa chega perto da tela; a vista 3D, quando a pessoa passa o mouse/foco no botão ou a escolhe
+  (~110 KB cada). Nada disso pesa na 1ª carga da Início.
+
+**Dados:** `src/data/lotes.mjs` (contornos em pixels das imagens `public/media/lotes/lotes-plan.webp` e `lotes-3d.webp`,
+caminho do percurso e posição das etiquetas). Para ajustar um lote, edite os pontos `plan` / `p3d`. **Preencha `area`**
+(m² de cada lote) quando tiver: o cartão passa a mostrar o valor em vez de "Sob consulta". A numeração (quadras A/B/C, lotes
+01–08 e 14) segue a imagem do site atual; se ela mudar, edite `id`, `q` e `n`.
+Marcação em `src/lib/lotmap.mjs`, estilos em `src/css/lotmap.css`, comportamento em `src/js/lotmap.js`.
+
 ## Hero em vídeo
 
 `public/media/hero.mp4` (desktop) e `hero-sm.mp4` (celular), gerados do reel original **sem áudio**, com um dissolve embutido
@@ -150,7 +170,7 @@ o formulário avisa que os canais ainda não foram configurados (e o build lista
 ## Estrutura
 
 ```
-src/data/        conteúdo editável (site.mjs, tour.mjs)
+src/data/        conteúdo editável (site.mjs, tour.mjs, lotes.mjs)
 src/pages/       uma página por aba (módulos que devolvem HTML)
 src/layout.mjs   <head>, SEO, cabeçalho, rodapé
 src/css/         main.css (todas as abas) · tour.css (só no tour)

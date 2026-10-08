@@ -6,4 +6,6 @@ import "../js/story.js";
 import "../js/map.js";
 import "../js/contact.js";
 import "../js/tour.js";
+import "../js/lotmap.js";
+import "../js/geomap.js";
 import "./router.js";

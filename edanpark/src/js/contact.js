@@ -21,6 +21,10 @@ if (form) {
     const a = parseInt(q.get("area"), 10);
     if (a >= +range.min && a <= +range.max) range.value = Math.round(a / 500) * 500;
     upd();
+    // lote escolhido no mapa de lotes: ?lote=B02
+    const lote = (q.get("lote") || "").toUpperCase();
+    const msg = form.elements.mensagem;
+    if (/^[A-C]\d{2}$/.test(lote) && msg && !msg.value) msg.value = `Tenho interesse no lote ${lote.slice(1)} da Quadra ${lote[0]}.`;
   };
   applyArea();
   addEventListener("hashchange", applyArea);

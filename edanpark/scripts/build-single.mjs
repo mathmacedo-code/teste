@@ -24,7 +24,7 @@ for (const f of pageFiles) pages.push((await imp(`src/pages/${f}.mjs`)).default)
 // ---------- CSS (+ fontes embutidas) e JS
 const css = await build({
   absWorkingDir: root,
-  entryPoints: ["src/css/main.css", "src/css/tour.css"],
+  entryPoints: ["src/css/main.css", "src/css/tour.css", "src/css/lotmap.css", "src/css/geomap.css"],
   outdir: "out",
   bundle: true,
   minify: true,
@@ -56,8 +56,8 @@ async function transform(html) {
   // poster do hero: imagem embutida direto no HTML (é o LCP)
   html = html.replace(/<picture>[\s\S]*?<img[^>]*alt="([^"]*)"[^>]*>\s*<\/picture>/, (_, alt) => `<img src="${posterUri}" width="432" height="768" alt="${alt}" decoding="async" data-poster>`);
   // fotos: viram data-k="/media/tour/x.webp" e são preenchidas por __h() assim que cada uma chega (sem repetir o base64)
-  html = html.replace(/(?<![\w-])(?:data-)?src="(\/media\/tour\/[^"]+\.webp)"/g, 'data-k="$1"'); // (não pega o data-src já existente)
-  for (const m of html.matchAll(/data-k="(\/media\/tour\/[^"]+\.webp)"/g)) await photoUri(m[1]);
+  html = html.replace(/(?<![\w-])(?:data-)?src="(\/media\/(?:tour|lotes)\/[^"]+\.webp)"/g, 'data-k="$1"'); // (não pega o data-src já existente)
+  for (const m of html.matchAll(/data-k="(\/media\/(?:tour|lotes)\/[^"]+\.webp)"/g)) await photoUri(m[1]);
   // halos e fundos minúsculos: embutidos onde são usados
   for (const m of [...html.matchAll(/url\((\/media\/tour\/[^)]+)\)/g)]) html = html.replace(m[0], `url(${await tileUri(m[1])})`);
   return html;
