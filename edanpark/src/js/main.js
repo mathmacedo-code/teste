@@ -65,16 +65,17 @@ if ("IntersectionObserver" in window) {
         if (!e.isIntersecting) return;
         co.unobserve(e.target);
         const el = e.target, to = +el.dataset.count, t0 = performance.now(), dur = 1700;
-        if (reduce) return;
         (function step(t) {
           const p = Math.min(1, (t - t0) / dur);
           el.textContent = fmt.format(Math.round(to * (1 - Math.pow(1 - p, 4))));
           if (p < 1) requestAnimationFrame(step);
         })(t0);
       }),
-    { threshold: 0.6 },
+    { threshold: 0.35 },
   );
   $$("[data-count]").forEach((el) => {
+    // "reduzir movimento": mostra o número final direto (antes ficava em 0)
+    if (reduce) return (el.textContent = fmt.format(+el.dataset.count));
     el.textContent = "0";
     co.observe(el);
   });

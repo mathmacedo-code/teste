@@ -119,7 +119,7 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .vcard{position:relative;aspect-ratio:9/16;clip-path:var(--roof);background:var(--navy-2) center/cover}
 .vcard img,.vcard video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .vcard video{opacity:0;transition:opacity .8s}
-.vcard.is-playing video{opacity:1}
+.vcard.is-playing video,.vcard.is-scrub video{opacity:1}
 .vcard__ctl{position:absolute;z-index:3;right:14px;bottom:16px;width:44px;height:44px;display:grid;place-items:center;background:var(--navy);color:#fff;transition:background .2s}
 .vcard__ctl:hover{background:var(--orange)}
 .vcard__ctl .i:last-child{display:none}

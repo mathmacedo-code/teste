@@ -1,7 +1,8 @@
 // Hero da Início: o vídeo começa sozinho (mudo, em loop). Na versão em várias páginas só baixa depois que a
 // página terminou de carregar; no arquivo único ele já está dentro do HTML e começa assim que chega.
+// Com "reduzir movimento" ligado no sistema, ele começa na primeira rolagem (não no carregamento).
 // Se o aparelho bloquear o autoplay (economia de bateria, "reproduzir prévias" desligado), o vídeo
-// começa no primeiro toque em qualquer lugar da página, sem precisar achar o botão.
+// começa no primeiro toque em qualquer lugar e, enquanto não tocar, acompanha a rolagem (como um "scrub").
 const hero = document.querySelector("[data-hero]");
 if (hero) {
   const card = hero.querySelector("[data-vcard]");
@@ -60,14 +61,41 @@ if (hero) {
     load()
       .then(() => video.play())
       .catch((e) => {
-        if (e && e.name === "NotAllowedError") (card.classList.add("is-paused"), arm());
+        if (e && e.name === "NotAllowedError") (card.classList.add("is-paused"), arm(), startScrub());
       });
+
+  // Rolagem: o aparelho não deixou tocar sozinho, então o vídeo avança conforme a página rola
+  // (mudar o tempo do vídeo não exige permissão de autoplay).
+  let scrub = false, scrubTick = false;
+  const scrubTo = () => {
+    scrubTick = false;
+    if (!video.paused || !video.duration || !isFinite(video.duration)) return;
+    const p = Math.min(1, Math.max(0, scrollY / Math.max(card.offsetHeight * 1.1, 1)));
+    const t = p * video.duration * 0.98;
+    if (Math.abs(video.currentTime - t) > 0.04) video.currentTime = t;
+  };
+  const startScrub = () => {
+    if (scrub) return;
+    scrub = true;
+    video.preload = "auto";
+    video.load(); // pede os quadros (a escolha do tempo só mostra imagem com dados carregados)
+    video.addEventListener("loadeddata", scrubTo, { once: true });
+    addEventListener("scroll", () => !scrubTick && ((scrubTick = true), requestAnimationFrame(scrubTo)), { passive: true });
+    card.classList.add("is-scrub");
+  };
+  // 1ª rolagem: tenta tocar de verdade (vale quando o vídeo estava esperando por "reduzir movimento")
+  const SC = ["scroll", "wheel", "touchmove"];
+  const onScroll1 = () => {
+    SC.forEach((t) => removeEventListener(t, onScroll1));
+    if (!userPaused) play();
+  };
   const sync = () => (userPaused || !visible || document.hidden ? video.pause() : loaded && video.play().catch(() => {}));
 
   video.addEventListener("playing", () => {
     card.classList.add("is-playing");
     card.classList.remove("is-paused");
     ctl.setAttribute("aria-label", "Pausar vídeo");
+    card.classList.remove("is-scrub");
     disarm();
   });
   video.addEventListener("pause", () => {
@@ -95,10 +123,16 @@ if (hero) {
   document.addEventListener("visibilitychange", () => loaded && sync());
 
   const kickoff = () => {
-    if (reduce || saver) {
+    if (saver) {
       card.classList.add("is-paused");
       userPaused = true;
       ctl.setAttribute("aria-label", "Reproduzir vídeo");
+      return;
+    }
+    if (reduce) {
+      // "reduzir movimento": não começa no carregamento; começa quando a pessoa rolar a página
+      card.classList.add("is-paused");
+      SC.forEach((t) => addEventListener(t, onScroll1, { passive: true }));
       return;
     }
     play();

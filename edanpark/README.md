@@ -127,8 +127,12 @@ na tela os pinos aparecem em sequência e a seleção passeia sozinha até o pri
 ## Celular
 
 - **Vídeo do hero:** começa sozinho (mudo, em loop, `autoplay` + `playsinline`). Se o aparelho bloquear o autoplay (economia de
-  bateria no iPhone/Android, "reproduzir prévias" desligado), o **primeiro toque em qualquer lugar da página** inicia o vídeo. Só não
-  começa sozinho com "reduzir movimento" ligado no sistema (ou, na versão em várias páginas, com economia de dados/2G).
+  bateria no iPhone/Android, "reproduzir prévias" desligado), o **primeiro toque em qualquer lugar da página** inicia o vídeo e,
+  até lá, **o vídeo acompanha a rolagem** (como se a rolagem fosse o "play"; mudar o tempo do vídeo não precisa de permissão).
+  Com "reduzir movimento" ligado no sistema, o vídeo **começa na primeira rolagem** em vez de no carregamento. Na versão em várias
+  páginas, com economia de dados/2G ele só toca pelo botão.
+- **Números animados (Início):** contam de 0 até o valor ao entrar na tela; com "reduzir movimento" aparecem direto com o valor final
+  (antes ficavam em 0).
 - **Altura de tela:** usa `svh` onde existe e `vh` nos aparelhos mais antigos (variável `--svh` em `main.css`).
 - **Tour 360°:** selo e contador empilhados, rótulos só do ponto tocado dentro da cena e layout próprio para celular deitado.
 - **Mapa de lotes:** controles e tira de lotes logo abaixo do mapa, cartão compacto, miniatura borrada enquanto a imagem chega.
