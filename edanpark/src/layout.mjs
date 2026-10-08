@@ -3,7 +3,7 @@ import { esc, icon, logoMark } from "./lib/ui.mjs";
 
 const year = new Date().getFullYear();
 
-function header(page) {
+export function header(page) {
   const links = nav
     .filter((n) => !n.cta)
     .map((n) => `<a href="${n.href}"${n.id === page.nav ? ' aria-current="page"' : ""}>${esc(n.label)}</a>`)
@@ -40,7 +40,7 @@ function contactLines() {
   return out;
 }
 
-function footer() {
+export function footer() {
   const contact = contactLines();
   return `
 <footer class="ftr">
@@ -60,7 +60,7 @@ function footer() {
 </footer>`;
 }
 
-function jsonLd(page) {
+export function jsonLd(page) {
   const org = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -90,7 +90,7 @@ export function layout(page, ctx) {
   const css = ["main.css", ...(page.css || [])].map((f) => `<link rel="stylesheet" href="${ctx.asset(f)}">`).join("");
   const js = ["main.js", ...(page.scripts || [])].map((f) => `<script defer src="${ctx.asset(f)}"></script>`).join("");
   return `<!doctype html>
-<html lang="pt-BR" data-root="/" data-idx="">
+<html lang="pt-BR" data-contact="/contato/">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">

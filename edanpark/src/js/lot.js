@@ -1,8 +1,7 @@
 // Simulador de lote: mostra a escala relativa da área escolhida (referência visual).
 const nf = new Intl.NumberFormat("pt-BR");
 const FIELD = 7140; // campo de futebol oficial (105 × 68 m)
-const ROOT = document.documentElement.dataset.root ?? "/";
-const IDX = document.documentElement.dataset.idx ?? "";
+const CONTACT = document.documentElement.dataset.contact ?? "/contato/";
 
 document.querySelectorAll("[data-lot]").forEach((root) => {
   const range = root.querySelector("[data-range]");
@@ -22,7 +21,7 @@ document.querySelectorAll("[data-lot]").forEach((root) => {
     pitch.textContent = (v / FIELD).toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
     pct.textContent = Math.round((v / max) * 100) + "%";
     range.style.setProperty("--pct", ((v - min) / (max - min)) * 100 + "%");
-    cta.href = `${ROOT}contato/${IDX}?area=${v}`;
+    cta.href = `${CONTACT}?area=${v}`;
   };
   range.addEventListener("input", update);
   update();

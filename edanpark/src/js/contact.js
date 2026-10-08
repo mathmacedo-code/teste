@@ -15,10 +15,15 @@ if (form) {
   };
   range.addEventListener("input", upd);
 
-  const q = new URLSearchParams(location.search);
-  const a = parseInt(q.get("area"), 10);
-  if (a >= +range.min && a <= +range.max) range.value = Math.round(a / 500) * 500;
-  upd();
+  // área vinda do simulador: ?area=… (páginas separadas) ou #contato?area=… (arquivo único)
+  const applyArea = () => {
+    const q = new URLSearchParams(location.search || location.hash.split("?")[1] || "");
+    const a = parseInt(q.get("area"), 10);
+    if (a >= +range.min && a <= +range.max) range.value = Math.round(a / 500) * 500;
+    upd();
+  };
+  applyArea();
+  addEventListener("hashchange", applyArea);
 
   const done = (msg) => {
     okText.textContent = msg;

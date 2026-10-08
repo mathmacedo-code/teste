@@ -39,14 +39,13 @@ function relativize(html, path) {
   const rel = "../".repeat(depth);
   return html
     .replace(/<link rel="preload" href="\/fonts\/[^>]*>\n?/g, "") // preload de fonte exige CORS: não vale em file://
-    .replace(/\b(href|src|srcset|data-src|data-src-lg|data-src-sm|poster)="\/(?!\/)([^"]*)"/g, (_, attr, p) => {
+    .replace(/\b(href|src|srcset|data-src|data-src-lg|data-src-sm|data-contact|poster)="\/(?!\/)([^"]*)"/g, (_, attr, p) => {
       const [pathPart, tail = ""] = p.split(/(?=[?#])/);
       const target = pathPart === "" || pathPart.endsWith("/") ? pathPart + "index.html" : pathPart;
       return `${attr}="${rel}${target}${tail}"`;
     })
     .replace(/url\(\/(?!\/)/g, `url(${rel}`)
-    .replace('data-root="/"', `data-root="${rel}"`)
-    .replace('data-idx=""', 'data-idx="index.html"');
+;
 }
 
 export async function buildSite() {

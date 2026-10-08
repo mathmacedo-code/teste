@@ -1,5 +1,6 @@
 node_modules
 dist
 dist-preview
+dist-single
 media-src/*.mp4
 *.log

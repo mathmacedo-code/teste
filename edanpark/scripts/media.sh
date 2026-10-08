@@ -57,4 +57,16 @@ aura heliponto 3.5
 aura galpao 12.2
 aura modulos 17.7
 
+# Versão leve das cenas (540x960) para o arquivo único (npm run build:single)
+mkdir -p single/lite
+lite() { ffmpeg -v error -y -ss "$2" -i "$SRC" -frames:v 1 -vf "scale=540:960:flags=lanczos" -c:v libwebp -quality 58 -compression_level 6 "single/lite/$1.webp"; }
+# vídeo leve (~0,8 MB) que vai embutido no arquivo único
+ffmpeg -v error -y -i "$SRC" -filter_complex "$FILTER;[v]fps=24,scale=540:960:flags=lanczos[o]" -map "[o]" \
+  -an -c:v libx264 -preset slow -crf 37 -profile:v main -level 4.0 -pix_fmt yuv420p -g 120 -movflags +faststart single/hero-lite.mp4
+lite fachada 1.4
+lite visao-geral 5.8
+lite heliponto 3.5
+lite galpao 12.2
+lite modulos 17.7
+
 ls -la "$OUT" "$OUT/tour"

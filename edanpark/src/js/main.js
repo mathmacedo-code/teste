@@ -31,13 +31,16 @@ onScroll();
 const nav = $("[data-nav]");
 if (nav && fine) {
   const links = $$("a", nav);
-  const cur = links.find((a) => a.hasAttribute("aria-current"));
   const place = (a) => {
     nav.style.setProperty("--x", a.offsetLeft + "px");
     nav.style.setProperty("--w", a.offsetWidth + "px");
     nav.classList.add("has-pill");
   };
-  const reset = () => (cur ? place(cur) : nav.classList.remove("has-pill"));
+  const reset = () => {
+    const cur = links.find((a) => a.hasAttribute("aria-current"));
+    cur ? place(cur) : nav.classList.remove("has-pill");
+  };
+  addEventListener("navchange", reset); // o arquivo único troca a aba atual por JS
   links.forEach((a) => (a.addEventListener("pointerenter", () => place(a)), a.addEventListener("focus", () => place(a))));
   nav.addEventListener("pointerleave", reset);
   nav.addEventListener("focusout", reset);

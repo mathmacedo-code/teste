@@ -9,7 +9,7 @@ import { join, extname, normalize, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const dist = join(root, "dist");
+const dist = process.env.DIST ? join(root, process.env.DIST) : join(root, "dist"); // DIST=dist-single serve o arquivo único
 const port = Number(process.env.PORT || 4173);
 const MIME = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8",

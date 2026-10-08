@@ -15,6 +15,20 @@ npm run build        # gera dist/ (é o que se publica)
 npm run build:preview  # gera dist-preview/: versão com caminhos relativos, abre por duplo clique em index.html (sem servidor)
 ```
 
+## Arquivo único (`index.html` e pronto)
+
+`npm run build:single` gera **`dist-single/index.html`**: um só arquivo com tudo dentro (CSS, JS, fontes, imagens, vídeo e as
+6 abas, trocadas pelo endereço: `#empreendimento`, `#tour`…). É só subir esse arquivo na hospedagem.
+
+- ~1,7 MB (≈ 1,2 MB transferidos com gzip). O arquivo é ordenado para a tela aparecer enquanto o resto ainda chega
+  (poster do hero embutido no topo; fotos, vídeo e JS por último).
+- Usa uma versão mais leve do vídeo (540×960, ~0,8 MB) e das fotos do tour; o vídeo é decodificado do próprio HTML.
+- Sem `og:image` (link de pré-visualização no WhatsApp/redes não terá imagem) nem `sitemap`: não há como referenciar arquivos externos.
+- Para a **melhor performance** em celular, prefira o site em várias páginas (`npm run build`): o primeiro carregamento
+  é ~140 KB e o vídeo vem depois. No Lighthouse (celular simulado) o arquivo único marca ~60 porque o simulador
+  conta o download inteiro antes do primeiro paint; na prática a página aparece em ~150 ms.
+- As fotos leves e o vídeo leve ficam em `single/` (gerados por `npm run media`).
+
 ## Abas (e onde editar)
 
 | Aba | Rota | Arquivo |

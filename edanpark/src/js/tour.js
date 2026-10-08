@@ -206,7 +206,7 @@ function init(root) {
     wake();
   }
   // Botão principal / tecla Enter: entra/sai da cena, ou segue para o contato no cartão final
-  const primary = () => (focus >= SCENES ? (location.href = `${SITE.root ?? "/"}contato/${SITE.idx ?? ""}`) : setEntered(!dollyT));
+  const primary = () => (focus >= SCENES ? (location.href = SITE.contact ?? "/contato/") : setEntered(!dollyT));
   const touched = () => root.classList.add("is-touched");
 
   /* ---------- Mouse / toque ---------- */
@@ -415,6 +415,7 @@ function init(root) {
     ([e]) => {
       visible = e.isIntersecting;
       if (visible) {
+        measure(); // no arquivo único a aba do tour fica oculta até ser aberta: mede de novo ao aparecer
         intro();
         wake();
       } else {

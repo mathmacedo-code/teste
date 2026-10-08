@@ -13,17 +13,24 @@ if (hero) {
   const conn = navigator.connection;
   const saver = !!(conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || "")));
 
-  let loaded = false, userPaused = false, visible = true;
+  const embedded = document.getElementById("hv"); // arquivo único: o vídeo vem dentro do HTML, em base64
+  let loaded = false, loading = null, userPaused = false, visible = true;
 
-  const load = () => {
-    if (loaded) return;
-    loaded = true;
-    video.src = matchMedia("(min-width:900px)").matches ? video.dataset.srcLg : video.dataset.srcSm;
-  };
-  const play = () => {
-    load();
-    video.play().catch(() => card.classList.add("is-paused"));
-  };
+  const load = () =>
+    (loading ||= (async () => {
+      if (embedded) {
+        const blob = await (await fetch("data:video/mp4;base64," + embedded.textContent.trim())).blob();
+        embedded.textContent = ""; // libera a cópia em texto
+        video.src = URL.createObjectURL(blob);
+      } else {
+        video.src = matchMedia("(min-width:900px)").matches ? video.dataset.srcLg : video.dataset.srcSm;
+      }
+      loaded = true;
+    })());
+  const play = () =>
+    load()
+      .then(() => video.play())
+      .catch(() => card.classList.add("is-paused"));
   const sync = () => (userPaused || !visible || document.hidden ? video.pause() : loaded && video.play().catch(() => {}));
 
   video.addEventListener("playing", () => {
