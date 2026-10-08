@@ -114,9 +114,9 @@ button{background:none;border:0;padding:0;cursor:pointer}
 .specs div:last-child{margin-right:0}
 .specs dt{font:800 clamp(1.3rem,1.4vw + .9rem,1.8rem)/1.1 var(--f);letter-spacing:-.02em}
 .specs dd{font-size:.8rem;color:var(--muted)}
-.hero__frame{position:relative;justify-self:end;width:min(100%,calc((calc(var(--svh)*100) - 300px)*.5625));margin-top:clamp(0px,2vw,24px)}
+.hero__frame{position:relative;justify-self:end;width:min(100%,calc((calc(var(--svh)*100) - 200px)*.5625));margin-top:clamp(0px,2vw,24px)}
 .hero__pic{position:relative}
-.vcard{position:relative;aspect-ratio:9/16;clip-path:var(--roof);background:var(--navy-2) center/cover}
+.vcard{position:relative;aspect-ratio:9/16;background:var(--navy-2) center/cover}
 .vcard img,.vcard video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .vcard video{opacity:0;transition:opacity .8s}
 .vcard.is-playing video,.vcard.is-scrub video{opacity:1}
@@ -330,14 +330,10 @@ button{background:none;border:0;padding:0;cursor:pointer}
 @media (max-width:899px){
   .hero{padding-top:var(--hdr);padding-bottom:36px;align-items:start;min-height:0}
   .hero__grid{grid-template-columns:minmax(0,1fr);gap:28px}
-  .hero__frame{order:-1;justify-self:stretch;margin:0 calc(var(--gut)*-1);width:auto}
-  .vcard{aspect-ratio:auto;height:min(calc(var(--svh)*60),600px)}
-  .vcard img,.vcard video{object-position:50% 35%}
+  .hero__frame{order:-1;justify-self:center;margin:0;width:min(100%,calc(var(--svh)*78*.5625))}
   .hero__title{max-width:none;font-size:clamp(2rem,8.4vw,3rem)}
-  .hero .frame-lines .l-orange{display:none}
   .hero__cta .btn{flex:1 1 auto}
   .specs{display:none}
-  .cap{padding:0 var(--gut)}
 }
 @media (max-width:560px){
   .btn{white-space:normal;text-align:center;line-height:1.3}

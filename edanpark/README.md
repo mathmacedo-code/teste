@@ -32,7 +32,7 @@ O logo virou layout, não só marca no canto:
 `npm run build:single` gera **`dist-single/index.html`**: um só arquivo com tudo dentro (CSS, JS, fontes, imagens, vídeo e as
 6 abas, trocadas pelo endereço: `#empreendimento`, `#tour`…). É só subir esse arquivo na hospedagem.
 
-- ~1,0 MB (≈ 0,8 MB com gzip). A ordem do arquivo foi pensada para a página funcionar enquanto o resto ainda chega:
+- ~4,8 MB (o vídeo em alta qualidade é ~85% disso). A ordem do arquivo foi pensada para a página funcionar enquanto o resto ainda chega:
   CSS + fonte → cabeçalho e abas (poster do hero já embutido) → **JS** (menu e abas já respondem) → fotos, uma a uma → vídeo (por último).
 - Usa versões leves do vídeo (432×768, ~0,4 MB) e das fotos do tour (~45 KB cada); o vídeo é decodificado do próprio HTML.
 - Medido em 4G lento simulado (1,6 Mbps, 150 ms, CPU 4× mais lenta): 1º paint em ~0,5 s, abas e menu respondendo em ~1 s,
@@ -66,7 +66,7 @@ uma aba, edite `nav` ali.
 | JS | 1,5 KB (comum) + 0,3–3 KB por aba, módulos ES sem dependências |
 | Fontes | 1 arquivo `woff2` (Montserrat variável, ~38 KB), com *preload* |
 | Início (celular), 1ª carga | ~140 KB: HTML + CSS + JS + fontes + poster do hero |
-| Vídeo do hero | **só começa a baixar depois do evento `load`**; celular recebe a versão de 1,3 MB, desktop a de 2,6 MB (original: 6,2 MB com áudio) |
+| Vídeo do hero | **só começa a baixar depois do evento `load`**; ambos em 720×1280 a 30 fps (celular ~3 MB, desktop ~4,5 MB; original: 6,2 MB com áudio) |
 | LCP | é o *poster* (WebP, com `preload` e `fetchpriority=high`); o hero **não depende de JS** para aparecer |
 | Economia de dados | com `saveData`/2G ou "reduzir movimento" o vídeo não é baixado; há um botão de reproduzir |
 | Mapa | iframe só carrega se a pessoa clicar |

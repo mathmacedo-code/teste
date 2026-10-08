@@ -1,5 +1,5 @@
 import { site, stats, pillars, phases } from "../data/site.mjs";
-import { icon, esc, logoIcon, frameLines } from "../lib/ui.mjs";
+import { icon, esc, logoIcon } from "../lib/ui.mjs";
 import { ctaBand, segmentsStrip } from "../lib/sections.mjs";
 import { lotMapSection } from "../lib/lotmap.mjs";
 
@@ -16,8 +16,7 @@ export default {
   description: "Edan Park: polo industrial e logístico em Estiva, Sul de Minas Gerais. 13 lotes modulares de 5.000 a 35.000 m², estrutura pronta e a Edan como empresa âncora.",
   css: ["lotmap.css"],
   scripts: ["hero.js", "lotmap.js"],
-  head: `<link rel="preload" as="image" href="/media/hero-poster-sm.webp" type="image/webp" media="(max-width:899px)" fetchpriority="high">
-<link rel="preload" as="image" href="/media/hero-poster.webp" type="image/webp" media="(min-width:900px)" fetchpriority="high">`,
+  head: `<link rel="preload" as="image" href="/media/hero-poster.webp" type="image/webp" fetchpriority="high">`,
   body: () => `
 <section class="hero grid-bg" data-hero>
   <div class="wrap hero__grid">
@@ -38,15 +37,11 @@ export default {
     <div class="hero__frame">
       <div class="hero__pic">
       <div class="vcard" data-vcard>
-        <picture>
-          <source media="(min-width:900px)" srcset="/media/hero-poster.webp" type="image/webp">
-          <img src="/media/hero-poster-sm.webp" width="540" height="960" alt="Vista aérea do Edan Park ao pôr do sol, com o galpão da Edan e as serras do Sul de Minas" fetchpriority="high" decoding="async" data-poster>
-        </picture>
+        <img src="/media/hero-poster.webp" width="720" height="1280" alt="Vista aérea do Edan Park ao pôr do sol, com o galpão da Edan e as serras do Sul de Minas" fetchpriority="high" decoding="async" data-poster>
         <video muted loop playsinline autoplay preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1" data-video data-src-lg="/media/hero.mp4" data-src-sm="/media/hero-sm.mp4"></video>
         <div class="vcard__bar" aria-hidden="true"><i data-vbar></i></div>
         <button class="vcard__ctl" type="button" aria-label="Pausar vídeo" data-vctl>${icon("pause")}${icon("play")}</button>
       </div>
-      ${frameLines()}
       </div>
       <p class="cap">Obra na reta final · ${esc(site.city)}, ${esc(site.state)}</p>
     </div>

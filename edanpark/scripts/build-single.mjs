@@ -46,15 +46,15 @@ const tourDir = join(root, "public/media/tour");
 const imgDict = {}; // "/media/tour/x.webp" -> data URI (fotos leves 432x768), na ordem em que aparecem nas abas
 const photoUri = async (path) => (imgDict[path] ||= await uri(join(root, "single/lite", basename(path)), "image/webp"));
 const tileUri = async (path) => uri(join(tourDir, basename(path)), "image/webp"); // halos/fundos minúsculos (~1 KB)
-const posterUri = await uri(join(root, "single/lite/poster.webp"), "image/webp");
-const videoB64 = await b64(join(root, "single/hero-lite.mp4"));
+const posterUri = await uri(join(root, "public/media/hero-poster.webp"), "image/webp");
+const videoB64 = await b64(join(root, "public/media/hero-sm.mp4"));
 
 // ---------- Abas
 const LINKS = { "": "#inicio", empreendimento: "#empreendimento", infraestrutura: "#infraestrutura", localizacao: "#localizacao", "tour-360": "#tour", contato: "#contato" };
 async function transform(html) {
   html = html.replace(/href="\/([a-z0-9-]*)\/?(\?[^"]*)?"/g, (m, k, q = "") => (k in LINKS ? `href="${LINKS[k]}${q}"` : m));
   // poster do hero: imagem embutida direto no HTML (é o LCP)
-  html = html.replace(/<picture>[\s\S]*?<img[^>]*alt="([^"]*)"[^>]*>\s*<\/picture>/, (_, alt) => `<img src="${posterUri}" width="432" height="768" alt="${alt}" decoding="async" data-poster>`);
+  html = html.replace('src="/media/hero-poster.webp"', `src="${posterUri}"`);
   // fotos: viram data-k="/media/tour/x.webp" e são preenchidas por __h() assim que cada uma chega (sem repetir o base64)
   html = html.replace(/(?<![\w-])(?:data-)?src="(\/media\/(?:tour|lotes)\/[^"]+\.webp)"/g, 'data-k="$1"'); // (não pega o data-src já existente)
   for (const m of html.matchAll(/data-k="(\/media\/(?:tour|lotes)\/[^"]+\.webp)"/g)) await photoUri(m[1]);

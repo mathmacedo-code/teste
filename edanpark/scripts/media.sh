@@ -21,16 +21,16 @@ FILTER="[0:v]split=3[a][b][c];
 [m][x]concat=n=2:v=1:a=0[v]"
 
 encode() { # nome largura altura crf
-  ffmpeg -v error -y -i "$SRC" -filter_complex "$FILTER;[v]fps=24,scale=$2:$3:flags=lanczos[o]" -map "[o]" \
-    -an -c:v libx264 -preset slow -crf "$4" -profile:v main -level 4.0 -pix_fmt yuv420p \
-    -g 120 -movflags +faststart "$OUT/$1.mp4"
+  ffmpeg -v error -y -i "$SRC" -filter_complex "$FILTER;[v]fps=30,scale=$2:$3:flags=lanczos[o]" -map "[o]" \
+    -an -c:v libx264 -preset slow -crf "$4" -profile:v high -level 4.0 -pix_fmt yuv420p \
+    -g 60 -movflags +faststart "$OUT/$1.mp4"
 }
-encode hero 720 1280 31      # desktop / telas grandes (~2,5 MB)
-encode hero-sm 540 960 33    # celular (~1,2 MB)
+# 720x1280 é a resolução do reel original: alta qualidade (30 fps) nos dois; o do celular só usa um crf maior
+encode hero 720 1280 27      # desktop / telas grandes (~4 MB)
+encode hero-sm 720 1280 30   # celular e arquivo único (~3 MB)
 
 # --- Poster do hero = 1º quadro do vídeo (evita "salto" quando o vídeo começa) + miniatura p/ blur-up
-ffmpeg -v error -y -ss 1.4 -i "$SRC" -frames:v 1 -vf "scale=720:1280" -c:v libwebp -quality 70 -compression_level 6 "$OUT/hero-poster.webp"
-ffmpeg -v error -y -ss 1.4 -i "$SRC" -frames:v 1 -vf "scale=540:960" -c:v libwebp -quality 66 -compression_level 6 "$OUT/hero-poster-sm.webp"
+ffmpeg -v error -y -ss 1.4 -i "$SRC" -frames:v 1 -vf "scale=720:1280:flags=lanczos" -c:v libwebp -quality 74 -compression_level 6 "$OUT/hero-poster.webp"
 
 # --- Cenas do tour 360° (quadros limpos, sem legendas gravadas) — nome:tempo(s)
 scene() { ffmpeg -v error -y -ss "$2" -i "$SRC" -frames:v 1 -vf "scale=720:1280:flags=lanczos" -c:v libwebp -quality 74 -compression_level 6 "$OUT/tour/$1.webp"; }
@@ -57,14 +57,9 @@ aura heliponto 3.5
 aura galpao 12.2
 aura modulos 17.7
 
-# Versão leve (432x768) para o arquivo único (npm run build:single): tudo vai dentro do HTML, então cada KB conta
+# Versão leve (432x768) das fotos para o arquivo único (npm run build:single): tudo vai dentro do HTML, então cada KB conta
 mkdir -p single/lite
 lite() { ffmpeg -v error -y -ss "$2" -i "$SRC" -frames:v 1 -vf "scale=432:768:flags=lanczos" -c:v libwebp -quality 54 -compression_level 6 "single/lite/$1.webp"; }
-# vídeo leve (~0,4 MB) que vai embutido no arquivo único
-ffmpeg -v error -y -i "$SRC" -filter_complex "$FILTER;[v]fps=24,scale=432:768:flags=lanczos[o]" -map "[o]" \
-  -an -c:v libx264 -preset veryslow -crf 38 -profile:v main -level 3.1 -pix_fmt yuv420p -g 240 \
-  -x264-params "aq-mode=3:deblock=1,1" -movflags +faststart single/hero-lite.mp4
-lite poster 1.4   # = 1º quadro do vídeo
 lite fachada 1.4
 lite visao-geral 5.8
 lite heliponto 3.5
