@@ -124,6 +124,18 @@ na tela os pinos aparecem em sequência e a seleção passeia sozinha até o pri
 - O mapa é um recorte (zoom) da região por CSS, para manter alvos de toque de 44 px em SP/Campinas/Santos no celular.
 - Marcação em `src/lib/geomap.mjs`, estilos em `src/css/geomap.css`, comportamento em `src/js/geomap.js`.
 
+## Celular
+
+- **Vídeo do hero:** começa sozinho (mudo, em loop, `autoplay` + `playsinline`). Se o aparelho bloquear o autoplay (economia de
+  bateria no iPhone/Android, "reproduzir prévias" desligado), o **primeiro toque em qualquer lugar da página** inicia o vídeo. Só não
+  começa sozinho com "reduzir movimento" ligado no sistema (ou, na versão em várias páginas, com economia de dados/2G).
+- **Altura de tela:** usa `svh` onde existe e `vh` nos aparelhos mais antigos (variável `--svh` em `main.css`).
+- **Tour 360°:** selo e contador empilhados, rótulos só do ponto tocado dentro da cena e layout próprio para celular deitado.
+- **Mapa de lotes:** controles e tira de lotes logo abaixo do mapa, cartão compacto, miniatura borrada enquanto a imagem chega.
+- Conferido em 320 a 915 px (em pé e deitado) sem rolagem horizontal. Cuidado ao criar elementos com largura mínima fixa
+  (ex.: `input[type=range]`, botões com `white-space:nowrap`): no Chrome do celular, um elemento largo demais faz a página inteira
+  "encolher" para caber.
+
 ## Hero em vídeo
 
 `public/media/hero.mp4` (desktop) e `hero-sm.mp4` (celular), gerados do reel original **sem áudio**, com um dissolve embutido

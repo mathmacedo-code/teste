@@ -42,7 +42,7 @@ export default {
           <source media="(min-width:900px)" srcset="/media/hero-poster.webp" type="image/webp">
           <img src="/media/hero-poster-sm.webp" width="540" height="960" alt="Vista aérea do Edan Park ao pôr do sol, com o galpão da Edan e as serras do Sul de Minas" fetchpriority="high" decoding="async" data-poster>
         </picture>
-        <video muted loop playsinline preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1" data-video data-src-lg="/media/hero.mp4" data-src-sm="/media/hero-sm.mp4"></video>
+        <video muted loop playsinline autoplay preload="none" disablepictureinpicture aria-hidden="true" tabindex="-1" data-video data-src-lg="/media/hero.mp4" data-src-sm="/media/hero-sm.mp4"></video>
         <div class="vcard__bar" aria-hidden="true"><i data-vbar></i></div>
         <button class="vcard__ctl" type="button" aria-label="Pausar vídeo" data-vctl>${icon("pause")}${icon("play")}</button>
       </div>

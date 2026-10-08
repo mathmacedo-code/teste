@@ -9,7 +9,7 @@ const view = (mode, on) => {
   const v = views[mode];
   const k = KEYS[mode];
   return `
-<div class="lm__view${on ? " is-on" : ""}" data-vista="${mode}" data-route="${route[k]}" style="--w:${v.w};--h:${v.h}">
+<div class="lm__view${on ? " is-on" : ""}" data-vista="${mode}" data-route="${route[k]}" style="--w:${v.w};--h:${v.h};background-image:url(data:image/webp;base64,${v.lqip})">
   <img data-src="${v.src}" width="${v.w}" height="${v.h}" alt="${esc(v.alt)}" decoding="async" draggable="false">
   <svg viewBox="0 0 ${v.w} ${v.h}" aria-hidden="true" focusable="false">
     <polyline class="lm__route" points="${route[k]}"/>
@@ -28,7 +28,7 @@ const chips = Object.entries(quadras)
   <span>${esc(name)}</span>
   ${lotes
     .filter((l) => l.q === q)
-    .map((l) => `<button type="button" data-lote="${l.id}" data-q="${esc(name)}" data-n="${l.n}" data-rel="${l.rel}" data-area="${l.area ?? ""}" aria-pressed="false" aria-label="${esc(name)}, lote ${l.n}">${l.n}</button>`)
+    .map((l) => `<button type="button" data-lote="${l.id}" data-q="${esc(name)}" data-n="${l.n}" data-rel="${l.rel}" data-area="${l.area ?? ""}" aria-pressed="false" aria-label="${esc(name)}, lote ${l.n}"><b>${l.n}</b><i>${l.id}</i></button>`)
     .join("")}
 </div>`,
   )
@@ -67,6 +67,7 @@ export function lotMapSection() {
         </div>
 
         <aside class="lm__card" aria-live="polite">
+          <div class="lm__info">
           <p class="lm__kick" data-kick>Edan Park</p>
           <h3 class="lm__title" data-title>13 lotes em 3 quadras</h3>
           <p class="lm__text" data-text>Escolha um lote no mapa ou na lista abaixo para ver a quadra e o tamanho em relação aos outros. Para a metragem e as condições, fale com a equipe.</p>
@@ -78,7 +79,8 @@ export function lotMapSection() {
             <a class="btn btn--primary btn--sm" data-ask href="/contato/"><span data-ask-t>Falar sobre lotes</span> ${icon("arrow-right")}</a>
             <button class="lm__reset" type="button" data-reset hidden>Ver todos os lotes</button>
           </div>
-          <div class="lm__list">${chips}</div>
+          </div>
+          <div class="lm__list" data-list>${chips}</div>
         </aside>
       </div>
       <p class="lm__note">Contornos e numeração conforme a planta do empreendimento. A área de cada lote é informada pela equipe comercial.</p>

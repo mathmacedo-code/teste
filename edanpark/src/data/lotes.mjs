@@ -1,5 +1,6 @@
 // Mapa de lotes (aba Início). Contornos e rotas traçados sobre as duas imagens do empreendimento:
 //   plan = planta vista de cima (public/media/lotes/lotes-plan.webp, 1100x750)
+//   (lqip = miniatura borrada embutida, aparece enquanto a imagem não chega)
 //   3d   = render em perspectiva (public/media/lotes/lotes-3d.webp, 1140x670)
 // Coordenadas em pixels da própria imagem (mesmo sistema do viewBox). Para ajustar um lote, edite os pontos "plan"/"p3d".
 // cp / c3 = onde fica a etiqueta (ponto mais "dentro" do lote).
@@ -7,8 +8,8 @@
 // area: preencha com os m² reais de cada lote (hoje fica "sob consulta"); rel = tamanho relativo medido na planta.
 export const lotMap = {
   views: {
-    plan: { src: "/media/lotes/lotes-plan.webp", w: 1100, h: 750, alt: "Planta do Edan Park vista de cima, com os 13 lotes distribuídos em três quadras" },
-    "3d": { src: "/media/lotes/lotes-3d.webp", w: 1140, h: 670, alt: "Vista aérea em perspectiva do Edan Park, com os 13 lotes distribuídos em três quadras" },
+    plan: { src: "/media/lotes/lotes-plan.webp", w: 1100, h: 750, lqip: "UklGRrwAAABXRUJQVlA4ILAAAACQBQCdASocABMAPwFsrE6rJiQiMAgBYCAJaAC2yBuo+gsvoo98iZ5rg1qsOurqC8h1X5y5AADNX/Ze40D+D6vW0F0OXaaxW2dbqGX0y3lOtLWFgt8kUF3KSL3IWBI5BoxQirWU5IHyjxwgJSphTNZ/qxbSYEe2du6vp6NoR4Rmds+0t2+5mFyi53Nb/j7DGejqfzLz08wTvWn0LZRn0nM0ApTV+SsdTFeGDlOHR56gAA==", alt: "Planta do Edan Park vista de cima, com os 13 lotes distribuídos em três quadras" },
+    "3d": { src: "/media/lotes/lotes-3d.webp", w: 1140, h: 670, lqip: "UklGRtQAAABXRUJQVlA4IMgAAAAQBQCdASocABMAPwFosFGrJSSisBgIAWAgCWoAnTMbOgAL4cMpuSHjUNXbRQDCM9VwANpQ61JmuO9T5xvgDzBmXDgPTS/aTlNSsC/nyMFxLCZX+60jBI+8CspU8NpZb6r+/FpDG7tErFjcf1jOsjhWe8955IxvDzptyxrDhTMCNoHhe2RY8CJjDpAWT4x7oYXnyxI4o0sBWN5zuECYdyrau/bQ7oac/82eI/R2KpTtSTTyS4KbkweZLQIfjsnGU/N5GLiFInLAAA==", alt: "Vista aérea em perspectiva do Edan Park, com os 13 lotes distribuídos em três quadras" },
   },
   quadras: { A: "Quadra A", B: "Quadra B", C: "Quadra C" },
   lotes: [

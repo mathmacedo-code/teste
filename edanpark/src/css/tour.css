@@ -5,8 +5,8 @@
    caro em GPUs fracas): o halo de cada parada já vem "assado" numa miniatura com canal alfa.
    Cores da marca: azul-petróleo #2a3447 e laranja #c35007.
    ========================================================================== */
-.tour{--P:880px;--R:880px;--ph:min(74svh,calc((100vw - 44px)*16/9),860px);
-  position:relative;height:100svh;min-height:640px;overflow:hidden;isolation:isolate;background:#10131a;
+.tour{--P:880px;--R:880px;--ph:min(calc(var(--svh)*74),calc((100vw - 44px)*16/9),860px);
+  position:relative;height:calc(var(--svh)*100);min-height:640px;overflow:hidden;isolation:isolate;background:#10131a;
   -webkit-user-select:none;user-select:none;touch-action:pan-y;cursor:grab;outline:0}
 .tour.is-drag{cursor:grabbing}
 .tour:focus-visible{outline:2px solid var(--orange-lt);outline-offset:-4px}
@@ -35,11 +35,11 @@
 
 /* Câmera e mundo 3D (a câmera fica no centro do arco) */
 .tour__auras{position:absolute;inset:0;pointer-events:none;overflow:hidden}
-.aura{position:absolute;left:50%;top:calc(50% - 1.5svh);width:calc(var(--ph)*1.7);height:calc(var(--ph)*1.75);margin:calc(var(--ph)*-.875) 0 0 calc(var(--ph)*-.85);
+.aura{position:absolute;left:50%;top:calc(50% - calc(var(--svh)*1.5));width:calc(var(--ph)*1.7);height:calc(var(--ph)*1.75);margin:calc(var(--ph)*-.875) 0 0 calc(var(--ph)*-.85);
   background:var(--bg) 0 0/100% 100% no-repeat;opacity:0;will-change:transform,opacity}
 .aura--cta{background:radial-gradient(closest-side,rgba(195,80,7,.8),rgba(195,80,7,.2) 60%,transparent)}
 .tour__cam{position:absolute;inset:0;perspective:var(--P);perspective-origin:50% 50%}
-.tour__world{position:absolute;left:50%;top:calc(50% - 1.5svh);width:0;height:0;transform-style:preserve-3d;will-change:transform}
+.tour__world{position:absolute;left:50%;top:calc(50% - calc(var(--svh)*1.5));width:0;height:0;transform-style:preserve-3d;will-change:transform}
 .stop{position:absolute;left:0;top:0;width:calc(var(--ph)*.5625);height:var(--ph);margin:calc(var(--ph)*-.5) 0 0 calc(var(--ph)*-.28125);
   transform:rotateY(var(--a)) translateZ(calc(var(--R)*-1));pointer-events:none;backface-visibility:hidden}
 .stop__photo{position:absolute;inset:0;pointer-events:auto;cursor:pointer;overflow:hidden;
@@ -85,7 +85,7 @@
 .tmap__pin[aria-current]{background:var(--orange);border-color:var(--orange)}
 .tmap__h{font-size:.64rem;line-height:1.4;color:rgba(255,255,255,.72)}
 
-.hint{position:absolute;left:50%;bottom:clamp(190px,26svh,260px);translate:-50% 0;display:flex;align-items:center;gap:10px;padding:10px 18px;background:rgba(30,39,54,.94);border-left:3px solid var(--orange);font:600 .78rem/1 var(--f);pointer-events:none;transition:opacity .6s,transform .6s}
+.hint{position:absolute;left:50%;bottom:clamp(190px,calc(var(--svh)*26),260px);translate:-50% 0;display:flex;align-items:center;gap:10px;padding:10px 18px;background:rgba(30,39,54,.94);border-left:3px solid var(--orange);font:600 .78rem/1 var(--f);pointer-events:none;transition:opacity .6s,transform .6s}
 .hint .i{animation:nudge 1.8s var(--ease) infinite}
 @keyframes nudge{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
 .tour.is-touched .hint,.tour.is-entered .hint{opacity:0;transform:translateY(10px)}
@@ -126,18 +126,47 @@
 .stops__n{padding:8px 18px 0;font:700 .7rem/1 var(--f);letter-spacing:.16em;color:var(--orange-ink)}
 
 @media (max-width:960px){
-  .tour{--P:760px;--R:760px;min-height:600px}
+  .tour{--P:760px;--R:760px;min-height:min(600px,calc(var(--svh)*100))}
   .hud{grid-template:"top tmap" auto "mid mid" 1fr "tools tools" auto "card card" auto/1fr auto;padding-bottom:12px;gap:10px}
   .hud__card{width:100%;padding:16px 16px 14px;gap:8px}
   .hud__tools{grid-auto-flow:column;justify-content:end;gap:8px}
-  .rbtn{width:42px;height:42px}
-  .hint{left:var(--gut);translate:none;bottom:auto;top:calc(var(--hdr) + 62px)}
+  .rbtn{width:44px;height:44px}
   .hud__text{font-size:.84rem;line-height:1.45;max-height:5.5em}
   .tmap{width:142px;padding:8px}
   .tmap__disc{--pr:47px;width:118px;margin:8px auto 0}
   .tmap__pin{font-size:.62rem}
   .tmap__h{display:none}
   .tmap__t{font-size:.56rem;letter-spacing:.12em}
+  /* selo e contador empilhados (não quebram em telas de 360 px) */
+  .hud__top{flex-direction:column;align-items:flex-start;gap:8px}
+  .hud__badge{padding:8px 11px;font-size:.62rem;letter-spacing:.14em;white-space:nowrap}
+  .hud__count{font-size:.78rem;white-space:nowrap}
+  /* a dica fica na área do meio, logo abaixo do selo (não encosta no mapa) */
+  .hint{position:relative;grid-area:mid;align-self:start;justify-self:start;left:auto;top:auto;bottom:auto;translate:none;margin-top:2px;padding:9px 14px}
+  /* dentro da cena: só o rótulo do ponto tocado (os demais ficavam atrás do mapa e dos botões) */
+  .tour.is-entered .stop.is-focus .spot span{opacity:0;transform:translateY(8px)}
+  .tour.is-entered .stop.is-focus .spot.is-open span{opacity:1;transform:none}
+  .spot{width:48px;height:48px}
+  .tour.is-entered .hud__tools{opacity:0;pointer-events:none;transition:opacity .3s}
+}
+/* celular na horizontal: cartão à esquerda, foto no meio, mapa e botões à direita */
+@media (orientation:landscape) and (max-height:540px){
+  .is-tour{--hdr:56px}
+  .tour{min-height:0;--ph:calc(calc(var(--svh)*100) - 70px)}
+  .hud{grid-template:"top . tmap" auto "card . tools" 1fr/min(300px,38vw) 1fr auto;align-items:start;padding-bottom:10px;gap:8px 12px}
+  .hud__top{flex-direction:row;align-items:center;gap:10px}
+  .hud__card{align-self:end;width:100%;padding:11px 14px 10px;gap:6px}
+  .hud__title{font-size:1.02rem}
+  .hud__text{font-size:.76rem;max-height:3.2em}
+  .hud__row--head{gap:6px}
+  .dots button{width:18px}.dots button[aria-current]{width:30px}.dots button[aria-current]::after{width:20px}
+  .hud__tools{grid-auto-flow:row;align-self:end;justify-content:end}
+  .tmap{width:128px;padding:6px 8px}
+  .tmap__t{display:none}
+  .tmap__disc{--pr:40px;width:100px;margin:2px auto 0}
+  .hint{position:absolute;left:min(300px,38vw);top:calc(var(--hdr) + 12px);margin:0}
+  .tour.is-entered .hud__card{opacity:.92}
+  .tour.is-entered .hud__tools{opacity:1;pointer-events:auto}
 }
 @media (prefers-reduced-motion:reduce){
   .stop__photo::after{transition:none}

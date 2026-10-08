@@ -200,6 +200,8 @@ function init(root) {
     if (on && focus >= SCENES) return;
     dollyT = on ? 1 : 0;
     root.classList.toggle("is-entered", on);
+    // telas pequenas: abre o 1º ponto da cena, para a pessoa ver que dá para tocar nos pontos
+    if (on && matchMedia("(max-width:960px)").matches) stops[mod(focus, M)].querySelector(".spot")?.classList.add("is-open");
     enterT.textContent = focus >= SCENES ? "Falar com a equipe" : on ? "Sair da cena" : "Entrar na cena";
     if (!on) (pxT = 0), (pyT = 0);
     wake();

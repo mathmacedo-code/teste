@@ -117,6 +117,12 @@ if (root) {
     }
     ids.forEach((k) => info[k].chip.setAttribute("aria-pressed", String(k === id)));
     root.classList.toggle("has-sel", !!id);
+    // tira horizontal (celular): leva o lote escolhido para o meio, sem rolar a página
+    const list = $("[data-list]");
+    if (id && list.scrollWidth > list.clientWidth + 4) {
+      const c = info[id].chip;
+      list.scrollTo({ left: c.offsetLeft - (list.clientWidth - c.offsetWidth) / 2, behavior: reduce ? "auto" : "smooth" });
+    }
   };
   const showLot = (id, extra = "") => {
     const l = info[id];
@@ -259,10 +265,12 @@ if (root) {
     }
   };
   for (const v of Object.values(views)) {
-    const done = () => v.img.classList.add("is-in");
+    const done = () => (v.img.classList.add("is-in"), v === cur() && root.classList.remove("is-wait"));
     v.img.addEventListener("load", done);
     if (v.img.complete && v.img.naturalWidth) done();
   }
+  // "Carregando o mapa…" enquanto a imagem da vista atual não chegou
+  const wait = () => root.classList.toggle("is-wait", !(cur().img.complete && cur().img.naturalWidth));
 
   function setMode(m) {
     if (m === mode) return;
@@ -270,6 +278,7 @@ if (root) {
     $$("[data-mode]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.mode === m)));
     for (const [k, v] of Object.entries(views)) v.el.classList.toggle("is-on", k === m);
     loadImg(cur());
+    wait();
     if (run) {
       // continua no mesmo lote (a ordem das paradas pode mudar de uma vista para a outra)
       const at = run.S[run.k].id, playing = goBtn.dataset.on === "true";
@@ -322,4 +331,5 @@ if (root) {
   ).observe(stage);
 
   showAll();
+  wait();
 }
