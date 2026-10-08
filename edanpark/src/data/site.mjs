@@ -53,22 +53,22 @@ export const pillars = [
   {
     icon: "grid",
     title: "Lotes modulares",
-    text: "De 5.000 a 35.000 m². Você escolhe o tamanho que cabe na operação de hoje e já sabe onde crescer amanhã.",
+    text: "De 5.000 a 35.000 m². Comece no tamanho que a operação pede hoje e planeje o crescimento dentro do mesmo polo.",
   },
   {
     icon: "anchor",
-    title: "Empresa âncora",
-    text: "A Edan escolheu o Edan Park para o seu Centro de Distribuição. Um vizinho de peso para quem chega.",
+    title: "Âncora instalada",
+    text: "A Edan escolheu o Edan Park para o seu centro de distribuição. Quem chega encontra um vizinho de peso.",
   },
   {
     icon: "layers",
-    title: "Estrutura completa",
-    text: "Galpões em estrutura metálica, piso industrial, acessos pavimentados, módulos administrativos e heliponto.",
+    title: "Estrutura de apoio",
+    text: "Galpões em estrutura metálica, piso industrial, vias pavimentadas, módulos administrativos e heliponto.",
   },
   {
     icon: "pin",
     title: "Sul de Minas",
-    text: "Estiva, no Sul de Minas Gerais: um polo pensado para gerar empregos e desenvolvimento onde a empresa se instala.",
+    text: "Estiva fica no Sul de Minas Gerais. A previsão do projeto é gerar cerca de 750 empregos diretos na região.",
   },
 ];
 

@@ -3,7 +3,6 @@
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
 const root = document.documentElement;
 
 /* ---------- Cabeçalho + barra de progresso ---------- */
@@ -26,27 +25,6 @@ function onScroll() {
 }
 addEventListener("scroll", () => !tick && (tick = true, requestAnimationFrame(() => ((tick = false), onScroll()))), { passive: true });
 onScroll();
-
-/* ---------- Pílula deslizante da navegação (desktop) ---------- */
-const nav = $("[data-nav]");
-if (nav && fine) {
-  const links = $$("a", nav);
-  const place = (a) => {
-    nav.style.setProperty("--x", a.offsetLeft + "px");
-    nav.style.setProperty("--w", a.offsetWidth + "px");
-    nav.classList.add("has-pill");
-  };
-  const reset = () => {
-    const cur = links.find((a) => a.hasAttribute("aria-current"));
-    cur ? place(cur) : nav.classList.remove("has-pill");
-  };
-  addEventListener("navchange", reset); // o arquivo único troca a aba atual por JS
-  links.forEach((a) => (a.addEventListener("pointerenter", () => place(a)), a.addEventListener("focus", () => place(a))));
-  nav.addEventListener("pointerleave", reset);
-  nav.addEventListener("focusout", reset);
-  reset();
-  document.fonts?.ready.then(reset);
-}
 
 /* ---------- Menu móvel ---------- */
 const burger = $("[data-burger]");
@@ -102,17 +80,6 @@ if ("IntersectionObserver" in window) {
   });
 } else {
   $$("[data-reveal],[data-phases]").forEach((el) => el.classList.add("is-in"));
-}
-
-/* ---------- Botões "magnéticos" (só com mouse) ---------- */
-if (fine && !reduce) {
-  $$("[data-magnet]").forEach((el) => {
-    el.addEventListener("pointermove", (e) => {
-      const r = el.getBoundingClientRect();
-      el.style.transform = `translate(${((e.clientX - r.left) / r.width - 0.5) * 12}px,${((e.clientY - r.top) / r.height - 0.5) * 10}px)`;
-    });
-    el.addEventListener("pointerleave", () => (el.style.transform = ""));
-  });
 }
 
 /* ---------- Prefetch das outras abas (navegação instantânea) ---------- */

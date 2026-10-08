@@ -15,6 +15,18 @@ npm run build        # gera dist/ (é o que se publica)
 npm run build:preview  # gera dist-preview/: versão com caminhos relativos, abre por duplo clique em index.html (sem servidor)
 ```
 
+## Identidade visual
+
+Baseada no logotipo oficial (azul-petróleo `#2a3447`, laranja `#c35007`, fundo branco; fonte Montserrat, a mesma da tagline).
+O logo virou layout, não só marca no canto:
+
+- **Recorte em "telhado"** (`--roof` no CSS): fotos, vídeo e blocos têm o topo cortado nos mesmos ângulos do telhado do logo.
+- **Linha laranja que cruza** a imagem, como no logo (`frameLines()` em `src/lib/logo.mjs`), e o **ícone do galpão "desenhando"** no
+  fundo das abas e da chamada final (`logoIcon()`).
+- **Nome vetorizado** (`logoWord()`): o azul segue a cor do texto (branco no rodapé) e o **E** é sempre laranja.
+- Sem brilhos, vidro, degradês ou partículas; cantos retos, linhas finas e grade de projeto ao fundo.
+- Para trocar o logo por um SVG oficial, edite `src/lib/logo.mjs` e `public/brand/favicon.svg`.
+
 ## Arquivo único (`index.html` e pronto)
 
 `npm run build:single` gera **`dist-single/index.html`**: um só arquivo com tudo dentro (CSS, JS, fontes, imagens, vídeo e as
@@ -49,7 +61,7 @@ uma aba, edite `nav` ali.
 |---|---|
 | CSS | ~8 KB gzip (todas as abas) + 3 KB só no tour |
 | JS | 1,5 KB (comum) + 0,3–3 KB por aba, módulos ES sem dependências |
-| Fontes | 2 arquivos `woff2` (~58 KB), com *preload* |
+| Fontes | 1 arquivo `woff2` (Montserrat variável, ~38 KB), com *preload* |
 | Início (celular), 1ª carga | ~140 KB: HTML + CSS + JS + fontes + poster do hero |
 | Vídeo do hero | **só começa a baixar depois do evento `load`**; celular recebe a versão de 1,3 MB, desktop a de 2,6 MB (original: 6,2 MB com áudio) |
 | LCP | é o *poster* (WebP, com `preload` e `fetchpriority=high`); o hero **não depende de JS** para aparecer |
@@ -90,7 +102,7 @@ Você fica no centro de uma cúpula ao entardecer; as 5 paradas ficam num arco a
 
 - **Arrastar** gira (inércia + encaixe na parada); setas do teclado; trackpad horizontal; giroscópio no celular.
 - **Entrar na cena** avança a câmera até a foto e mostra os *hotspots* (rótulos). **Tour guiado** faz isso sozinho.
-- Radar no canto indica para onde você olha; pontos para pular direto a uma parada; tela cheia.
+- **Mapa do tour** (canto superior direito): visão de cima da cúpula com um ponto numerado por parada (clique para ir até ela) e o cone mostrando para onde você olha. Também há bolinhas no cartão e tela cheia.
 - Tudo em CSS 3D (sem WebGL, sem biblioteca) e o laço de animação para sozinho quando nada se move.
 
 ### Usar uma imagem 360° de verdade

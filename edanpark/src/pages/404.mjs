@@ -8,10 +8,10 @@ export default {
   description: "Página não encontrada.",
   head: '<meta name="robots" content="noindex">',
   body: () => `
-<section class="phero" style="min-height:80svh;display:grid;align-content:center">
+<section class="phero grid-bg" style="min-height:80svh;display:grid;align-content:center">
   <div class="wrap phero__in">
     <span class="eyebrow">Erro 404</span>
-    <h1>Essa rota <span class="grad">não existe.</span></h1>
+    <h1>Essa página não existe.</h1>
     <p class="lead">O endereço pode ter mudado. Volte ao início ou entre no tour 360°.</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn--primary" href="/">Ir para o início ${icon("arrow-right")}</a><a class="btn btn--ghost" href="/tour-360/">Tour 360°</a></div>
   </div>

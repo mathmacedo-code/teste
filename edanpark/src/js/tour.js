@@ -11,6 +11,7 @@ function init(root) {
   const M = +root.dataset.n; // paradas (cenas + cartão final)
   const SCENES = +root.dataset.scenes;
   const STEP = +root.dataset.step; // graus entre paradas
+  const OFFS = +root.dataset.offs || 0; // o mapa centraliza o arco de paradas no topo
   const SITE = document.documentElement.dataset;
 
   const world = $("[data-world]");
@@ -21,8 +22,7 @@ function init(root) {
   const sky = $(".tour__sky");
   const stops = $$("[data-stop]");
   const dots = $$("[data-dot]");
-  const rdots = $$("[data-rdot]");
-  const radar = $("[data-radar]");
+  const cone = $("[data-cone]"); // cone de visão no "Mapa do tour"
   const card = $(".hud__card");
   const kick = $(".hud [data-kicker]");
   const titleEl = $(".hud [data-title]");
@@ -132,7 +132,7 @@ function init(root) {
     if (pano && panoW) {
       pano.style.transform = `translate3d(${(-mod((yaw + px) * ppd(), panoW)).toFixed(1)}px,${((pitch + py) * ppd()).toFixed(1)}px,0)`;
     }
-    radar.setAttribute("transform", `rotate(${(-yaw).toFixed(2)})`);
+    cone.setAttribute("transform", `rotate(${(yaw + px - OFFS).toFixed(2)})`);
   }
 
   /* ---------- Loop (para sozinho quando nada se move) ---------- */
@@ -174,8 +174,7 @@ function init(root) {
     ensure(i - 1), ensure(i), ensure(i + 1);
     const isCta = i >= SCENES;
     stops.forEach((s, k) => s.classList.toggle("is-focus", k === i));
-    dots.forEach((d, k) => (k === i ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
-    rdots.forEach((d, k) => d.classList.toggle("is-on", k === i));
+    dots.forEach((d) => (+d.dataset.dot === i ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current"))); // bolinhas do cartão + pontos do mapa
     curEl.textContent = isCta ? "Fim" : String(i + 1).padStart(2, "0");
     $$(".spot.is-open").forEach((s) => s.classList.remove("is-open"));
     if (isCta && dollyT) setEntered(false);
@@ -316,7 +315,7 @@ function init(root) {
   $("[data-next]").addEventListener("click", () => (stopGuide(), touched(), step(1)));
   $("[data-prev]").addEventListener("click", () => (stopGuide(), touched(), step(-1)));
   enterBtn.addEventListener("click", () => (stopGuide(), touched(), primary()));
-  dots.forEach((d, i) => d.addEventListener("click", () => (stopGuide(), touched(), goTo(i))));
+  dots.forEach((d) => d.addEventListener("click", () => (stopGuide(), touched(), goTo(+d.dataset.dot))));
   document.querySelectorAll("[data-jump]").forEach((b) =>
     b.addEventListener("click", () => {
       stopGuide();
@@ -429,6 +428,5 @@ function init(root) {
 
   addEventListener("resize", measure);
   document.fonts?.ready.then(measure);
-  rdots[0]?.classList.add("is-on");
   measure();
 }

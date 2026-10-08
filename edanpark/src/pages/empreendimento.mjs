@@ -11,16 +11,15 @@ export default {
   body: () => `
 ${pageHero({
   eyebrow: "Empreendimento",
-  title: `Um polo feito para a operação <span class="grad">crescer.</span>`,
+  title: "Um polo industrial e logístico feito para crescer.",
   lead: "Condomínio industrial e logístico em Estiva, no Sul de Minas Gerais, com lotes modulares que acompanham o tamanho do seu negócio.",
-  bg: "/media/tour/fachada-bg.webp",
 })}
 
 <section class="sec" aria-labelledby="proj-t">
   <div class="wrap split">
     <div class="sticky">
       <span class="eyebrow" data-reveal>O projeto</span>
-      <h2 class="h2" id="proj-t" data-reveal style="--d:1;margin-top:20px">Modularidade como ponto de partida.</h2>
+      <h2 class="h2" id="proj-t" data-reveal style="--d:1;margin-top:20px">Comece no tamanho certo e cresça no mesmo lugar.</h2>
     </div>
     <div class="prose" data-reveal style="--d:2">
       <p><strong>O Edan Park é um condomínio industrial e logístico em ${esc(site.city)}, ${esc(site.region)}.</strong> São 13 lotes modulares, de 5.000 a 35.000 m², pensados para receber desde uma operação enxuta até um grande centro de distribuição.</p>
@@ -34,7 +33,7 @@ ${pageHero({
   <div class="wrap">
     <div class="anchor-card" data-reveal="zoom">
       <span class="eyebrow">Empresa âncora</span>
-      <h2 class="h2" style="max-width:20ch">${esc(anchor.name)} no Edan Park</h2>
+      <h2 class="h2">${esc(anchor.name)} no Edan Park</h2>
       <p class="lead">${esc(anchor.text)}</p>
       <div class="facts">${anchor.facts.map((f) => `<div><b>${esc(f.value)}</b><span>${esc(f.label)}</span></div>`).join("")}</div>
     </div>
@@ -71,7 +70,7 @@ ${pageHero({
   <div class="wrap split">
     <div class="sticky">
       <span class="eyebrow" data-reveal>Dúvidas comuns</span>
-      <h2 class="h2" id="faq-t" data-reveal style="--d:1;margin-top:20px">O que mais perguntam sobre o polo.</h2>
+      <h2 class="h2" id="faq-t" data-reveal style="--d:1;margin-top:20px">Dúvidas frequentes.</h2>
     </div>
     <div class="faq" data-reveal style="--d:2">
       ${faq.map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`).join("")}

@@ -1,5 +1,5 @@
 import { infra } from "../data/site.mjs";
-import { esc } from "../lib/ui.mjs";
+import { esc, frameLines } from "../lib/ui.mjs";
 import { ctaBand, pageHero } from "../lib/sections.mjs";
 
 export default {
@@ -11,16 +11,16 @@ export default {
   body: () => `
 ${pageHero({
   eyebrow: "Infraestrutura",
-  title: `Estrutura de escala <span class="grad">industrial.</span>`,
-  lead: "Do galpão ao heliponto: o que já está de pé no Edan Park, visto de perto.",
-  bg: "/media/tour/galpao-bg.webp",
+  title: "Infraestrutura do polo, vista de perto.",
+  lead: "Do galpão ao heliponto: o que já está de pé no Edan Park.",
 })}
 
-<section class="sec" style="padding-top:0">
+<section class="sec" style="padding-top:clamp(40px,5vw,72px)">
   <div class="wrap story" data-story>
     <div class="story__stage">
       <div class="story__frame">
-        ${infra.map((s, i) => `<img ${i === 0 ? `src="${s.img}" class="is-on" fetchpriority="high"` : `data-src="${s.img}"`} width="720" height="1280" alt="${esc(s.title)}" decoding="async" data-img>`).join("")}
+        <div class="story__pic">${infra.map((s, i) => `<img ${i === 0 ? `src="${s.img}" class="is-on" fetchpriority="high"` : `data-src="${s.img}"`} width="720" height="1280" alt="${esc(s.title)}" decoding="async" data-img>`).join("")}</div>
+        ${frameLines(-3)}
         <div class="story__tag"><span data-tag>${esc(infra[0].kicker)}</span><span class="story__dots" aria-hidden="true">${infra.map((_, i) => `<i${i === 0 ? ' class="is-on"' : ""}></i>`).join("")}</span></div>
       </div>
     </div>

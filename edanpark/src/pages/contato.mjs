@@ -18,12 +18,11 @@ export default {
   body: () => `
 ${pageHero({
   eyebrow: "Contato",
-  title: `Traga sua empresa para o <span class="grad">Edan Park!</span>`,
+  title: "Traga sua empresa para o Edan Park.",
   lead: "Conte o que a sua operação precisa. Respondemos com as opções de lotes e a visita guiada ao polo.",
-  bg: "/media/tour/heliponto-bg.webp",
 })}
 
-<section class="sec" style="padding-top:0">
+<section class="sec" style="padding-top:clamp(40px,5vw,72px)">
   <div class="wrap contact">
     <div class="contact__info" data-reveal>
       <h2 class="h3">Como prefere falar com a gente?</h2>

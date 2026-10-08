@@ -6,10 +6,7 @@ if (hero) {
   const video = card.querySelector("[data-video]");
   const ctl = card.querySelector("[data-vctl]");
   const bar = card.querySelector("[data-vbar]");
-  const poster = card.querySelector("[data-poster]");
-  const ambient = hero.querySelector("[data-ambient]");
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const fine = matchMedia("(hover:hover) and (pointer:fine)").matches;
   const conn = navigator.connection;
   const saver = !!(conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || "")));
 
@@ -72,36 +69,4 @@ if (hero) {
     (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(play);
   };
   document.readyState === "complete" ? kickoff() : addEventListener("load", kickoff, { once: true });
-
-  /* Brilho ambiente: a cor do vídeo "vaza" para o fundo (canvas minúsculo + blur em CSS) */
-  if (ambient && matchMedia("(min-width:900px)").matches) {
-    const ctx = ambient.getContext("2d", { alpha: false });
-    const paint = (src) => {
-      try {
-        ctx.drawImage(src, 0, 0, ambient.width, ambient.height);
-        ambient.classList.add("is-on");
-      } catch {}
-    };
-    poster.complete ? paint(poster) : poster.addEventListener("load", () => paint(poster), { once: true });
-    if ("requestVideoFrameCallback" in video) {
-      let last = 0;
-      const frame = (t) => {
-        if (t - last > 90) (last = t), paint(video);
-        video.requestVideoFrameCallback(frame);
-      };
-      video.requestVideoFrameCallback(frame);
-    } else {
-      setInterval(() => !video.paused && paint(video), 120);
-    }
-  }
-
-  /* Inclinação 3D do cartão acompanhando o mouse */
-  if (fine && !reduce) {
-    hero.addEventListener("pointermove", (e) => {
-      const r = hero.getBoundingClientRect();
-      card.style.setProperty("--ry", ((e.clientX - r.left) / r.width - 0.5) * -9 + "deg");
-      card.style.setProperty("--rx", ((e.clientY - r.top) / r.height - 0.5) * 6 + "deg");
-    });
-    hero.addEventListener("pointerleave", () => (card.style.removeProperty("--ry"), card.style.removeProperty("--rx")));
-  }
 }

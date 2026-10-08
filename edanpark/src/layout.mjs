@@ -1,5 +1,5 @@
 import { site, nav } from "./data/site.mjs";
-import { esc, icon, logoMark } from "./lib/ui.mjs";
+import { esc, icon, logoWord } from "./lib/ui.mjs";
 
 const year = new Date().getFullYear();
 
@@ -12,12 +12,9 @@ export function header(page) {
   return `
 <header class="hdr" data-hdr>
   <div class="hdr__in wrap">
-    <a class="brand" href="/">
-      ${logoMark()}
-      <span class="brand__t"><b>EDAN PARK</b><small>${esc(site.tagline)}</small></span>
-    </a>
-    <nav class="nav" aria-label="Principal" data-nav>${links}<span class="nav__pill" aria-hidden="true"></span></nav>
-    <a class="btn btn--primary btn--sm hdr__cta" href="${cta.href}"${cta.id === page.nav ? ' aria-current="page"' : ""}>${esc(cta.label === "Contato" ? "Fale conosco" : cta.label)}</a>
+    <a class="brand" href="/">${logoWord()}<span class="sr">${esc(site.tagline)}</span></a>
+    <nav class="nav" aria-label="Principal" data-nav>${links}</nav>
+    <a class="btn btn--primary btn--sm hdr__cta" href="${cta.href}"${cta.id === page.nav ? ' aria-current="page"' : ""}>Falar com a equipe</a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menu" data-burger><span></span><span></span></button>
   </div>
 </header>
@@ -46,10 +43,11 @@ export function footer() {
 <footer class="ftr">
   <div class="wrap ftr__grid">
     <div class="ftr__brand">
-      <a class="brand brand--lg" href="/">${logoMark()}<span class="brand__t"><b>EDAN PARK</b><small>${esc(site.tagline)}</small></span></a>
+      <a href="/" aria-label="${esc(site.name)} — início">${logoWord()}</a>
+      <p class="ftr__tag">${esc(site.tagline)}</p>
       <p>Lotes modulares de 5.000 a 35.000 m² em ${esc(site.city)}, ${esc(site.region)}.</p>
     </div>
-    <nav aria-label="Rodapé"><h2>Abas</h2><ul>${nav.map((n) => `<li><a href="${n.href}">${esc(n.label)}</a></li>`).join("")}</ul></nav>
+    <nav aria-label="Rodapé"><h2>Navegação</h2><ul>${nav.map((n) => `<li><a href="${n.href}">${esc(n.label)}</a></li>`).join("")}</ul></nav>
     <div><h2>Fale com a gente</h2>${
       contact.length
         ? `<ul class="ftr__contact">${contact.map((c) => `<li>${c}</li>`).join("")}</ul>`
@@ -96,7 +94,7 @@ export function layout(page, ctx) {
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(page.description)}">
-<meta name="theme-color" content="#0a0d12">
+<meta name="theme-color" content="#ffffff">
 <script>document.documentElement.className+=" js"</script>
 <link rel="canonical" href="${url}">
 <meta property="og:type" content="website">
@@ -108,8 +106,7 @@ export function layout(page, ctx) {
 <meta property="og:image" content="${site.url}/media/og.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/brand/favicon.svg" type="image/svg+xml">
-<link rel="preload" href="/fonts/sora.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/montserrat.woff2" as="font" type="font/woff2" crossorigin>
 ${page.head || ""}
 ${css}
 ${jsonLd(page)}

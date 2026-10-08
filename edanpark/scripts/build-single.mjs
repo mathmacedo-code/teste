@@ -33,9 +33,7 @@ const css = await build({
   logLevel: "warning",
 });
 let styles = css.outputFiles.map((f) => f.text).join("\n");
-for (const [name, file] of [["sora", "sora.woff2"], ["manrope", "manrope.woff2"]]) {
-  styles = styles.replaceAll(`url(/fonts/${file})`, `url(${await uri(join(root, "public/fonts", file), "font/woff2")})`);
-}
+styles = styles.replaceAll("url(/fonts/montserrat.woff2)", `url(${await uri(join(root, "public/fonts/montserrat.woff2"), "font/woff2")})`);
 const views = pages.map((p) => p.nav);
 styles += `.js [data-view]{display:none}${views.map((v) => `.js[data-v="${v}"] [data-view="${v}"]`).join(",")}{display:block;animation:viewin .45s var(--ease)}@keyframes viewin{from{transform:translateY(14px)}}`;
 
@@ -84,7 +82,7 @@ const html = `<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>${site.name} — ${site.tagline} em ${site.city}, ${site.state}</title>
 <meta name="description" content="${home.description.replace(/"/g, "&quot;")}">
-<meta name="theme-color" content="#0a0d12">
+<meta name="theme-color" content="#ffffff">
 <link rel="canonical" href="${site.url}/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="${site.name} — ${site.tagline}">

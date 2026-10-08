@@ -1,5 +1,5 @@
 import { site } from "../data/site.mjs";
-import { icon, esc } from "../lib/ui.mjs";
+import { icon, esc, logoIcon } from "../lib/ui.mjs";
 import { ctaBand, pageHero, mapsUrl } from "../lib/sections.mjs";
 
 const { lat, lon } = site.geo;
@@ -14,15 +14,14 @@ export default {
   body: () => `
 ${pageHero({
   eyebrow: "Localização",
-  title: `No coração do <span class="grad">Sul de Minas.</span>`,
-  lead: "Em Estiva (MG), o Edan Park une o ambiente de serras e a estrutura de um polo industrial e logístico.",
-  bg: "/media/tour/modulos-bg.webp",
+  title: "No Sul de Minas, em Estiva.",
+  lead: "O Edan Park fica em Estiva (MG), entre serras, com a estrutura de um polo industrial e logístico.",
 })}
 
-<section class="sec" style="padding-top:0">
+<section class="sec" style="padding-top:clamp(40px,5vw,72px)">
   <div class="wrap loc">
     <div data-reveal>
-      <p class="loc__big grad">${esc(site.city)}<br>${esc(site.state)}</p>
+      <p class="loc__big">${esc(site.city)}<br><span>${esc(site.state)}</span></p>
       <ul class="loc__list">
         <li><span>Município</span><b>${esc(site.city)}</b></li>
         <li><span>Estado</span><b>Minas Gerais</b></li>
@@ -34,14 +33,12 @@ ${pageHero({
         <a class="btn btn--ghost" href="/contato/">Agendar visita</a>
       </div>
     </div>
-    <div class="map" data-map data-reveal="zoom" style="--bg:url(/media/tour/visao-geral-bg.webp)">
+    <div class="map" data-map data-reveal>
+      ${logoIcon("map__mark draw")}
       <div class="map__pin">
-        <span class="dot"></span>
         <strong class="h3">${esc(site.name)}</strong>
         <span>${esc(site.city)} · ${esc(site.state)}</span>
-        <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
-          <button class="btn btn--light btn--sm" type="button" data-load-map data-src="${osm}">Ver no mapa</button>
-        </div>
+        <button class="btn btn--primary btn--sm" type="button" data-load-map data-src="${osm}">Ver no mapa</button>
         <small style="color:var(--muted);max-width:30ch">Posição aproximada do município. Peça a localização exata e o roteiro de visita à nossa equipe.</small>
       </div>
     </div>
