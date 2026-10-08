@@ -45,7 +45,7 @@ const CITIES = [
 const LABELS = {
   mg: { name: "Minas Gerais", lat: -20.3, lon: -46.0 },
   sp: { name: "São Paulo", lat: -24.15, lon: -47.35 },
-  rj: { name: "Rio de Janeiro", lat: -22.335, lon: -43.29 },
+  rj: { name: "Rio de Janeiro", lat: -22.335, lon: -43.36 },
 };
 
 // ---------------------------------------------------------------- leitura do pacote

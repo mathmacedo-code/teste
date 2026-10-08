@@ -19,7 +19,7 @@ const pos = (o) => `--x:${o.x};--y:${o.y}`;
 
 // Lado do rótulo de cada pino: [mapa estreito, mapa largo]  (b = baixo, t = cima, l = esquerda, r = direita)
 const RIGHT = new Set(["sao-paulo", "santos"]); // caixa de destaque ao lado do pino (os demais: acima)
-const SIDE = { campinas: ["b", "l"], "sao-paulo": ["r", "l"], santos: ["r", "r"], "belo-horizonte": ["l", "r"], "rio-de-janeiro": ["b", "r"] };
+const SIDE = { campinas: ["b", "l"], "sao-paulo": ["r", "l"], santos: ["r", "r"], "belo-horizonte": ["l", "r"], "rio-de-janeiro": ["t", "r"] };
 
 const row = (c, i) => `
 <li><button class="gm__row" type="button" data-city="${c.id}" aria-pressed="${c.id === first}">
@@ -49,7 +49,7 @@ export function geoMap() {
     <div class="gm__head">
       <span class="eyebrow" data-reveal>Mapa da região</span>
       <h2 class="h2" id="gm-t" data-reveal style="--d:1">A distância até as principais cidades.</h2>
-      <p class="lead" data-reveal style="--d:2">O Edan Park fica em ${esc(site.city)}, no Sul de Minas, perto da divisa com São Paulo. Escolha uma cidade para ver a distância por rodovia.</p>
+      <p class="lead" data-reveal style="--d:2">Escolha uma cidade para ver a distância por rodovia até o Edan Park, saindo de ${esc(site.city)}.</p>
     </div>
 
     <figure class="gm__fig">

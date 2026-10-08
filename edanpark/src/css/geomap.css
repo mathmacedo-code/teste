@@ -32,7 +32,7 @@
 .gm__note{font-size:.8rem;color:var(--muted)}
 
 /* ---------- Quadro do mapa ---------- */
-.gm__map{--x0:340;--y0:284;--w:305;--h:371;
+.gm__map{--x0:340;--y0:284;--w:305;--h:385;
   position:relative;aspect-ratio:var(--w)/var(--h);overflow:hidden;isolation:isolate;background:var(--paper);clip-path:var(--roof-w)}
 .gm__svg{position:absolute;max-width:none;left:calc(var(--x0) / var(--w) * -100%);top:calc(var(--y0) / var(--h) * -100%);width:calc(var(--W) / var(--w) * 100%);height:calc(var(--H) / var(--h) * 100%)}
 .gm__s{stroke:var(--paper);stroke-width:1.5px;stroke-linejoin:round;vector-effect:non-scaling-stroke}
@@ -48,12 +48,16 @@
 /* Tudo o que é HTML sobre o mapa: posição = (coordenada − origem do recorte) / tamanho do recorte */
 .gm__pin,.gm__edan,.gm__st,.gm__call{--px:calc((var(--x) - var(--x0)) / var(--w) * 100cqw);position:absolute;left:calc((var(--x) - var(--x0)) / var(--w) * 100%);top:calc((var(--y) - var(--y0)) / var(--h) * 100%)}
 
-.gm__st{translate:-50% -50%;z-index:1;pointer-events:none;white-space:nowrap;font:600 .58rem/1 var(--f);letter-spacing:.24em;text-transform:uppercase;color:#d9deea}
+.gm__st{translate:-50% -50%;z-index:1;pointer-events:none;white-space:nowrap;font:600 .58rem/1 var(--f);letter-spacing:.2em;text-transform:uppercase;color:#d9deea}
 .gm__st--rj{color:#fff} /* RJ: fundo mais claro, texto branco puro para manter o contraste */
 
 /* Pinos das cidades: botão de 44 px (alvo de toque), quadrado laranja de 16 px no centro */
-.gm__pin{z-index:2;width:44px;height:44px;margin:-22px 0 0 -22px;translate:var(--hx,0px) var(--hy,0px);--cx:calc(50% - var(--hx,0px));--cy:calc(50% - var(--hy,0px))}
+.gm__pin{-webkit-tap-highlight-color:transparent;z-index:2;width:44px;height:44px;margin:-22px 0 0 -22px;translate:var(--hx,0px) var(--hy,0px);--cx:calc(50% - var(--hx,0px));--cy:calc(50% - var(--hy,0px))}
 .gm__pin[aria-pressed=true]{z-index:3}
+/* a área de toque (44 px) de cada pino sai um pouco do centro, para os três pinos de SP não se sobreporem */
+.gm__pin[data-city=campinas]{--hy:-12px}
+.gm__pin[data-city=sao-paulo]{--hy:-8px}
+.gm__pin[data-city=santos]{--hy:10px}
 .gm__dot{position:absolute;left:calc(var(--cx) - 8px);top:calc(var(--cy) - 8px);width:16px;height:16px;background:var(--orange);border:2px solid #fff;transition:scale .25s var(--ease),background .2s,border-color .2s}
 .gm__pin:hover .gm__dot{scale:1.2}
 .gm__pin[aria-pressed=true] .gm__dot{scale:1.4;background:#fff;border:3px solid var(--orange)}
@@ -69,26 +73,26 @@
 
 /* Marcador da Edan (ícone do galpão) com anel que pulsa */
 .gm__edan{z-index:3;width:50px;height:46px;margin:-23px 0 0 -25px;display:grid;place-items:center;background:#fff;border-bottom:4px solid var(--orange);pointer-events:none}
-.gm__edan::before,.gm__edan::after{content:"";position:absolute;inset:-2px -2px -2px;border:2px solid var(--orange);opacity:0;animation:gm-pulse 2.8s var(--ease) infinite}
+.gm__edan::before,.gm__edan::after{content:"";position:absolute;inset:-2px -2px -2px;border:2px solid var(--orange-lt);opacity:0;animation:gm-pulse 2.8s var(--ease) infinite}
 .gm__edan::after{animation-delay:1.4s}
 @keyframes gm-pulse{0%{opacity:.8;scale:1}100%{opacity:0;scale:1.8}}
 .gm__logo{width:34px;height:auto;overflow:visible}
 .gm__logo .l-navy{stroke-width:52}
 .gm__logo .l-orange{stroke-width:44}
-.gm__tag--edan{left:calc(100% + 10px);top:50%;translate:0 -50%;background:var(--orange);color:#fff;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.gm__tag--edan{left:50%;bottom:calc(100% + 8px);translate:-50% 0;background:var(--orange);color:#fff;font-weight:800;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase}
 
 /* Caixa de destaque: laranja, texto branco, ancorada no pino selecionado (haste vertical até o pino).
    O deslocamento --sh mantém a caixa inteira dentro do quadro (clamp com a largura do quadro, em cqw). */
-.gm__call{z-index:4;width:0;height:0;pointer-events:none;--rise:16px;--hw:84px;opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
+.gm__call{z-index:4;width:0;height:0;pointer-events:none;--rise:16px;--hw:78px;opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s .25s}
 .gm__call.is-on{opacity:1;visibility:visible;transition-delay:0s}
 .gm__call::before{content:"";position:absolute;left:-1px;bottom:11px;width:2px;height:calc(var(--rise) - 9px);background:var(--orange);transform-origin:50% 100%}
 .gm__call.is-on::before{animation:gm-stem .3s var(--ease) both}
 @keyframes gm-stem{from{transform:scaleY(0)}}
-.gm__box{--sh:clamp(calc(var(--hw) - var(--px)),var(--bx,0px),calc(100cqw - var(--px) - var(--hw)));position:absolute;left:0;bottom:var(--rise);width:calc(var(--hw)*2);display:grid;gap:2px;padding:8px 12px;background:var(--orange);color:#fff;font:600 .78rem/1.2 var(--f);translate:calc(-50% + var(--sh)) 0}
+.gm__box{--sh:clamp(calc(var(--hw) + 8px - var(--px)),var(--bx,0px),calc(100cqw - var(--px) - var(--hw) - 8px));position:absolute;left:0;bottom:var(--rise);width:calc(var(--hw)*2);display:grid;gap:2px;padding:8px 10px;background:var(--orange);color:#fff;white-space:nowrap;font:600 .76rem/1.2 var(--f);translate:calc(-50% + var(--sh)) 0}
 .gm__call[data-dir=r]{--run:36px}
 .gm__call[data-dir=r]::before{left:11px;bottom:-1px;width:calc(var(--run) - 9px);height:2px;transform-origin:0 50%}
 .gm__call[data-dir=r].is-on::before{animation-name:gm-stemx}
-.gm__call[data-dir=r] .gm__box{left:var(--run);bottom:auto;top:0;translate:0 calc(-50% + var(--dy,0px))}
+.gm__call[data-dir=r] .gm__box{left:var(--run);bottom:auto;top:0;translate:min(0px,calc(100cqw - var(--px) - var(--run) - var(--hw)*2 - 8px)) calc(-50% + var(--dy,0px))}
 @keyframes gm-stemx{from{transform:scaleX(0)}}
 .gm__box b{font-weight:800}
 .gm__bk{font-size:1.15rem;letter-spacing:-.01em;line-height:1.1}
@@ -96,30 +100,41 @@
 @keyframes gm-box{from{opacity:0;transform:translateY(6px)}}
 
 /* Mapa estreito: a caixa de Campinas sobe acima do marcador da Edan; as de São Paulo e Santos ficam ao lado */
-.gm__call[data-city=campinas]{--rise:64px}
+.gm__call[data-city=campinas]{--rise:26cqw}
+.gm__call[data-city=santos]{--run:60px}
+.gm__pin[data-city=campinas] .gm__tag{translate:-36% 0}
 .gm__call[data-city=sao-paulo]{--dy:-12px}
-.gm__call[data-city=santos]{--dy:8px}
+.gm__call[data-city=santos]{--dy:12px}
 .gm__st--sp{display:none}
+.gm__pin[data-city=rio-de-janeiro] .gm__tag{translate:-62% 0}
 
 /* ---------- Entrada (só com JS; sem JS tudo aparece) ---------- */
-.js .gm:not(.is-in) :is(.gm__pin,.gm__edan,.gm__ln,.gm__call.is-on){opacity:0}
+.js .gm:not(.is-in) :is(.gm__pin,.gm__edan,.gm__ln,.gm__on,.gm__call.is-on){opacity:0}
 .gm.is-in .gm__pin{animation:gm-pop .5s var(--ease) backwards;animation-delay:calc(var(--i)*130ms + 450ms)}
 .gm.is-in .gm__edan{animation:gm-pop .5s var(--ease) backwards;animation-delay:.1s}
 .gm.is-in .gm__ln{animation:gm-draw .9s var(--ease) backwards;animation-delay:calc(var(--i)*130ms + 350ms)}
 @keyframes gm-pop{from{opacity:0;scale:.4}}
+/* a caixa e a linha laranja da cidade selecionada entram depois do pino (só na 1ª vez; .is-set encerra a entrada) */
+.gm.is-in:not(.is-set) .gm__call.is-on{animation:gm-fade .4s var(--ease) 1s backwards}
+.gm.is-in:not(.is-set) .gm__on.is-on{animation:gm-draw .7s var(--ease) 1s backwards}
+@keyframes gm-fade{from{opacity:0}}
 
 /* ---------- Mapa largo (tablet/desktop): recorte um pouco maior, mais ar ao redor ---------- */
-@container (min-width:480px){
+@container (min-width:560px){
   .gm__map{--x0:285;--y0:306;--w:400;--h:358}
   .gm__call{--rise:18px;--hw:132px}
-  .gm__call[data-city=campinas]{--rise:18px;--bx:-34px}
+  .gm__call[data-city=campinas]{--rise:13cqw;--bx:-30px}
+  .gm__call[data-city=santos]{--run:44px}
+  .gm__pin[data-city=campinas] .gm__tag{translate:0 -50%}
   .gm__call[data-city=sao-paulo],.gm__call[data-city=santos]{--dy:0px}
   .gm__st--sp{display:block}
+  .gm__pin[data-city=rio-de-janeiro] .gm__tag{translate:0 -50%}
   .gm__call[data-dir=r]{--run:44px}
   .gm__box{display:flex;align-items:baseline;gap:.4em;white-space:nowrap;width:auto;min-width:calc(var(--hw)*2 - 28px);justify-content:center;padding:9px 16px;font-size:.9rem}
   .gm__bk{font-size:1.05rem}
   .gm__tag{font-size:.74rem}
-  .gm__st{font-size:.64rem}
+  .gm__tag--edan{left:calc(100% + 10px);bottom:auto;top:50%;translate:0 -50%;letter-spacing:.1em}
+  .gm__st{font-size:.64rem;letter-spacing:.24em}
   [data-w=r] .gm__tag{left:calc(var(--cx) + 16px);right:auto;top:var(--cy);bottom:auto;translate:0 -50%}
   [data-w=l] .gm__tag{right:calc(100% - var(--cx) + 16px);left:auto;top:var(--cy);bottom:auto;translate:0 -50%}
   [data-w=b] .gm__tag{left:var(--cx);right:auto;top:calc(var(--cy) + 15px);bottom:auto;translate:-50% 0}
@@ -132,5 +147,5 @@
 @media (prefers-reduced-motion:reduce){
   .gm__edan::before,.gm__edan::after{display:none}
   .gm *,.gm *::before,.gm *::after{animation:none!important;transition:none!important}
-  .js .gm:not(.is-in) :is(.gm__pin,.gm__edan,.gm__ln){opacity:1}
+  .js .gm:not(.is-in) :is(.gm__pin,.gm__edan,.gm__ln,.gm__on.is-on,.gm__call.is-on){opacity:1}
 }

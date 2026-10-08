@@ -44,7 +44,7 @@ if (root) {
   if ("IntersectionObserver" in window) {
     new IntersectionObserver(([e]) => {
       seen = e.isIntersecting;
-      if (seen) root.classList.add("is-in");
+      if (seen && !root.classList.contains("is-in")) root.classList.add("is-in"), setTimeout(() => root.classList.add("is-set"), 2200);
       run();
     }, { threshold: 0.3 }).observe(root.querySelector(".gm__map"));
   } else root.classList.add("is-in");

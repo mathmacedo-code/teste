@@ -109,6 +109,21 @@ caminho do percurso e posição das etiquetas). Para ajustar um lote, edite os p
 01–08 e 14) segue a imagem do site atual; se ela mudar, edite `id`, `q` e `n`.
 Marcação em `src/lib/lotmap.mjs`, estilos em `src/css/lotmap.css`, comportamento em `src/js/lotmap.js`.
 
+## Mapa estratégico (Localização)
+
+Mapa esquemático do Sudeste (MG em azul-petróleo, SP e RJ mais claros) com o marcador da Edan em Estiva e as cidades de
+referência. Clique/toque num pino (ou na lista) para ver "161 km de Campinas"; setas do teclado percorrem as cidades. Ao entrar
+na tela os pinos aparecem em sequência e a seleção passeia sozinha até o primeiro clique (parada com "reduzir movimento").
+
+- **Distâncias:** só Campinas (161 km) vem do site antigo; São Paulo (~200), Santos (~275), Belo Horizonte (~400) e Rio (~400)
+  são **estimativas rodoviárias**. Confirme/ajuste em `src/data/geo.mjs` (campo `km`; `source: "site-atual" | "estimado"`;
+  o gerador marca com `// CONFIRMAR`). Para trocar/incluir cidades, edite a lista `cities` em `scripts/geo.mjs` e rode-o.
+- **Contornos:** gerados por `scripts/geo.mjs` a partir do pacote [`@svg-maps/brazil`](https://www.npmjs.com/package/@svg-maps/brazil)
+  (Victor Cazanave, **CC BY 4.0**: exige crédito, que fica na legenda do mapa, e aviso de adaptação). Para regerar:
+  `npm i --no-save @svg-maps/brazil` e `node scripts/geo.mjs`.
+- O mapa é um recorte (zoom) da região por CSS, para manter alvos de toque de 44 px em SP/Campinas/Santos no celular.
+- Marcação em `src/lib/geomap.mjs`, estilos em `src/css/geomap.css`, comportamento em `src/js/geomap.js`.
+
 ## Hero em vídeo
 
 `public/media/hero.mp4` (desktop) e `hero-sm.mp4` (celular), gerados do reel original **sem áudio**, com um dissolve embutido
@@ -170,7 +185,7 @@ o formulário avisa que os canais ainda não foram configurados (e o build lista
 ## Estrutura
 
 ```
-src/data/        conteúdo editável (site.mjs, tour.mjs, lotes.mjs)
+src/data/        conteúdo editável (site.mjs, tour.mjs, lotes.mjs; geo.mjs é gerado por scripts/geo.mjs)
 src/pages/       uma página por aba (módulos que devolvem HTML)
 src/layout.mjs   <head>, SEO, cabeçalho, rodapé
 src/css/         main.css (todas as abas) · tour.css (só no tour)
