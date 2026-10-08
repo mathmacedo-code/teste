@@ -2,7 +2,8 @@
 // Suporta Range requests (obrigatório para o vídeo tocar/buscar corretamente).
 import { createServer } from "node:http";
 import { createReadStream, watch } from "node:fs";
-import { stat } from "node:fs/promises";
+import { stat, readFile } from "node:fs/promises";
+import { gzipSync } from "node:zlib";
 import { execFile } from "node:child_process";
 import { join, extname, normalize, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -50,6 +51,11 @@ const server = createServer(async (req, res) => {
       const end = b ? Number(b) : s.size - 1;
       res.writeHead(206, { ...headers, "Content-Range": `bytes ${start}-${end}/${s.size}`, "Content-Length": end - start + 1 });
       createReadStream(f, { start, end }).pipe(res);
+    } else if (/^(text\/|application\/(json|xml)|image\/svg)/.test(type) && /gzip/.test(req.headers["accept-encoding"] || "")) {
+      // como as hospedagens reais: texto vai comprimido
+      const body = gzipSync(await readFile(f));
+      res.writeHead(200, { ...headers, "Content-Encoding": "gzip", "Content-Length": body.length, Vary: "Accept-Encoding" });
+      res.end(body);
     } else {
       res.writeHead(200, { ...headers, "Content-Length": s.size });
       createReadStream(f).pipe(res);

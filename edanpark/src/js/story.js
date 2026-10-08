@@ -1,4 +1,5 @@
 // Infraestrutura: a imagem fixa troca conforme cada bloco de texto passa pelo meio da tela.
+// Só a 1ª imagem vem no HTML; as demais baixam depois do load (a da etapa seguinte primeiro).
 const root = document.querySelector("[data-story]");
 if (root) {
   const steps = [...root.querySelectorAll("[data-step]")];
@@ -7,9 +8,18 @@ if (root) {
   const tag = root.querySelector("[data-tag]");
   let cur = -1, tick = false;
 
+  const ensure = (i) => {
+    const im = imgs[i];
+    if (im?.dataset.src) (im.src = im.dataset.src), im.removeAttribute("data-src");
+  };
+  // espera ~2,5 s depois do load para não competir com a 1ª imagem; show() busca a da etapa seguinte na hora
+  const loadRest = () => setTimeout(() => imgs.forEach((_, k) => setTimeout(() => ensure(k), 400 * k)), 2500);
+  document.readyState === "complete" ? loadRest() : addEventListener("load", loadRest, { once: true });
+
   const show = (i) => {
     if (i === cur) return;
     cur = i;
+    ensure(i), ensure(i + 1);
     steps.forEach((s, k) => s.classList.toggle("is-on", k === i));
     imgs.forEach((m, k) => m.classList.toggle("is-on", k === i));
     dots.forEach((d, k) => d.classList.toggle("is-on", k === i));

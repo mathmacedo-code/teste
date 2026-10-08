@@ -156,11 +156,21 @@ function init(root) {
     }
   };
 
+  /* ---------- Imagens: só a 1ª vem no HTML; as outras baixam depois (vizinhas da parada em foco primeiro) ---------- */
+  const ensure = (i) => {
+    const im = stops[mod(i, M)].querySelector("img[data-src]");
+    if (im) (im.src = im.dataset.src), im.removeAttribute("data-src");
+  };
+  // espera ~2,5 s depois do load para não competir com a 1ª imagem; ensure() cobre quem navegar antes disso
+  const loadRest = () => setTimeout(() => stops.forEach((_, k) => setTimeout(() => ensure(k), 300 * k)), 2500);
+  document.readyState === "complete" ? loadRest() : addEventListener("load", loadRest, { once: true });
+
   /* ---------- HUD / foco ---------- */
   let swapTimer = 0;
   function syncFocus(i) {
     if (i === focus) return;
     focus = i;
+    ensure(i - 1), ensure(i), ensure(i + 1);
     const isCta = i >= SCENES;
     stops.forEach((s, k) => s.classList.toggle("is-focus", k === i));
     dots.forEach((d, k) => (k === i ? d.setAttribute("aria-current", "true") : d.removeAttribute("aria-current")));
@@ -181,6 +191,7 @@ function init(root) {
   }
 
   function goTo(i) {
+    ensure(i);
     target = angleOf(i, target);
     wake();
   }

@@ -20,7 +20,7 @@ ${pageHero({
   <div class="wrap story" data-story>
     <div class="story__stage">
       <div class="story__frame">
-        ${infra.map((s, i) => `<img src="${s.img}" width="720" height="1280" alt="${esc(s.title)}" ${i === 0 ? 'class="is-on" fetchpriority="high"' : 'loading="lazy"'} decoding="async" data-img>`).join("")}
+        ${infra.map((s, i) => `<img ${i === 0 ? `src="${s.img}" class="is-on" fetchpriority="high"` : `data-src="${s.img}"`} width="720" height="1280" alt="${esc(s.title)}" decoding="async" data-img>`).join("")}
         <div class="story__tag"><span data-tag>${esc(infra[0].kicker)}</span><span class="story__dots" aria-hidden="true">${infra.map((_, i) => `<i${i === 0 ? ' class="is-on"' : ""}></i>`).join("")}</span></div>
       </div>
     </div>

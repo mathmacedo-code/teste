@@ -12,7 +12,7 @@ function header(page) {
   return `
 <header class="hdr" data-hdr>
   <div class="hdr__in wrap">
-    <a class="brand" href="/" aria-label="${esc(site.name)} — início">
+    <a class="brand" href="/">
       ${logoMark()}
       <span class="brand__t"><b>EDAN PARK</b><small>${esc(site.tagline)}</small></span>
     </a>
@@ -46,7 +46,7 @@ function footer() {
 <footer class="ftr">
   <div class="wrap ftr__grid">
     <div class="ftr__brand">
-      <a class="brand brand--lg" href="/" aria-label="${esc(site.name)}">${logoMark()}<span class="brand__t"><b>EDAN PARK</b><small>${esc(site.tagline)}</small></span></a>
+      <a class="brand brand--lg" href="/">${logoMark()}<span class="brand__t"><b>EDAN PARK</b><small>${esc(site.tagline)}</small></span></a>
       <p>Lotes modulares de 5.000 a 35.000 m² em ${esc(site.city)}, ${esc(site.region)}.</p>
     </div>
     <nav aria-label="Rodapé"><h2>Abas</h2><ul>${nav.map((n) => `<li><a href="${n.href}">${esc(n.label)}</a></li>`).join("")}</ul></nav>

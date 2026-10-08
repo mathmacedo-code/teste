@@ -16,7 +16,7 @@ const motes = Array.from({ length: 26 }, () => `<i style="--x:${(rnd() * 100).to
 const stop = (s, i) => `
 <figure class="stop${i === 0 ? " is-focus" : ""}" data-stop="${i}" data-kicker="${esc(s.kicker)}" data-title="${esc(s.title)}" data-text="${esc(s.text)}" style="--a:${i * STEP}deg">
   <div class="stop__photo" data-photo>
-    <img src="${s.img}" width="720" height="1280" alt="${esc(s.title)}: ${esc(s.text)}" decoding="async"${i === 0 ? ' fetchpriority="high"' : ""} draggable="false">
+    <img ${i === 0 ? `src="${s.img}" fetchpriority="high"` : `data-src="${s.img}"`} width="720" height="1280" alt="${esc(s.title)}: ${esc(s.text)}" decoding="async" draggable="false">
     ${s.spots.map((p) => `<button class="spot" type="button" style="left:${p.x}%;top:${p.y}%" aria-label="${esc(p.label)}" data-spot><i></i><span>${esc(p.label)}</span></button>`).join("")}
   </div>
 </figure>`;
@@ -27,7 +27,7 @@ const ctaStop = `
 <figure class="stop" data-stop="${N}" data-cta data-kicker="${esc(cta.kicker)}" data-title="${esc(cta.title)}" data-text="${esc(cta.text)}" style="--a:${N * STEP}deg">
   <div class="stop__photo stop__cta" data-photo>
     <span class="eyebrow">${esc(cta.kicker)}</span>
-    <h3>Traga sua empresa para o Edan Park!</h3>
+    <h2>Traga sua empresa para o Edan Park!</h2>
     <a class="btn btn--light" href="/contato/" data-nodrag>Fale com a gente ${icon("arrow-right")}</a>
   </div>
 </figure>`;
@@ -107,7 +107,7 @@ export default {
     <ol class="stops">
       ${tour.scenes
         .map(
-          (s, i) => `<li data-reveal style="--d:${i}"><button type="button" data-jump="${i}" aria-label="Ver no tour: ${esc(s.title)}">
+          (s, i) => `<li data-reveal style="--d:${i}"><button type="button" data-jump="${i}">
         <img src="${s.img}" width="360" height="640" alt="" loading="lazy" decoding="async">
         <span class="stops__n">${pad(i + 1)}</span><strong>${esc(s.title)}</strong><span>${esc(s.text)}</span></button></li>`,
         )

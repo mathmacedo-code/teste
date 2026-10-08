@@ -48,7 +48,7 @@ export default {
       <div class="float float--b" aria-hidden="true">${icon("layers")}<span>Heliponto no polo<small>Estrutura completa</small></span></div>
     </div>
   </div>
-  <a class="scroll-cue" href="#sobre" aria-label="Rolar para o conteúdo"><span>Role</span><i></i></a>
+  <a class="scroll-cue" href="#sobre" aria-label="Role para o conteúdo"><span>Role</span><i></i></a>
 </section>
 
 ${marquee()}

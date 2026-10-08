@@ -40,8 +40,24 @@ uma aba, edite `nav` ali.
 | LCP | é o *poster* (WebP, com `preload` e `fetchpriority=high`); o hero **não depende de JS** para aparecer |
 | Economia de dados | com `saveData`/2G ou "reduzir movimento" o vídeo não é baixado; há um botão de reproduzir |
 | Mapa | iframe só carrega se a pessoa clicar |
+| Imagens do tour / infraestrutura | só a 1ª vem no HTML; as outras baixam ~2,5 s depois do `load` (e na hora, se você navegar antes) — o peso inicial dessas abas caiu de ~570 para ~280 KiB |
 | Navegação | `prefetch` das outras abas ao passar o mouse/tocar + transições entre páginas (View Transitions) |
 | Cache | `assets/*`, `media/*` e `fonts/*` com `Cache-Control: immutable` (arquivos com *hash* no nome) |
+
+### Medido (Lighthouse 12, celular simulado: 4G lenta + CPU 4× mais lenta, servidor local com gzip)
+
+| Aba | Desempenho | Acessibilidade | Boas práticas | SEO | LCP | Peso inicial |
+|---|---|---|---|---|---|---|
+| Início | 100 | 100 | 100 | 100 | 1,8 s | 140 KiB |
+| Empreendimento | 100 | 100 | 100 | 100 | 1,4 s | 73 KiB |
+| Infraestrutura | 97 | 100 | 100 | 100 | 2,6 s | 286 KiB |
+| Localização | 100 | 100 | 100 | 100 | 1,4 s | 72 KiB |
+| Tour 360° | 98 | 100 | 100 | 100 | 2,3 s | 279 KiB |
+| Contato | 100 | 100 | 100 | 100 | 1,4 s | 73 KiB |
+
+TBT ≤ 9 ms e CLS ≈ 0 em todas. Em Chrome sem simulação o hero pinta em ~150 ms. axe-core: 0 violações (6 abas × celular/desktop).
+São números de laboratório; na hospedagem real variam com rede, CDN e compressão (use Brotli/gzip). Para repetir:
+`npx lighthouse http://localhost:4173/ --only-categories=performance,accessibility,best-practices,seo` com `npm run start` rodando.
 
 ## Hero em vídeo
 
